@@ -12,8 +12,11 @@ load_dotenv()
 
 def create_app():
     app = Flask(__name__)
+
+    # Secret key
     app.secret_key = os.getenv("SECRET_KEY")
 
+    # Database URL
     database_url = URL.create(
         drivername="mysql+pymysql",
         username=os.getenv("DB_USER"),
@@ -23,17 +26,25 @@ def create_app():
         database=os.getenv("DB_NAME")
     )
 
+    # Database configuration
     app.config["SQLALCHEMY_DATABASE_URI"] = database_url
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+    # Enable SSL connection for Aiven MySQL
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+        "connect_args": {
+            "ssl": {}
+        }
+    }
+
+    # Initialize database
     db.init_app(app)
 
-
+    # Register routes
     app.register_blueprint(main)
 
+    # Create tables
     with app.app_context():
-     db.create_all()
-
-   
+        db.create_all()
 
     return app
