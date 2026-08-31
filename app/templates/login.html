@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sign In | AccessIQ</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            font-family: "Segoe UI", Arial, sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    rgba(37, 99, 235, 0.12),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    135deg,
+                    #020617,
+                    #071426
+                );
+
+            color: #ffffff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 25px;
+        }
+
+
+        /* Main Login Container */
+
+        .login-container {
+            width: 100%;
+            max-width: 1150px;
+            min-height: 680px;
+
+            display: grid;
+            grid-template-columns: 42% 58%;
+
+            background: rgba(10, 20, 38, 0.88);
+
+            border: 1px solid rgba(148, 163, 184, 0.22);
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.45);
+        }
+
+
+        /* =========================
+           LEFT BRAND SECTION
+        ========================== */
+
+        .brand-section {
+            position: relative;
+
+            padding: 55px 50px;
+
+            display: flex;
+            flex-direction: column;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(2, 6, 23, 0.97),
+                    rgba(8, 27, 52, 0.96)
+                );
+
+            border-right:
+                1px solid rgba(148, 163, 184, 0.15);
+
+            overflow: hidden;
+        }
+
+
+        /* Background Glow */
+
+        .brand-section::before {
+            content: "";
+
+            position: absolute;
+
+            width: 350px;
+            height: 350px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(37, 99, 235, 0.14),
+                    transparent 70%
+                );
+
+            bottom: -150px;
+            left: -120px;
+
+            pointer-events: none;
+        }
+
+
+        .brand-section > * {
+            position: relative;
+            z-index: 1;
+        }
+
+
+        /* Logo */
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 14px;
+
+            font-size: 24px;
+
+            color: #38bdf8;
+
+            background:
+                rgba(30, 64, 175, 0.25);
+
+            border:
+                1px solid rgba(56, 189, 248, 0.35);
+        }
+
+
+        .logo-text h1 {
+            margin: 0;
+
+            font-size: 28px;
+            font-weight: 650;
+
+            letter-spacing: 0.4px;
+        }
+
+
+        .logo-text span {
+            display: block;
+
+            margin-top: 4px;
+
+            font-size: 11px;
+
+            letter-spacing: 1.4px;
+
+            color: #94a3b8;
+        }
+
+
+        /* Main Text */
+
+        .brand-content {
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+
+
+        .security-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            margin-bottom: 22px;
+
+            color: #38bdf8;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+
+        .security-line {
+            width: 26px;
+            height: 2px;
+
+            background: #38bdf8;
+        }
+
+
+        .brand-content h2 {
+            margin: 0 0 22px;
+
+            font-size: 38px;
+
+            line-height: 1.3;
+
+            font-weight: 650;
+
+            color: #f8fafc;
+        }
+
+
+        .brand-content p {
+            margin: 0;
+
+            max-width: 350px;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+
+            color: #94a3b8;
+        }
+
+
+        /* Feature List */
+
+        .features {
+            margin-top: 42px;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 20px;
+        }
+
+
+        .feature {
+            display: flex;
+            align-items: center;
+
+            gap: 14px;
+        }
+
+
+        .feature-icon {
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            color: #38bdf8;
+
+            background:
+                rgba(15, 23, 42, 0.7);
+
+            border:
+                1px solid rgba(56, 189, 248, 0.18);
+
+            font-size: 19px;
+        }
+
+
+        .feature-text strong {
+            display: block;
+
+            margin-bottom: 4px;
+
+            font-size: 14px;
+
+            color: #e2e8f0;
+        }
+
+
+        .feature-text span {
+            font-size: 12px;
+
+            color: #64748b;
+
+            line-height: 1.5;
+        }
+
+
+        /* Footer */
+
+        .brand-footer {
+            margin-top: 30px;
+
+            font-size: 12px;
+
+            color: #64748b;
+        }
+
+
+        .brand-footer strong {
+            color: #94a3b8;
+        }
+
+
+        /* =========================
+           RIGHT LOGIN SECTION
+        ========================== */
+
+        .login-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            padding: 55px 75px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(10, 20, 38, 0.98),
+                    rgba(5, 15, 29, 0.98)
+                );
+        }
+
+
+        .login-content {
+            width: 100%;
+            max-width: 470px;
+        }
+
+
+        /* Shield Icon */
+
+        .login-shield {
+            width: 88px;
+            height: 88px;
+
+            margin: 0 auto 28px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            font-size: 40px;
+
+            color: #38bdf8;
+
+            border:
+                1px solid rgba(56, 189, 248, 0.35);
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(37, 99, 235, 0.18),
+                    rgba(2, 6, 23, 0.2)
+                );
+
+            box-shadow:
+                0 0 35px rgba(37, 99, 235, 0.12);
+        }
+
+
+        /* Login Header */
+
+        .login-header {
+            text-align: center;
+
+            margin-bottom: 35px;
+        }
+
+
+        .login-header h2 {
+            margin: 0 0 10px;
+
+            font-size: 32px;
+
+            font-weight: 650;
+
+            color: #f8fafc;
+        }
+
+
+        .login-header p {
+            margin: 0;
+
+            font-size: 14px;
+
+            color: #94a3b8;
+        }
+
+
+        /* Form */
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+
+        label {
+            display: block;
+
+            margin-bottom: 9px;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            color: #cbd5e1;
+        }
+
+
+        .input-wrapper {
+            position: relative;
+        }
+
+
+        .input-icon {
+            position: absolute;
+
+            left: 16px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: #64748b;
+
+            font-size: 18px;
+
+            pointer-events: none;
+        }
+
+
+        input {
+            width: 100%;
+            height: 54px;
+
+            padding:
+                0
+                48px
+                0
+                48px;
+
+            border-radius: 10px;
+
+            border:
+                1px solid rgba(148, 163, 184, 0.28);
+
+            background:
+                rgba(15, 23, 42, 0.65);
+
+            color: #f8fafc;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition:
+                border-color 0.2s,
+                box-shadow 0.2s,
+                background 0.2s;
+        }
+
+
+        input::placeholder {
+            color: #64748b;
+        }
+
+
+        input:focus {
+            border-color: #2563eb;
+
+            background:
+                rgba(15, 23, 42, 0.9);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(37, 99, 235, 0.12);
+        }
+
+
+        /* Password Toggle */
+
+        .password-toggle {
+            position: absolute;
+
+            right: 15px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            background: none;
+
+            border: none;
+
+            width: auto;
+            height: auto;
+
+            margin: 0;
+            padding: 4px;
+
+            color: #64748b;
+
+            cursor: pointer;
+
+            font-size: 18px;
+        }
+
+
+        .password-toggle:hover {
+            color: #38bdf8;
+
+            background: none;
+
+            transform:
+                translateY(-50%);
+        }
+
+
+        /* Sign In Button */
+
+        .login-button {
+            width: 100%;
+            height: 54px;
+
+            margin-top: 8px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            color: white;
+
+            font-size: 15px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #1d4ed8,
+                    #0ea5e9
+                );
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
+        }
+
+
+        .login-button:hover {
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 10px 25px
+                rgba(37, 99, 235, 0.25);
+        }
+
+
+        .login-button i {
+            margin-right: 8px;
+        }
+
+
+        /* Error */
+
+        .error {
+            margin-top: 20px;
+
+            padding: 13px 15px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+
+            border-radius: 9px;
+
+            background:
+                rgba(127, 29, 29, 0.18);
+
+            border:
+                1px solid rgba(248, 113, 113, 0.3);
+
+            color: #fca5a5;
+
+            font-size: 13px;
+        }
+
+
+        /* Security Note */
+
+        .security-note {
+            margin-top: 28px;
+
+            padding: 15px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+
+            border-radius: 10px;
+
+            border:
+                1px solid rgba(56, 189, 248, 0.15);
+
+            background:
+                rgba(15, 23, 42, 0.45);
+
+            color: #94a3b8;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+
+        .security-note i {
+            color: #2dd4bf;
+
+            font-size: 20px;
+        }
+
+
+        /* =========================
+           RESPONSIVE DESIGN
+        ========================== */
+
+        @media (max-width: 900px) {
+
+            .login-container {
+                max-width: 550px;
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .brand-section {
+                display: none;
+            }
+
+
+            .login-section {
+                padding: 55px 45px;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            body {
+                padding: 15px;
+            }
+
+
+            .login-container {
+                border-radius: 15px;
+            }
+
+
+            .login-section {
+                padding: 40px 25px;
+            }
+
+
+            .login-shield {
+                width: 72px;
+                height: 72px;
+
+                font-size: 32px;
+            }
+
+
+            .login-header h2 {
+                font-size: 27px;
+            }
+
+
+            .brand-content h2 {
+                font-size: 30px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="login-container">
+
+
+        <!-- LEFT BRAND SECTION -->
+
+        <div class="brand-section">
+
+
+            <div class="logo">
+
+                <div class="logo-icon">
+                    <i class="bi bi-shield-lock-fill"></i>
+                </div>
+
+
+                <div class="logo-text">
+
+                    <h1>AccessIQ</h1>
+
+                    <span>SECURE ACCESS MANAGEMENT</span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="brand-content">
+
+
+                <div class="security-label">
+
+                    <span class="security-line"></span>
+
+                    SMARTER SECURITY
+
+                </div>
+
+
+                <h2>
+                    Secure Access.<br>
+                    Smarter Decisions.<br>
+                    Stronger Protection.
+                </h2>
+
+
+                <p>
+                    AccessIQ helps organizations manage
+                    user access with role-based control,
+                    security monitoring and intelligent
+                    risk analysis.
+                </p>
+
+
+
+                <div class="features">
+
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+
+
+                        <div class="feature-text">
+
+                            <strong>Role-Based Access</strong>
+
+                            <span>
+                                Secure permissions for the
+                                right users.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+                            <i class="bi bi-cpu"></i>
+                        </div>
+
+
+                        <div class="feature-text">
+
+                            <strong>AI-Powered Analysis</strong>
+
+                            <span>
+                                Intelligent security and
+                                risk insights.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+                            <i class="bi bi-bell"></i>
+                        </div>
+
+
+                        <div class="feature-text">
+
+                            <strong>Security Alerts</strong>
+
+                            <span>
+                                Stay informed about important
+                                security events.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="brand-footer">
+
+                <strong>AccessIQ</strong> · Secure Access Management
+
+                <br><br>
+
+                © 2026 AccessIQ. All rights reserved.
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- RIGHT LOGIN SECTION -->
+
+        <div class="login-section">
+
+
+            <div class="login-content">
+
+
+                <div class="login-shield">
+
+                    <i class="bi bi-shield-lock-fill"></i>
+
+                </div>
+
+
+
+                <div class="login-header">
+
+                    <h2>Welcome Back</h2>
+
+                    <p>
+                        Sign in to continue to AccessIQ
+                    </p>
+
+                </div>
+
+
+
+                <form
+                    method="POST"
+                    action="{{ url_for('main.login') }}"
+                >
+
+
+                    <!-- USERNAME -->
+
+                    <div class="form-group">
+
+                        <label for="username">
+                            Username
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <i
+                                class="bi bi-person input-icon"
+                            ></i>
+
+
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                placeholder="Enter your username"
+                                autocomplete="username"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <i
+                                class="bi bi-lock input-icon"
+                            ></i>
+
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
+
+
+                            <!-- Functional Show/Hide Password -->
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="passwordToggle"
+                                aria-label="Show password"
+                            >
+
+                                <i
+                                    class="bi bi-eye"
+                                    id="toggleIcon"
+                                ></i>
+
+                            </button>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- LOGIN BUTTON -->
+
+                    <button
+                        type="submit"
+                        class="login-button"
+                    >
+
+                        <i class="bi bi-box-arrow-in-right"></i>
+
+                        Sign In
+
+                    </button>
+
+
+                </form>
+
+
+
+                <!-- ERROR MESSAGE -->
+
+                {% if error %}
+
+                    <div class="error">
+
+                        <i
+                            class="bi bi-exclamation-circle-fill"
+                        ></i>
+
+                        <span>
+                            {{ error }}
+                        </span>
+
+                    </div>
+
+                {% endif %}
+
+
+
+                <!-- SECURITY NOTE -->
+
+                <div class="security-note">
+
+                    <i class="bi bi-shield-check"></i>
+
+                    <span>
+                        Your access is protected through
+                        secure authentication and role-based
+                        access control.
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- SHOW / HIDE PASSWORD SCRIPT -->
+
+    <script>
+
+        const passwordInput =
+            document.getElementById("password");
+
+        const passwordToggle =
+            document.getElementById("passwordToggle");
+
+        const toggleIcon =
+            document.getElementById("toggleIcon");
+
+
+        passwordToggle.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    passwordInput.type === "password"
+                ) {
+
+                    passwordInput.type = "text";
+
+                    toggleIcon.classList.remove(
+                        "bi-eye"
+                    );
+
+                    toggleIcon.classList.add(
+                        "bi-eye-slash"
+                    );
+
+                    passwordToggle.setAttribute(
+                        "aria-label",
+                        "Hide password"
+                    );
+
+                } else {
+
+                    passwordInput.type = "password";
+
+                    toggleIcon.classList.remove(
+                        "bi-eye-slash"
+                    );
+
+                    toggleIcon.classList.add(
+                        "bi-eye"
+                    );
+
+                    passwordToggle.setAttribute(
+                        "aria-label",
+                        "Show password"
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

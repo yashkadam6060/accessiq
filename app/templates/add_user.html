@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AccessIQ | Add User</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+<body>
+
+<div class="app-wrapper">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="brand-icon">
+                <i class="bi bi-shield-lock-fill"></i>
+            </div>
+
+            <div>
+                <h4>AccessIQ</h4>
+                <span>SECURITY CONSOLE</span>
+            </div>
+
+        </div>
+
+
+        <div class="sidebar-label">
+            MAIN MENU
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="{{ url_for('main.dashboard') }}"
+               class="sidebar-link">
+
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <a href="{{ url_for('main.admin') }}"
+               class="sidebar-link active">
+
+                <i class="bi bi-people-fill"></i>
+                <span>User Management</span>
+
+            </a>
+
+
+            <a href="{{ url_for('main.manage_roles') }}"
+               class="sidebar-link">
+
+                <i class="bi bi-person-badge-fill"></i>
+                <span>Role Management</span>
+
+            </a>
+
+
+            <a href="{{ url_for('main.audit_logs') }}"
+               class="sidebar-link">
+
+                <i class="bi bi-journal-text"></i>
+                <span>Audit Logs</span>
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-user">
+
+            <div class="user-avatar">
+                {{ session["username"][0]|upper }}
+            </div>
+
+            <div class="user-details">
+
+                <strong>
+                    {{ session["username"] }}
+                </strong>
+
+                <span>
+                    {{ session["role"] }}
+                </span>
+
+            </div>
+
+            <a
+                href="{{ url_for('main.logout') }}"
+                class="logout-icon"
+                title="Logout"
+            >
+
+                <i class="bi bi-box-arrow-right"></i>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN AREA -->
+
+    <main class="main-area">
+
+        <header class="topbar">
+
+            <div class="page-heading">
+
+                <h5>
+                    Add User
+                </h5>
+
+                <span>
+                    Create a new AccessIQ user
+                </span>
+
+            </div>
+
+        </header>
+
+
+        <section class="page-content">
+
+            <div class="mb-4">
+
+                <h1 class="page-title">
+                    Create New User
+                </h1>
+
+                <p class="page-subtitle">
+                    Add a user and assign their initial access role.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-body p-4">
+
+                    {% if error %}
+
+                    <div class="alert alert-danger">
+                        {{ error }}
+                    </div>
+
+                    {% endif %}
+
+
+                    <form method="POST">
+
+                        <div class="row g-4">
+
+
+                            <!-- Username -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Username
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="username"
+                                    class="form-control"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- Email -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Email
+                                </label>
+
+                                <input
+                                    type="email"
+                                    name="email"
+                                    class="form-control"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- Password -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Password
+                                </label>
+
+                                <input
+                                    type="password"
+                                    name="password"
+                                    class="form-control"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- Department -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Department
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="department"
+                                    class="form-control"
+                                    placeholder="e.g. IT"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- Designation -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Designation
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="designation"
+                                    class="form-control"
+                                    placeholder="e.g. Software Developer"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- Role -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Role
+                                </label>
+
+                                <select
+    name="role_id"
+    class="form-select"
+    required
+    style="color: #ffffff; background-color: #16213e;"
+>
+
+    <option value="" style="color: #000000; background-color: #ffffff;">
+        Select Role
+    </option>
+
+    {% for role in roles %}
+
+    <option
+        value="{{ role.id }}"
+        style="color: #000000; background-color: #ffffff;"
+    >
+        {{ role.name }}
+    </option>
+
+    {% endfor %}
+
+</select>
+
+                            </div>
+
+
+                            <!-- Status -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Status
+                                </label>
+
+                                
+
+                            </div>
+<select
+    name="status"
+    class="form-select"
+    required
+    style="color: #ffffff; background-color: #16213e;"
+>
+
+    <option
+        value="Active"
+        style="color: #000000; background-color: #ffffff;"
+    >
+        Active
+    </option>
+
+    <option
+        value="Inactive"
+        style="color: #000000; background-color: #ffffff;"
+    >
+        Inactive
+    </option>
+
+</select>
+
+                        </div>
+
+
+                        <div class="d-flex gap-3 mt-5">
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >
+
+                                <i class="bi bi-person-plus-fill me-2"></i>
+
+                                Create User
+
+                            </button>
+
+
+                            <a
+                                href="{{ url_for('main.admin') }}"
+                                class="btn btn-outline-light"
+                            >
+
+                                Cancel
+
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AccessIQ | Dashboard</title>
+
+    <!-- Bootstrap -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Bootstrap Icons -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <!-- AccessIQ CSS -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+
+    <style>
+        .notification-wrapper { position: relative; }
+        .notification-btn { position: relative; cursor: pointer; }
+        .notification-count {
+            position: absolute; top: -5px; right: -5px; min-width: 18px; height: 18px;
+            padding: 0 5px; display: flex; align-items: center; justify-content: center;
+            border-radius: 999px; background: #ef4444; color: #fff; font-size: 10px;
+            font-weight: 700; line-height: 1; border: 2px solid #111827;
+        }
+        .notification-panel {
+            position: absolute; top: calc(100% + 14px); right: 0; width: 370px;
+            max-width: calc(100vw - 30px); background: #111827;
+            border: 1px solid rgba(148, 163, 184, 0.16); border-radius: 14px;
+            box-shadow: 0 20px 50px rgba(0,0,0,.35); overflow: hidden; z-index: 2000; display: none;
+        }
+        .notification-panel.show { display: block; animation: notificationPanelIn .18s ease-out; }
+        @keyframes notificationPanelIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .notification-header {
+            display: flex; align-items: center; justify-content: space-between; padding: 16px 18px;
+            border-bottom: 1px solid rgba(148,163,184,.10);
+        }
+        .notification-header h6 { margin: 0; color: #f8fafc; font-weight: 700; }
+        .notification-header span { color: #94a3b8; font-size: 12px; }
+        .notification-list { max-height: 390px; overflow-y: auto; }
+        .notification-item {
+            display: flex; gap: 12px; padding: 14px 18px;
+            border-bottom: 1px solid rgba(148,163,184,.07); transition: background .18s ease;
+        }
+        .notification-item:hover { background: rgba(56,189,248,.055); }
+        .notification-item:last-child { border-bottom: 0; }
+        .notification-icon {
+            width: 38px; height: 38px; flex: 0 0 38px; display: flex;
+            align-items: center; justify-content: center; border-radius: 10px; font-size: 16px;
+        }
+        .notification-icon.warning { color: #fbbf24; background: rgba(245,158,11,.12); }
+        .notification-icon.danger { color: #f87171; background: rgba(239,68,68,.12); }
+        .notification-icon.success { color: #4ade80; background: rgba(34,197,94,.12); }
+        .notification-content { min-width: 0; flex: 1; }
+        .notification-title { color: #f8fafc; font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+        .notification-message { color: #94a3b8; font-size: 12px; line-height: 1.45; }
+        .notification-time { margin-top: 5px; color: #64748b; font-size: 10px; }
+        .notification-empty { padding: 30px 18px; text-align: center; color: #94a3b8; }
+        .notification-empty i { display: block; margin-bottom: 8px; color: #475569; font-size: 28px; }
+        .notification-footer {
+            padding: 12px 18px; border-top: 1px solid rgba(148,163,184,.10); text-align: center;
+        }
+        .notification-footer a { color: #38bdf8; font-size: 12px; font-weight: 600; text-decoration: none; }
+        .notification-footer a:hover { color: #7dd3fc; }
+        @media (max-width: 576px) {
+            .notification-panel { position: fixed; top: 70px; right: 15px; width: calc(100vw - 30px); max-width: none; }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="app-wrapper">
+
+
+    <!-- =====================================================
+         SIDEBAR
+         ===================================================== -->
+
+    <aside class="sidebar">
+
+        <!-- Brand -->
+
+        <div class="sidebar-brand">
+
+            <div class="brand-icon">
+
+                <i class="bi bi-shield-lock-fill"></i>
+
+            </div>
+
+            <div>
+
+                <h4>AccessIQ</h4>
+
+                <span>SECURITY CONSOLE</span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Main Navigation -->
+
+        <div class="sidebar-label">
+
+            MAIN MENU
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+
+            <a
+                href="{{ url_for('main.dashboard') }}"
+                class="sidebar-link active"
+            >
+
+                <i class="bi bi-grid-1x2-fill"></i>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            {% if role == "Admin" %}
+
+            <a
+                href="{{ url_for('main.admin') }}"
+                class="sidebar-link"
+            >
+
+                <i class="bi bi-people-fill"></i>
+
+                <span>
+                    User Management
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('main.manage_roles') }}"
+                class="sidebar-link"
+            >
+
+                <i class="bi bi-person-badge-fill"></i>
+
+                <span>
+                    Role Management
+                </span>
+
+            </a>
+
+            {% endif %}
+
+
+            <a
+                href="{{ url_for('main.audit_logs') }}"
+                class="sidebar-link"
+            >
+
+                <i class="bi bi-journal-text"></i>
+
+                <span>
+                    Audit Logs
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('main.ai_analysis') }}"
+                class="sidebar-link"
+            >
+
+                <i class="bi bi-robot"></i>
+
+                <span>
+                    AI Security
+                </span>
+
+                <span class="ai-badge">
+                    AI
+                </span>
+
+            </a>
+
+
+        </nav>
+
+
+        <!-- User -->
+
+        <div class="sidebar-user">
+
+    <div class="user-avatar">
+        {{ session.get('username', 'U')[0]|upper }}
+    </div>
+
+    <div class="user-details">
+
+        <strong>
+            {{ session.get('username') }}
+        </strong>
+
+        <span>
+            {{ session.get('role') }}
+        </span>
+
+    </div>
+
+
+    <!-- Change Password -->
+
+    <a href="{{ url_for('main.change_password') }}"
+       class="logout-icon"
+       title="Change Password">
+
+        <i class="bi bi-key"></i>
+
+    </a>
+
+
+    <!-- Logout -->
+
+    <a href="{{ url_for('main.logout') }}"
+       class="logout-icon"
+       title="Logout">
+
+        <i class="bi bi-box-arrow-right"></i>
+
+    </a>
+
+</div>
+
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN AREA
+         ===================================================== -->
+
+    <main class="main-area">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div class="d-flex align-items-center">
+
+                <button
+                    class="mobile-menu-btn"
+                    type="button"
+                >
+
+                    <i class="bi bi-list"></i>
+
+                </button>
+
+
+                <div class="page-heading">
+
+                    <h5>
+                        Security Dashboard
+                    </h5>
+
+                    <span>
+                        Monitor and manage your AccessIQ environment
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="topbar-actions">
+
+                <!-- Notification -->
+
+                <div class="notification-wrapper">
+
+                    <button
+                        class="topbar-icon notification-btn"
+                        id="notificationButton"
+                        type="button"
+                        title="Notifications"
+                        aria-label="Open notifications"
+                        aria-expanded="false"
+                    >
+
+                        <i class="bi bi-bell"></i>
+
+                        {% if notification_count > 0 %}
+                        <span class="notification-count">
+                            {{ notification_count if notification_count < 10 else "9+" }}
+                        </span>
+                        {% endif %}
+
+                    </button>
+
+                    <div class="notification-panel" id="notificationPanel" aria-hidden="true">
+
+                        <div class="notification-header">
+                            <h6>Notifications</h6>
+                            <span>{{ notification_count }} active</span>
+                        </div>
+
+                        <div class="notification-list">
+
+                            {% if notifications %}
+
+                                {% for notification in notifications %}
+                                <div class="notification-item">
+                                    <div class="notification-icon {{ notification.type }}">
+                                        <i class="bi {{ notification.icon }}"></i>
+                                    </div>
+                                    <div class="notification-content">
+                                        <div class="notification-title">
+                                            {{ notification.title }}
+                                        </div>
+                                        <div class="notification-message">
+                                            {{ notification.message }}
+                                        </div>
+                                        <div class="notification-time">
+                                            {{ notification.timestamp }}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+
+                            {% else %}
+                                <div class="notification-empty">
+                                    <i class="bi bi-bell-slash"></i>
+                                    No new notifications
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+                        <div class="notification-footer">
+                            {% if role == "Admin" %}
+                            <a href="{{ url_for('main.admin_permission_requests') }}">
+                                Review Permission Requests
+                            </a>
+                            {% else %}
+                            <a href="{{ url_for('main.permission_requests') }}">
+                                View Permission Requests
+                            </a>
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Profile -->
+
+                <div class="topbar-profile">
+
+                    <div class="user-avatar small-avatar">
+
+                        {{ username[0]|upper }}
+
+                    </div>
+
+
+                    <div class="profile-text">
+
+                        <strong>
+                            {{ username }}
+                        </strong>
+
+                        <span>
+                            {{ role }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =====================================================
+             PAGE CONTENT
+             ===================================================== -->
+
+        <section class="page-content">
+
+
+            <!-- Welcome -->
+
+            <div class="mb-4">
+
+                <h1 class="page-title">
+
+                    Welcome back, {{ username }} 👋
+
+                </h1>
+
+
+                <p class="page-subtitle">
+
+                    Here's what's happening with your security system today.
+
+                </p>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 STAT CARDS
+                 ================================================= -->
+
+            <div class="row g-4 mb-4">
+
+
+                <!-- Users -->
+
+                <div class="col-xl-3 col-md-6">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+
+                            <i class="bi bi-people-fill"></i>
+
+                        </div>
+
+
+                        <div class="stat-label">
+
+                            SYSTEM USERS
+
+                        </div>
+
+
+                        <div class="stat-value">
+
+                            USERS = {{ total_users }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Role -->
+
+                <div class="col-xl-3 col-md-6">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+
+                            <i class="bi bi-person-badge-fill"></i>
+
+                        </div>
+
+
+                        <div class="stat-label">
+
+                            TOTAL ROLES
+
+                        </div>
+
+
+                        <div class="stat-value">
+
+                            {{ total_roles }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Security -->
+
+                <div class="col-xl-3 col-md-6">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+
+                            <i class="bi bi-shield-check"></i>
+
+                        </div>
+
+
+                        <div class="stat-label">
+
+                            SECURITY EVENTS
+
+                        </div>
+
+
+                        <div class="stat-value">
+
+                            {{ total_events }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Failed Logins -->
+
+                <div class="col-xl-3 col-md-6">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+
+                            <i class="bi bi-robot"></i>
+
+                        </div>
+
+
+                        <div class="stat-label">
+
+                            FAILED LOGINS
+
+                        </div>
+
+
+                        <div class="stat-value">
+
+                            {{ failed_logins }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 PENDING PERMISSION REQUESTS
+                 ================================================= -->
+
+            {% if role == "Admin" %}
+
+            <div class="card mb-4">
+
+                <div class="card-body p-4">
+
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <h5 class="mb-1">
+
+                                Permission Requests
+
+                            </h5>
+
+
+                            <small class="text-muted">
+
+                                Pending requests awaiting your review
+
+                            </small>
+
+                        </div>
+
+
+                        <span class="badge bg-warning">
+
+                            {{ pending_requests }} Pending
+
+                        </span>
+
+                    </div>
+
+
+                    {% if pending_requests > 0 %}
+
+                    <div class="mt-3">
+
+                        <p class="mb-3">
+
+                            There are permission requests waiting for Admin review.
+
+                        </p>
+
+
+                        <a
+                            href="{{ url_for('main.admin_permission_requests') }}"
+                            class="btn btn-primary"
+                        >
+
+                            <i class="bi bi-key-fill me-2"></i>
+
+                            Review Requests
+
+                        </a>
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="mt-3">
+
+                        <p class="text-muted mb-0">
+
+                            No pending permission requests.
+
+                        </p>
+
+                    </div>
+
+                    {% endif %}
+
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+
+            <!-- EMPLOYEE PERMISSION REQUEST -->
+
+            {% if role != "Admin" %}
+
+            <div class="card mb-4">
+
+                <div class="card-body p-4">
+
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <h5 class="mb-1">
+
+                                Request Permission
+
+                            </h5>
+
+
+                            <small class="text-muted">
+
+                                Need access to an additional system permission?
+                                Submit a request to an administrator.
+
+                            </small>
+
+                        </div>
+
+
+                        <div>
+
+                            <i class="bi bi-key-fill fs-2"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="mt-3">
+
+                        <a
+                            href="{{ url_for('main.permission_requests') }}"
+                            class="btn btn-primary"
+                        >
+
+                            <i class="bi bi-key-fill me-2"></i>
+
+                            Request Permission
+
+                        </a>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+
+            <!-- =================================================
+                 CHART + AI SECURITY
+                 ================================================= -->
+
+            <div class="row g-4 mb-4">
+
+
+                <!-- Activity Chart -->
+
+                <div class="col-lg-8">
+
+                    <div class="card h-100">
+
+                        <div class="card-body p-4">
+
+
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                                <div>
+
+                                    <h5 class="mb-1">
+
+                                        Security Activity
+
+                                    </h5>
+
+
+                                    <small class="text-muted">
+
+                                        Recent system activity overview
+
+                                    </small>
+
+                                </div>
+
+
+                                <span class="badge badge-info">
+
+                                    LIVE
+
+                                </span>
+
+                            </div>
+
+
+                            <div style="height: 280px;">
+
+                                <canvas id="activityChart"></canvas>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- AI Security -->
+
+                <div class="col-lg-4">
+
+                    <div class="ai-panel h-100">
+
+
+                        <div class="d-flex align-items-center gap-3 mb-4">
+
+
+                            <div class="ai-icon">
+
+                                <i class="bi bi-robot"></i>
+
+                            </div>
+
+
+                            <div>
+
+                                <div class="ai-title">
+
+                                    AI Security
+
+                                </div>
+
+
+                                <small class="text-muted">
+
+                                    Intelligent analysis
+
+                                </small>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <p class="ai-text">
+
+                            AccessIQ uses AI-assisted analysis to identify
+                            suspicious login activity and unauthorized
+                            access attempts.
+
+                        </p>
+
+
+
+                        <!-- LIVE RISK -->
+
+                        <div class="mt-4">
+
+
+                            <div class="d-flex justify-content-between mb-2">
+
+
+                                <span class="text-muted">
+
+                                    Current Risk
+
+                                </span>
+
+
+                                {% if analysis.risk_level == "HIGH" %}
+
+                                <strong class="text-danger">
+
+                                    HIGH
+
+                                </strong>
+
+                                {% elif analysis.risk_level == "MEDIUM" %}
+
+                                <strong class="text-warning">
+
+                                    MEDIUM
+
+                                </strong>
+
+                                {% else %}
+
+                                <strong class="text-success">
+
+                                    LOW
+
+                                </strong>
+
+                                {% endif %}
+
+
+                            </div>
+
+
+
+                            <!-- RISK SCORE -->
+
+                            <div class="d-flex justify-content-between mb-2">
+
+                                <small class="text-muted">
+
+                                    Risk Score
+
+                                </small>
+
+
+                                <small class="fw-bold">
+
+                                    {{ analysis.risk_score }}/100
+
+                                </small>
+
+                            </div>
+
+
+
+                            <!-- PROGRESS BAR -->
+
+                            <div
+                                class="progress"
+                                style="height: 7px; background: rgba(255,255,255,0.08);"
+                            >
+
+                                {% if analysis.risk_level == "HIGH" %}
+
+                                <div
+                                    class="progress-bar bg-danger"
+                                    role="progressbar"
+                                    style="width: {{ analysis.risk_score }}%;"
+                                ></div>
+
+                                {% elif analysis.risk_level == "MEDIUM" %}
+
+                                <div
+                                    class="progress-bar bg-warning"
+                                    role="progressbar"
+                                    style="width: {{ analysis.risk_score }}%;"
+                                ></div>
+
+                                {% else %}
+
+                                <div
+                                    class="progress-bar bg-success"
+                                    role="progressbar"
+                                    style="width: {{ analysis.risk_score }}%;"
+                                ></div>
+
+                                {% endif %}
+
+                            </div>
+
+
+
+                            <!-- RISK DESCRIPTION -->
+
+                            <p class="text-muted small mt-3 mb-0">
+
+                                {{ analysis.risk_description }}
+
+                            </p>
+
+
+                        </div>
+
+
+
+                        <!-- AI PAGE BUTTON -->
+
+                        <a
+                            href="{{ url_for('main.ai_analysis') }}"
+                            class="btn btn-primary w-100 mt-4"
+                        >
+
+                            <i class="bi bi-stars me-2"></i>
+
+                            View AI Analysis
+
+                        </a>
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 ROLE DISTRIBUTION
+                 ================================================= -->
+
+            <div class="row g-4 mb-4">
+
+
+                <div class="col-lg-8">
+
+                    <div class="card h-100">
+
+                        <div class="card-body p-4">
+
+
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                                <div>
+
+                                    <h5 class="mb-1">
+
+                                        Role Distribution
+
+                                    </h5>
+
+
+                                    <small class="text-muted">
+
+                                        Distribution of users across system roles
+
+                                    </small>
+
+                                </div>
+
+
+                                <span class="badge badge-info">
+
+                                    LIVE
+
+                                </span>
+
+                            </div>
+
+
+                            <div style="height: 300px;">
+
+                                <canvas id="roleChart"></canvas>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 QUICK ACTIONS
+                 ================================================= -->
+
+            <div class="row g-4">
+
+
+                <div class="col-lg-8">
+
+                    <div class="card">
+
+                        <div class="card-body p-4">
+
+
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                                <div>
+
+                                    <h5 class="mb-1">
+
+                                        Quick Actions
+
+                                    </h5>
+
+
+                                    <small class="text-muted">
+
+                                        Access frequently used security tools
+
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="row g-3">
+
+
+                                {% if role == "Admin" %}
+
+                                <div class="col-md-6">
+
+                                    <a
+                                        href="{{ url_for('main.admin') }}"
+                                        class="btn btn-outline-light w-100 py-3"
+                                    >
+
+                                        <i class="bi bi-people me-2"></i>
+
+                                        Manage Users
+
+                                    </a>
+
+                                </div>
+
+
+                                <div class="col-md-6">
+
+                                    <a
+                                        href="{{ url_for('main.manage_roles') }}"
+                                        class="btn btn-outline-light w-100 py-3"
+                                    >
+
+                                        <i class="bi bi-shield-lock me-2"></i>
+
+                                        Manage Roles
+
+                                    </a>
+
+                                </div>
+
+                                {% endif %}
+
+
+
+                                <div class="col-md-6">
+
+                                    <a
+                                        href="{{ url_for('main.audit_logs') }}"
+                                        class="btn btn-outline-light w-100 py-3"
+                                    >
+
+                                        <i class="bi bi-journal-text me-2"></i>
+
+                                        View Audit Logs
+
+                                    </a>
+
+                                </div>
+
+
+
+                                <div class="col-md-6">
+
+                                    <a
+                                        href="{{ url_for('main.ai_analysis') }}"
+                                        class="btn btn-outline-light w-100 py-3"
+                                    >
+
+                                        <i class="bi bi-robot me-2"></i>
+
+                                        Run AI Analysis
+
+                                    </a>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Current User -->
+
+                <div class="col-lg-4">
+
+                    <div class="card h-100">
+
+                        <div class="card-body p-4">
+
+
+                            <div class="d-flex align-items-center gap-3 mb-4">
+
+
+                                <div class="user-avatar">
+
+                                    {{ username[0]|upper }}
+
+                                </div>
+
+
+                                <div>
+
+                                    <h5 class="mb-1">
+
+                                        {{ username }}
+
+                                    </h5>
+
+
+                                    <small class="text-muted">
+
+                                        Currently logged in
+
+                                    </small>
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <div class="mb-3">
+
+                                <small class="text-muted d-block">
+
+                                    ACCOUNT ROLE
+
+                                </small>
+
+
+                                <strong>
+
+                                    {{ role }}
+
+                                </strong>
+
+                            </div>
+
+
+
+                            <div>
+
+                                <small class="text-muted d-block">
+
+                                    SECURITY ACCESS
+
+                                </small>
+
+
+                                <span class="badge badge-success mt-1">
+
+                                    Authorized
+
+                                </span>
+
+                            </div>
+
+
+
+                            <a
+                                href="{{ url_for('main.logout') }}"
+                                class="btn btn-outline-light w-100 mt-4"
+                            >
+
+                                <i class="bi bi-box-arrow-right me-2"></i>
+
+                                Logout
+
+                            </a>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     CHART.JS
+     ========================================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+
+const chartLabels =
+    {{ chart_labels | tojson | safe }};
+
+const successfulLoginsData =
+    {{ successful_logins_data | tojson | safe }};
+
+const securityEventsData =
+    {{ security_events_data | tojson | safe }};
+
+const roleData =
+    {{ role_data | tojson | safe }};
+
+
+
+/* =========================================================
+   ACTIVITY CHART
+   ========================================================= */
+
+const chartCanvas =
+    document.getElementById("activityChart");
+
+
+if (chartCanvas) {
+
+    new Chart(chartCanvas, {
+
+        type: "line",
+
+        data: {
+
+            labels: chartLabels,
+
+            datasets: [
+
+                {
+
+                    label: "Successful Logins",
+
+                    data: successfulLoginsData,
+
+                    borderWidth: 2,
+
+                    tension: 0.4,
+
+                    fill: true,
+
+                    backgroundColor:
+                        "rgba(56, 189, 248, 0.08)",
+
+                    borderColor:
+                        "#38bdf8",
+
+                    pointBackgroundColor:
+                        "#38bdf8"
+
+                },
+
+
+                {
+
+                    label: "Security Events",
+
+                    data: securityEventsData,
+
+                    borderWidth: 2,
+
+                    tension: 0.4,
+
+                    fill: true,
+
+                    backgroundColor:
+                        "rgba(245, 158, 11, 0.06)",
+
+                    borderColor:
+                        "#f59e0b",
+
+                    pointBackgroundColor:
+                        "#f59e0b"
+
+                }
+
+            ]
+
+        },
+
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+
+                    labels: {
+
+                        color: "#94a3b8"
+
+                    }
+
+                }
+
+            },
+
+
+            scales: {
+
+                x: {
+
+                    grid: {
+
+                        color:
+                            "rgba(148, 163, 184, 0.08)"
+
+                    },
+
+                    ticks: {
+
+                        color: "#64748b"
+
+                    }
+
+                },
+
+
+                y: {
+
+                    beginAtZero: true,
+
+                    grid: {
+
+                        color:
+                            "rgba(148, 163, 184, 0.08)"
+
+                    },
+
+                    ticks: {
+
+                        color: "#64748b"
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
+
+}
+
+
+
+/* =========================================================
+   ROLE DISTRIBUTION
+   ========================================================= */
+
+const roleCanvas =
+    document.getElementById("roleChart");
+
+
+if (roleCanvas) {
+
+    new Chart(roleCanvas, {
+
+        type: "doughnut",
+
+        data: {
+
+            labels:
+                Object.keys(roleData),
+
+            datasets: [
+
+                {
+
+                    label: "Users",
+
+                    data:
+                        Object.values(roleData),
+
+                    borderWidth: 2
+
+                }
+
+            ]
+
+        },
+
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+
+                    position: "right",
+
+                    labels: {
+
+                        color: "#94a3b8"
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
+
+}
+
+</script>
+
+
+
+
+<script>
+    const notificationButton = document.getElementById("notificationButton");
+    const notificationPanel = document.getElementById("notificationPanel");
+
+    if (notificationButton && notificationPanel) {
+        notificationButton.addEventListener("click", function (event) {
+            event.stopPropagation();
+            const isOpen = notificationPanel.classList.toggle("show");
+            notificationButton.setAttribute("aria-expanded", isOpen ? "true" : "false");
+            notificationPanel.setAttribute("aria-hidden", isOpen ? "false" : "true");
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!notificationPanel.contains(event.target) && !notificationButton.contains(event.target)) {
+                notificationPanel.classList.remove("show");
+                notificationButton.setAttribute("aria-expanded", "false");
+                notificationPanel.setAttribute("aria-hidden", "true");
+            }
+        });
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                notificationPanel.classList.remove("show");
+                notificationButton.setAttribute("aria-expanded", "false");
+                notificationPanel.setAttribute("aria-hidden", "true");
+            }
+        });
+    }
+</script>
+
+<!-- AccessIQ JavaScript -->
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+
+</body>
+
+</html>

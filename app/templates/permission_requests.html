@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AccessIQ | Permission Requests</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+<body>
+
+<div class="app-wrapper">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="brand-icon">
+                <i class="bi bi-shield-lock-fill"></i>
+            </div>
+
+            <div>
+                <h4>AccessIQ</h4>
+                <span>SECURITY CONSOLE</span>
+            </div>
+
+        </div>
+
+
+        <div class="sidebar-label">
+            MAIN MENU
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="{{ url_for('main.dashboard') }}"
+               class="sidebar-link">
+
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>Dashboard</span>
+
+            </a>
+
+
+            {% if session["role"] == "Admin" %}
+
+            <a href="{{ url_for('main.admin') }}"
+               class="sidebar-link">
+
+                <i class="bi bi-people-fill"></i>
+                <span>User Management</span>
+
+            </a>
+
+
+            <a href="{{ url_for('main.manage_roles') }}"
+               class="sidebar-link">
+
+                <i class="bi bi-person-badge-fill"></i>
+                <span>Role Management</span>
+
+            </a>
+
+            {% endif %}
+
+
+            <!-- PERMISSION REQUESTS -->
+
+            <a href="{{ url_for('main.permission_requests') }}"
+               class="sidebar-link active">
+
+                <i class="bi bi-key-fill"></i>
+                <span>Permission Requests</span>
+
+            </a>
+
+
+            <a href="{{ url_for('main.audit_logs') }}"
+               class="sidebar-link">
+
+                <i class="bi bi-journal-text"></i>
+                <span>Audit Logs</span>
+
+            </a>
+
+
+            <a href="{{ url_for('main.ai_analysis') }}"
+               class="sidebar-link">
+
+                <i class="bi bi-robot"></i>
+                <span>AI Security</span>
+
+            </a>
+
+        </nav>
+
+
+        <!-- CURRENT USER -->
+
+        <div class="sidebar-user">
+
+            <div class="user-avatar">
+
+                {{ session["username"][0]|upper }}
+
+            </div>
+
+
+            <div class="user-details">
+
+                <strong>
+                    {{ session["username"] }}
+                </strong>
+
+                <span>
+                    {{ session["role"] }}
+                </span>
+
+            </div>
+
+
+            <a
+                href="{{ url_for('main.logout') }}"
+                class="logout-icon"
+            >
+
+                <i class="bi bi-box-arrow-right"></i>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN AREA -->
+
+    <main class="main-area">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div class="page-heading">
+
+                <h5>
+                    Permission Requests
+                </h5>
+
+                <span>
+                    Request additional system permissions
+                </span>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE CONTENT -->
+
+        <section class="page-content">
+
+
+            <div class="mb-4">
+
+                <h1 class="page-title">
+                    Permission Requests
+                </h1>
+
+                <p class="page-subtitle">
+                    Request permissions and track your requests.
+                </p>
+
+            </div>
+
+
+            <!-- REQUEST PERMISSION CARD -->
+
+            <div class="card mb-4">
+
+                <div class="card-body p-4">
+
+                    <h5 class="mb-3">
+                        Request a Permission
+                    </h5>
+
+
+                    <form
+                        method="POST"
+                        action="{{ url_for('main.create_permission_request') }}"
+                    >
+
+
+                        <!-- PERMISSION -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Permission
+                            </label>
+
+
+                            <select
+                                name="permission_id"
+                                class="form-select permission-select"
+                                required
+                            >
+
+                                <option value="">
+                                    Select a permission
+                                </option>
+
+
+                                {% for permission in permissions %}
+
+                                <option value="{{ permission.id }}">
+                                    {{ permission.name }}
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- REASON -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Reason
+                            </label>
+
+
+                            <textarea
+                                name="reason"
+                                class="form-control"
+                                rows="3"
+                                placeholder="Explain why you need this permission"
+                                required
+                            ></textarea>
+
+                        </div>
+
+
+                        <!-- SUBMIT -->
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+
+                            <i class="bi bi-send me-2"></i>
+
+                            Submit Request
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            <!-- MY REQUESTS -->
+
+            <div class="card">
+
+                <div class="card-body p-4">
+
+                    <h5 class="mb-4">
+                        My Permission Requests
+                    </h5>
+
+
+                    <div class="table-responsive">
+
+
+                        <table class="table table-dark
+                                      table-hover align-middle">
+
+
+                            <!-- TABLE HEADER -->
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Permission
+                                    </th>
+
+                                    <th>
+                                        Reason
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                    <th>
+                                        Requested
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <!-- TABLE BODY -->
+
+                            <tbody>
+
+
+                                {% for request_item in requests %}
+
+
+                                <tr>
+
+
+                                    <!-- PERMISSION -->
+
+                                    <td>
+
+                                        {{ request_item.permission.name }}
+
+                                    </td>
+
+
+                                    <!-- REASON -->
+
+                                    <td>
+
+                                        {{ request_item.reason }}
+
+                                    </td>
+
+
+                                    <!-- STATUS -->
+
+                                    <td>
+
+
+                                        {% if request_item.status == "Pending" %}
+
+                                        <span class="badge bg-warning">
+                                            Pending
+                                        </span>
+
+
+                                        {% elif request_item.status == "Approved" %}
+
+                                        <span class="badge bg-success">
+                                            Approved
+                                        </span>
+
+
+                                        {% else %}
+
+                                        <span class="badge bg-danger">
+                                            Rejected
+                                        </span>
+
+                                        {% endif %}
+
+
+                                    </td>
+
+
+                                    <!-- REQUESTED -->
+
+                                    <td>
+
+                                        {{ request_item.requested_at }}
+
+                                    </td>
+
+
+                                </tr>
+
+
+                                {% else %}
+
+
+                                <tr>
+
+                                    <td
+                                        colspan="4"
+                                        class="text-center text-muted py-5"
+                                    >
+
+                                        No permission requests yet.
+
+                                    </td>
+
+                                </tr>
+
+
+                                {% endfor %}
+
+
+                            </tbody>
+
+
+                        </table>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+</body>
+
+</html>
