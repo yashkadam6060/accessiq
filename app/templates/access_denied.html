@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Access Denied | AccessIQ</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background: #0b0f19;
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        /* Background glow */
+        body::before {
+            content: "";
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 60, 80, 0.08);
+            border-radius: 50%;
+            filter: blur(100px);
+            top: -150px;
+            left: -150px;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: rgba(80, 120, 255, 0.07);
+            border-radius: 50%;
+            filter: blur(100px);
+            bottom: -200px;
+            right: -150px;
+        }
+
+        .container {
+            position: relative;
+            width: 90%;
+            max-width: 520px;
+            padding: 45px 40px;
+            text-align: center;
+
+            background: rgba(20, 25, 38, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+
+            box-shadow:
+                0 25px 70px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(255, 60, 80, 0.05);
+
+            backdrop-filter: blur(15px);
+        }
+
+        .icon {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 25px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+            font-size: 42px;
+
+            background: rgba(255, 60, 80, 0.08);
+            border: 1px solid rgba(255, 80, 90, 0.25);
+
+            box-shadow: 0 0 30px rgba(255, 60, 80, 0.12);
+        }
+
+        .title {
+            font-size: 30px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: #9ca3b4;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .permission-box {
+            text-align: left;
+            padding: 18px 20px;
+            margin-bottom: 30px;
+
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 12px;
+        }
+
+        .permission-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #7f8799;
+            margin-bottom: 7px;
+        }
+
+        .permission-value {
+            color: #ff6675;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 12px 22px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #ffffff;
+            color: #0b0f19;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.12);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: #c8cdd8;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.09);
+        }
+
+        .footer {
+            margin-top: 28px;
+            font-size: 11px;
+            color: #596174;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 35px 25px;
+            }
+
+            .title {
+                font-size: 25px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="icon">
+            🛡️
+        </div>
+
+        <div class="title">
+            ACCESS DENIED
+        </div>
+
+        <div class="subtitle">
+            You don't have sufficient permissions to access this resource.
+            Please contact an administrator if you believe this is an error.
+        </div>
+
+        <div class="permission-box">
+            <div class="permission-label">
+                Required Permission
+            </div>
+
+            <div class="permission-value">
+                {{ permission if permission else "Restricted Access" }}
+            </div>
+        </div>
+
+        <div class="buttons">
+
+            <a href="{{ url_for('main.dashboard') }}"
+               class="btn btn-primary">
+                ← Back to Dashboard
+            </a>
+
+            <a href="{{ url_for('main.logout') }}"
+               class="btn btn-secondary">
+                Logout
+            </a>
+
+        </div>
+
+        <div class="footer">
+            AccessIQ Security System
+        </div>
+
+    </div>
+
+</body>
+</html>

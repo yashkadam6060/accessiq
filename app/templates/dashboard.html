@@ -194,7 +194,22 @@
 
             </a>
 
+{% if role == "Admin" %}
 
+<a
+    href="{{ url_for('main.security_analytics') }}"
+    class="sidebar-link"
+>
+
+    <i class="bi bi-bar-chart-fill"></i>
+
+    <span>
+        Security Analytics
+    </span>
+
+</a>
+
+{% endif %}
             <a
                 href="{{ url_for('main.ai_analysis') }}"
                 class="sidebar-link"
@@ -472,7 +487,7 @@
 
                         <div class="stat-value">
 
-                            USERS = {{ total_users }}
+                             {{ total_users }}
 
                         </div>
 
@@ -1272,13 +1287,11 @@
 </div>
 
 
-
 <!-- =========================================================
      CHART.JS
      ========================================================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 
 <script>
 
@@ -1295,14 +1308,12 @@ const roleData =
     {{ role_data | tojson | safe }};
 
 
-
 /* =========================================================
-   ACTIVITY CHART
+   SECURITY ACTIVITY CHART
    ========================================================= */
 
 const chartCanvas =
     document.getElementById("activityChart");
-
 
 if (chartCanvas) {
 
@@ -1317,14 +1328,13 @@ if (chartCanvas) {
             datasets: [
 
                 {
-
                     label: "Successful Logins",
 
                     data: successfulLoginsData,
 
-                    borderWidth: 2,
+                    borderWidth: 2.5,
 
-                    tension: 0.4,
+                    tension: 0.45,
 
                     fill: true,
 
@@ -1335,10 +1345,17 @@ if (chartCanvas) {
                         "#38bdf8",
 
                     pointBackgroundColor:
-                        "#38bdf8"
+                        "#38bdf8",
 
+                    pointBorderColor:
+                        "#0f172a",
+
+                    pointBorderWidth: 2,
+
+                    pointRadius: 4,
+
+                    pointHoverRadius: 7
                 },
-
 
                 {
 
@@ -1346,27 +1363,34 @@ if (chartCanvas) {
 
                     data: securityEventsData,
 
-                    borderWidth: 2,
+                    borderWidth: 2.5,
 
-                    tension: 0.4,
+                    tension: 0.45,
 
                     fill: true,
 
                     backgroundColor:
-                        "rgba(245, 158, 11, 0.06)",
+                        "rgba(245, 158, 11, 0.07)",
 
                     borderColor:
                         "#f59e0b",
 
                     pointBackgroundColor:
-                        "#f59e0b"
+                        "#f59e0b",
 
+                    pointBorderColor:
+                        "#0f172a",
+
+                    pointBorderWidth: 2,
+
+                    pointRadius: 4,
+
+                    pointHoverRadius: 7
                 }
 
             ]
 
         },
-
 
         options: {
 
@@ -1374,20 +1398,65 @@ if (chartCanvas) {
 
             maintainAspectRatio: false,
 
+            interaction: {
+                mode: "index",
+                intersect: false
+            },
+
             plugins: {
 
                 legend: {
 
+                    position: "top",
+
+                    align: "end",
+
                     labels: {
 
-                        color: "#94a3b8"
+                        color: "#94a3b8",
+
+                        usePointStyle: true,
+
+                        pointStyle: "circle",
+
+                        padding: 20,
+
+                        font: {
+                            size: 12
+                        }
 
                     }
 
+                },
+
+                tooltip: {
+
+                    backgroundColor: "#111827",
+
+                    titleColor: "#f8fafc",
+
+                    bodyColor: "#cbd5e1",
+
+                    borderColor:
+                        "rgba(148, 163, 184, 0.15)",
+
+                    borderWidth: 1,
+
+                    padding: 12,
+
+                    displayColors: true,
+
+                    titleFont: {
+                        size: 12,
+                        weight: "600"
+                    },
+
+                    bodyFont: {
+                        size: 12
+                    }
                 }
 
             },
-
 
             scales: {
 
@@ -1395,19 +1464,28 @@ if (chartCanvas) {
 
                     grid: {
 
-                        color:
-                            "rgba(148, 163, 184, 0.08)"
+                        display: false
+
+                    },
+
+                    border: {
+
+                        display: false
 
                     },
 
                     ticks: {
 
-                        color: "#64748b"
+                        color: "#64748b",
 
+                        font: {
+                            size: 11
+                        },
+
+                        padding: 8
                     }
 
                 },
-
 
                 y: {
 
@@ -1416,14 +1494,27 @@ if (chartCanvas) {
                     grid: {
 
                         color:
-                            "rgba(148, 163, 184, 0.08)"
+                            "rgba(148, 163, 184, 0.06)"
+
+                    },
+
+                    border: {
+
+                        display: false
 
                     },
 
                     ticks: {
 
-                        color: "#64748b"
+                        color: "#64748b",
 
+                        precision: 0,
+
+                        font: {
+                            size: 11
+                        },
+
+                        padding: 8
                     }
 
                 }
@@ -1437,16 +1528,20 @@ if (chartCanvas) {
 }
 
 
-
 /* =========================================================
-   ROLE DISTRIBUTION
+   ROLE DISTRIBUTION CHART
    ========================================================= */
 
 const roleCanvas =
     document.getElementById("roleChart");
 
-
 if (roleCanvas) {
+
+    const roleLabels =
+        Object.keys(roleData);
+
+    const roleValues =
+        Object.values(roleData);
 
     new Chart(roleCanvas, {
 
@@ -1454,32 +1549,53 @@ if (roleCanvas) {
 
         data: {
 
-            labels:
-                Object.keys(roleData),
+            labels: roleLabels,
+datasets: [
 
-            datasets: [
+    {
 
-                {
+        label: "Users",
 
-                    label: "Users",
+        data: roleValues,
 
-                    data:
-                        Object.values(roleData),
+        backgroundColor: [
+            "#38bdf8",
+            "#8b5cf6",
+            "#22c55e",
+            "#f59e0b",
+            "#ef4444",
+            "#ec4899"
+        ],
 
-                    borderWidth: 2
+        borderWidth: 3,
 
-                }
+        borderColor: "#111827",
 
-            ]
+        hoverOffset: 8
 
+    }
+
+]
+            
         },
-
 
         options: {
 
             responsive: true,
 
             maintainAspectRatio: false,
+
+            cutout: "68%",
+
+            animation: {
+
+                animateRotate: true,
+
+                animateScale: true,
+
+                duration: 900
+
+            },
 
             plugins: {
 
@@ -1489,7 +1605,68 @@ if (roleCanvas) {
 
                     labels: {
 
-                        color: "#94a3b8"
+                        color: "#94a3b8",
+
+                        usePointStyle: true,
+
+                        pointStyle: "circle",
+
+                        padding: 16,
+
+                        font: {
+                            size: 12
+                        }
+                    }
+
+                },
+
+                tooltip: {
+
+                    backgroundColor: "#111827",
+
+                    titleColor: "#f8fafc",
+
+                    bodyColor: "#cbd5e1",
+
+                    borderColor:
+                        "rgba(148, 163, 184, 0.15)",
+
+                    borderWidth: 1,
+
+                    padding: 12,
+
+                    callbacks: {
+
+                        label: function(context) {
+
+                            const value =
+                                context.raw;
+
+                            const total =
+                                context.dataset.data
+                                    .reduce(
+                                        (sum, item) =>
+                                            sum + item,
+                                        0
+                                    );
+
+                            const percentage =
+                                total > 0
+                                    ? ((value / total) * 100)
+                                        .toFixed(1)
+                                    : 0;
+
+                            return (
+                                " " +
+                                context.label +
+                                ": " +
+                                value +
+                                " users (" +
+                                percentage +
+                                "%)"
+                            );
+
+                        }
 
                     }
 
@@ -1504,6 +1681,10 @@ if (roleCanvas) {
 }
 
 </script>
+
+
+
+
 
 
 

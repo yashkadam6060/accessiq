@@ -574,6 +574,15 @@
                                     <td>
 
                                         <a
+    <a
+    href="{{ url_for('main.user_profile', user_id=user.id) }}"
+    class="btn btn-sm btn-outline-info"
+    title="View Profile"
+>
+    <i class="bi bi-person-vcard"></i>
+</a>
+
+<a
     href="{{ url_for('main.edit_user', user_id=user.id) }}"
     class="btn btn-sm btn-outline-light"
     title="Edit User"
@@ -587,7 +596,6 @@
     style="display: inline;"
     onsubmit="return confirm('Are you sure you want to delete {{ user.username }}?');"
 >
-
     <button
         type="submit"
         class="btn btn-sm btn-outline-danger"
@@ -595,7 +603,6 @@
     >
         <i class="bi bi-trash-fill"></i>
     </button>
-
 </form>
 
                                     </td>

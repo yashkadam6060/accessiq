@@ -1,6 +1,27 @@
 from datetime import datetime, timedelta
+from io import BytesIO
 
-from flask import Blueprint, render_template, request, redirect, url_for, session
+from flask import (
+    Blueprint,
+    render_template,
+    request,
+    redirect,
+    url_for,
+    session,
+    send_file
+)
+
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.enums import TA_CENTER
+from reportlab.platypus import (
+    SimpleDocTemplate,
+    Paragraph,
+    Spacer,
+    Table,
+    TableStyle
+)
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from .models import User, Role, Permission, AuditLog, db, PermissionRequest
@@ -443,17 +464,112 @@ def audit_logs():
 
     if session.get("role") != "Admin":
 
-        return "Access Denied: Admins only.", 403
+        return render_template(
+            "access_denied.html",
+            permission="Administrator Access"
+        ), 403
 
-    logs = AuditLog.query.order_by(
+    # --------------------------------
+    # Audit log filters
+    # --------------------------------
+
+    user_search = request.args.get(
+        "user",
+        ""
+    ).strip()
+
+    action = request.args.get(
+        "action",
+        ""
+    ).strip()
+
+    date_from = request.args.get(
+        "date_from",
+        ""
+    ).strip()
+
+    date_to = request.args.get(
+        "date_to",
+        ""
+    ).strip()
+
+    query = AuditLog.query
+
+    # Filter by username
+    if user_search:
+        query = query.join(
+            User,
+            AuditLog.user_id == User.id,
+            isouter=True
+        ).filter(
+            User.username.ilike(
+                f"%{user_search}%"
+            )
+        )
+
+    # Filter by action
+    if action:
+        query = query.filter(
+            AuditLog.action == action
+        )
+
+    # Filter from date
+    if date_from:
+        try:
+            from_date = datetime.strptime(
+                date_from,
+                "%Y-%m-%d"
+            )
+
+            query = query.filter(
+                AuditLog.timestamp >= from_date
+            )
+
+        except ValueError:
+            date_from = ""
+
+    # Filter to date
+    if date_to:
+        try:
+            to_date = datetime.strptime(
+                date_to,
+                "%Y-%m-%d"
+            ) + timedelta(days=1)
+
+            query = query.filter(
+                AuditLog.timestamp < to_date
+            )
+
+        except ValueError:
+            date_to = ""
+
+    # Get filtered logs
+    logs = query.order_by(
         AuditLog.timestamp.desc()
     ).all()
 
+    # Get available actions for dropdown
+    actions = db.session.query(
+        AuditLog.action
+    ).distinct().order_by(
+        AuditLog.action.asc()
+    ).all()
+
+    actions = [
+        item[0]
+        for item in actions
+        if item[0]
+    ]
+
     return render_template(
         "audit_logs.html",
-        logs=logs
+        logs=logs,
+        actions=actions,
+        user_search=user_search,
+        selected_action=action,
+        date_from=date_from,
+        date_to=date_to
     )
-
 
 @main.route("/logout")
 def logout():
@@ -486,7 +602,10 @@ def admin():
 
     if session.get("role") != "Admin":
 
-        return "Access Denied: Admins only", 403
+        return render_template(
+            "access_denied.html",
+            permission="Administrator Access"
+        ), 403
 
     search = request.args.get(
         "search",
@@ -591,7 +710,287 @@ def admin():
         selected_status=status
 
     )
+# =========================================================
+# SECURITY ANALYTICS
+# =========================================================
 
+@main.route("/security-analytics")
+def security_analytics():
+
+    # Check login
+    if "user_id" not in session:
+        return redirect(url_for("main.login"))
+
+    # Admin only
+    if session.get("role") != "Admin":
+        return render_template(
+            "access_denied.html",
+            permission="Administrator Access"
+        ), 403
+
+    # -----------------------------------------
+    # SECURITY EVENT COUNTS
+    # -----------------------------------------
+
+    failed_logins = AuditLog.query.filter_by(
+        action="FAILED_LOGIN"
+    ).count()
+
+    access_denied = AuditLog.query.filter_by(
+        action="ACCESS_DENIED"
+    ).count()
+
+    successful_logins = AuditLog.query.filter_by(
+        action="LOGIN"
+    ).count()
+
+    total_security_events = (
+        failed_logins + access_denied
+    )
+
+    # -----------------------------------------
+    # 7-DAY SECURITY ACTIVITY
+    # -----------------------------------------
+
+    chart_labels = []
+    failed_login_data = []
+    access_denied_data = []
+    successful_login_data = []
+
+    today = datetime.now().date()
+
+    for i in range(6, -1, -1):
+
+        current_date = today - timedelta(days=i)
+        next_date = current_date + timedelta(days=1)
+
+        failed = AuditLog.query.filter(
+            AuditLog.action == "FAILED_LOGIN",
+            AuditLog.timestamp >= current_date,
+            AuditLog.timestamp < next_date
+        ).count()
+
+        denied = AuditLog.query.filter(
+            AuditLog.action == "ACCESS_DENIED",
+            AuditLog.timestamp >= current_date,
+            AuditLog.timestamp < next_date
+        ).count()
+
+        successful = AuditLog.query.filter(
+            AuditLog.action == "LOGIN",
+            AuditLog.timestamp >= current_date,
+            AuditLog.timestamp < next_date
+        ).count()
+
+        chart_labels.append(
+            current_date.strftime("%a")
+        )
+
+        failed_login_data.append(failed)
+        access_denied_data.append(denied)
+        successful_login_data.append(successful)
+
+    # -----------------------------------------
+    # MOST ACTIVE USERS
+    # -----------------------------------------
+
+    active_users = []
+
+    users = User.query.all()
+
+    for user in users:
+
+        activity_count = AuditLog.query.filter_by(
+            user_id=user.id
+        ).count()
+
+        if activity_count > 0:
+
+            active_users.append({
+                "username": user.username,
+                "role": (
+                    user.role.name
+                    if user.role
+                    else "Not Assigned"
+                ),
+                "activity": activity_count
+            })
+
+    active_users.sort(
+        key=lambda x: x["activity"],
+        reverse=True
+    )
+
+    active_users = active_users[:10]
+
+    # -----------------------------------------
+    # EVENT BREAKDOWN
+    # -----------------------------------------
+
+    event_breakdown = {}
+
+    logs = AuditLog.query.all()
+
+    for log in logs:
+
+        event_breakdown[log.action] = (
+            event_breakdown.get(log.action, 0) + 1
+        )
+
+    # -----------------------------------------
+    # RECENT SECURITY EVENTS
+    # -----------------------------------------
+
+    recent_security_events = AuditLog.query.filter(
+        AuditLog.action.in_([
+            "FAILED_LOGIN",
+            "ACCESS_DENIED"
+        ])
+    ).order_by(
+        AuditLog.timestamp.desc()
+    ).limit(15).all()
+
+    # -----------------------------------------
+    # RENDER ANALYTICS PAGE
+    # -----------------------------------------
+
+    return render_template(
+        "security_analytics.html",
+
+        failed_logins=failed_logins,
+
+        access_denied=access_denied,
+
+        successful_logins=successful_logins,
+
+        total_security_events=total_security_events,
+
+        chart_labels=chart_labels,
+
+        failed_login_data=failed_login_data,
+
+        access_denied_data=access_denied_data,
+
+        successful_login_data=successful_login_data,
+
+        active_users=active_users,
+
+        event_breakdown=event_breakdown,
+
+        recent_security_events=recent_security_events
+    )
+@main.route("/admin/user-profile/<int:user_id>")
+def user_profile(user_id):
+
+    # --------------------------------
+    # Check login
+    # --------------------------------
+
+    if "user_id" not in session:
+
+        return redirect(
+            url_for("main.login")
+        )
+
+    # --------------------------------
+    # Only Admin can view profiles
+    # --------------------------------
+
+    if session.get("role") != "Admin":
+
+        return render_template(
+            "access_denied.html",
+            permission="Administrator Access"
+        ), 403
+
+    # --------------------------------
+    # Get user
+    # --------------------------------
+
+    user = User.query.get_or_404(
+        user_id
+    )
+
+    # --------------------------------
+    # Audit activity
+    # --------------------------------
+
+    user_logs = AuditLog.query.filter_by(
+        user_id=user.id
+    ).order_by(
+        AuditLog.timestamp.desc()
+    ).all()
+
+    # --------------------------------
+    # Login statistics
+    # --------------------------------
+
+    total_logins = AuditLog.query.filter_by(
+        user_id=user.id,
+        action="LOGIN"
+    ).count()
+
+    failed_logins = AuditLog.query.filter_by(
+        user_id=user.id,
+        action="FAILED_LOGIN"
+    ).count()
+
+    total_activity = AuditLog.query.filter_by(
+        user_id=user.id
+    ).count()
+
+    # --------------------------------
+    # Permission requests
+    # --------------------------------
+
+    permission_requests = PermissionRequest.query.filter_by(
+        user_id=user.id
+    ).order_by(
+        PermissionRequest.requested_at.desc()
+    ).all()
+
+    # --------------------------------
+    # Risk level
+    # --------------------------------
+
+    if failed_logins >= 5:
+
+        risk_level = "HIGH"
+
+    elif failed_logins >= 2:
+
+        risk_level = "MEDIUM"
+
+    else:
+
+        risk_level = "LOW"
+
+    # --------------------------------
+    # Last login
+    # --------------------------------
+
+    last_login = AuditLog.query.filter_by(
+        user_id=user.id,
+        action="LOGIN"
+    ).order_by(
+        AuditLog.timestamp.desc()
+    ).first()
+
+    # --------------------------------
+    # Render profile
+    # --------------------------------
+
+    return render_template(
+        "user_profile.html",
+        user=user,
+        user_logs=user_logs,
+        total_logins=total_logins,
+        failed_logins=failed_logins,
+        total_activity=total_activity,
+        permission_requests=permission_requests,
+        risk_level=risk_level,
+        last_login=last_login
+    )
 
 @main.route(
     "/admin/add-user",
@@ -607,7 +1006,10 @@ def add_user():
 
     if session.get("role") != "Admin":
 
-        return "Access Denied: Admins only", 403
+        return render_template(
+            "access_denied.html",
+            permission="Administrator Access"
+        ), 403
 
 
     roles = Role.query.all()
@@ -733,7 +1135,10 @@ def edit_user(user_id):
 
     if session.get("role") != "Admin":
 
-        return "Access Denied: Admins only", 403
+        return render_template(
+            "access_denied.html",
+            permission="Administrator Access"
+        ), 403
 
 
     user = User.query.get_or_404(
@@ -816,10 +1221,11 @@ def manage_roles():
 
         )
 
-        return (
-            "Access Denied: You do not have permission to manage roles.",
-            403
-        )
+
+        return render_template(
+            "access_denied.html",
+            permission="Manage Roles"
+        ), 403
 
 
     roles = Role.query.all()
@@ -847,14 +1253,12 @@ def edit_role(role_id):
         )
 
 
-    if not has_permission(
-        "Manage Roles"
-    ):
+    if not has_permission("Manage Roles"):
 
-        return (
-            "Access Denied: You do not have permission to manage roles.",
-            403
-        )
+        return render_template(
+            "access_denied.html",
+            permission="Manage Roles"
+        ), 403
 
 
     role = Role.query.get_or_404(
@@ -933,10 +1337,10 @@ def add_role():
         "Manage Roles"
     ):
 
-        return (
-            "Access Denied: You do not have permission to manage roles.",
-            403
-        )
+        return render_template(
+            "access_denied.html",
+            permission="Manage Roles"
+        ), 403
 
 
     permissions = Permission.query.all()
@@ -1022,7 +1426,10 @@ def ai_analysis():
 
     if session.get("role") != "Admin":
 
-        return "Access Denied: Admins only.", 403
+        return render_template(
+            "access_denied.html",
+            permission="Administrator Access"
+        ), 403
 
 
     logs = AuditLog.query.order_by(
@@ -1172,7 +1579,10 @@ def admin_permission_requests():
 
     if session.get("role") != "Admin":
 
-        return "Access Denied: Admins only.", 403
+        return render_template(
+            "access_denied.html",
+            permission="Administrator Access"
+        ), 403
 
 
     requests = PermissionRequest.query.order_by(
@@ -1209,7 +1619,10 @@ def review_permission_request(
 
     if session.get("role") != "Admin":
 
-        return "Access Denied: Admins only.", 403
+        return render_template(
+            "access_denied.html",
+            permission="Administrator Access"
+        ), 403
 
 
     permission_request = PermissionRequest.query.get_or_404(
@@ -1287,6 +1700,8 @@ def review_permission_request(
     return redirect(
         url_for("main.admin_permission_requests")
     )
+
+
 @main.route("/change-password", methods=["GET", "POST"])
 def change_password():
 
@@ -1364,6 +1779,8 @@ def change_password():
     return render_template(
         "change_password.html"
     )
+
+
 @main.route("/admin/delete-user/<int:user_id>", methods=["POST"])
 def delete_user(user_id):
 
@@ -1373,11 +1790,17 @@ def delete_user(user_id):
 
     # Only Admin can delete users
     if session.get("role") != "Admin":
-        return "Access Denied: Admins only", 403
+        return render_template(
+            "access_denied.html",
+            permission="Administrator Access"
+        ), 403
 
     # Prevent admin from deleting their own account
     if user_id == session["user_id"]:
-        return "You cannot delete your own account.", 403
+        return render_template(
+            "access_denied.html",
+            permission="Account Protection"
+        ), 403
 
     # Find the user
     user = User.query.get_or_404(user_id)
@@ -1397,4 +1820,356 @@ def delete_user(user_id):
 
     return redirect(
         url_for("main.admin")
+    )
+# =========================================================
+# EXPORT SECURITY REPORT
+# =========================================================
+
+@main.route("/export-security-report")
+def export_security_report():
+
+    # -----------------------------------------
+    # Check login
+    # -----------------------------------------
+
+    if "user_id" not in session:
+        return redirect(
+            url_for("main.login")
+        )
+
+    # -----------------------------------------
+    # Admin only
+    # -----------------------------------------
+
+    if session.get("role") != "Admin":
+
+        return render_template(
+            "access_denied.html",
+            permission="Administrator Access"
+        ), 403
+
+    # -----------------------------------------
+    # Get security statistics
+    # -----------------------------------------
+
+    total_users = User.query.count()
+
+    successful_logins = AuditLog.query.filter_by(
+        action="LOGIN"
+    ).count()
+
+    failed_logins = AuditLog.query.filter_by(
+        action="FAILED_LOGIN"
+    ).count()
+
+    access_denied = AuditLog.query.filter_by(
+        action="ACCESS_DENIED"
+    ).count()
+
+    total_security_events = (
+        failed_logins + access_denied
+    )
+
+    # -----------------------------------------
+    # Recent security events
+    # -----------------------------------------
+
+    security_logs = AuditLog.query.filter(
+        AuditLog.action.in_([
+            "FAILED_LOGIN",
+            "ACCESS_DENIED"
+        ])
+    ).order_by(
+        AuditLog.timestamp.desc()
+    ).limit(20).all()
+
+    # -----------------------------------------
+    # Create PDF in memory
+    # -----------------------------------------
+
+    pdf_buffer = BytesIO()
+
+    document = SimpleDocTemplate(
+        pdf_buffer,
+        pagesize=A4,
+        rightMargin=35,
+        leftMargin=35,
+        topMargin=35,
+        bottomMargin=35
+    )
+
+    styles = getSampleStyleSheet()
+
+    title_style = styles["Title"]
+    title_style.alignment = TA_CENTER
+
+    heading_style = styles["Heading2"]
+
+    normal_style = styles["BodyText"]
+
+    elements = []
+
+    # -----------------------------------------
+    # Title
+    # -----------------------------------------
+
+    elements.append(
+        Paragraph(
+            "AccessIQ Security Report",
+            title_style
+        )
+    )
+
+    elements.append(
+        Spacer(1, 10)
+    )
+
+    elements.append(
+        Paragraph(
+            f"Generated on: "
+            f"{datetime.now().strftime('%d %b %Y, %I:%M %p')}",
+            normal_style
+        )
+    )
+
+    elements.append(
+        Spacer(1, 20)
+    )
+
+    # -----------------------------------------
+    # Summary
+    # -----------------------------------------
+
+    elements.append(
+        Paragraph(
+            "Security Summary",
+            heading_style
+        )
+    )
+
+    elements.append(
+        Spacer(1, 8)
+    )
+
+    summary_data = [
+        ["Metric", "Count"],
+        ["Total Users", str(total_users)],
+        ["Successful Logins", str(successful_logins)],
+        ["Failed Login Attempts", str(failed_logins)],
+        ["Access Denied Events", str(access_denied)],
+        ["Total Security Events", str(total_security_events)]
+    ]
+
+    summary_table = Table(
+        summary_data,
+        colWidths=[300, 120]
+    )
+
+    summary_table.setStyle(
+        TableStyle([
+            (
+                "BACKGROUND",
+                (0, 0),
+                (-1, 0),
+                colors.HexColor("#1f2937")
+            ),
+            (
+                "TEXTCOLOR",
+                (0, 0),
+                (-1, 0),
+                colors.white
+            ),
+            (
+                "GRID",
+                (0, 0),
+                (-1, -1),
+                0.5,
+                colors.grey
+            ),
+            (
+                "FONTNAME",
+                (0, 0),
+                (-1, 0),
+                "Helvetica-Bold"
+            ),
+            (
+                "ALIGN",
+                (1, 1),
+                (1, -1),
+                "CENTER"
+            ),
+            (
+                "VALIGN",
+                (0, 0),
+                (-1, -1),
+                "MIDDLE"
+            ),
+            (
+                "BOTTOMPADDING",
+                (0, 0),
+                (-1, -1),
+                8
+            ),
+            (
+                "TOPPADDING",
+                (0, 0),
+                (-1, -1),
+                8
+            )
+        ])
+    )
+
+    elements.append(summary_table)
+
+    elements.append(
+        Spacer(1, 25)
+    )
+
+    # -----------------------------------------
+    # Recent Security Events
+    # -----------------------------------------
+
+    elements.append(
+        Paragraph(
+            "Recent Security Events",
+            heading_style
+        )
+    )
+
+    elements.append(
+        Spacer(1, 8)
+    )
+
+    event_data = [
+        ["User", "Event", "Details", "Date"]
+    ]
+
+    for log in security_logs:
+
+        username = (
+            log.user.username
+            if log.user
+            else "System"
+        )
+
+        timestamp = (
+            log.timestamp.strftime(
+                "%d %b %Y %I:%M %p"
+            )
+            if log.timestamp
+            else "-"
+        )
+
+        details = log.details or "-"
+
+        event_data.append([
+            username,
+            log.action,
+            details,
+            timestamp
+        ])
+
+    if len(event_data) == 1:
+
+        event_data.append([
+            "-",
+            "No security events",
+            "-",
+            "-"
+        ])
+
+    event_table = Table(
+        event_data,
+        colWidths=[90, 100, 170, 100],
+        repeatRows=1
+    )
+
+    event_table.setStyle(
+        TableStyle([
+            (
+                "BACKGROUND",
+                (0, 0),
+                (-1, 0),
+                colors.HexColor("#1f2937")
+            ),
+            (
+                "TEXTCOLOR",
+                (0, 0),
+                (-1, 0),
+                colors.white
+            ),
+            (
+                "GRID",
+                (0, 0),
+                (-1, -1),
+                0.5,
+                colors.grey
+            ),
+            (
+                "FONTNAME",
+                (0, 0),
+                (-1, 0),
+                "Helvetica-Bold"
+            ),
+            (
+                "FONTSIZE",
+                (0, 0),
+                (-1, -1),
+                8
+            ),
+            (
+                "VALIGN",
+                (0, 0),
+                (-1, -1),
+                "TOP"
+            ),
+            (
+                "BOTTOMPADDING",
+                (0, 0),
+                (-1, -1),
+                6
+            ),
+            (
+                "TOPPADDING",
+                (0, 0),
+                (-1, -1),
+                6
+            )
+        ])
+    )
+
+    elements.append(event_table)
+
+    elements.append(
+        Spacer(1, 25)
+    )
+
+    # -----------------------------------------
+    # Footer
+    # -----------------------------------------
+
+    elements.append(
+        Paragraph(
+            "Generated by AccessIQ Security Management System",
+            normal_style
+        )
+    )
+
+    # -----------------------------------------
+    # Build PDF
+    # -----------------------------------------
+
+    document.build(elements)
+
+    pdf_buffer.seek(0)
+
+    # -----------------------------------------
+    # Download PDF
+    # -----------------------------------------
+
+    return send_file(
+        pdf_buffer,
+        as_attachment=True,
+        download_name="AccessIQ_Security_Report.pdf",
+        mimetype="application/pdf"
     )
