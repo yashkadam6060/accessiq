@@ -1701,6 +1701,18 @@ def review_permission_request(
         url_for("main.admin_permission_requests")
     )
 
+@main.route("/profile")
+def profile():
+    if "user_id" not in session:
+        return redirect(url_for("main.login"))
+
+    user = User.query.get_or_404(session["user_id"])
+
+    return render_template(
+        "profile.html",
+        user=user
+    )
+
 
 @main.route("/change-password", methods=["GET", "POST"])
 def change_password():

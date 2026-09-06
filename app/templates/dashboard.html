@@ -403,24 +403,26 @@
 
                 <div class="topbar-profile">
 
-                    <div class="user-avatar small-avatar">
+                  <a
+    href="{{ url_for('main.profile') }}"
+    class="topbar-profile"
+    style="text-decoration: none; cursor: pointer;"
+    title="My Profile"
+>
+    <div class="user-avatar small-avatar">
+        {{ session.get('username', 'U')[0]|upper }}
+    </div>
 
-                        {{ username[0]|upper }}
+    <div class="profile-text">
+        <strong>
+            {{ session.get('username') }}
+        </strong>
 
-                    </div>
-
-
-                    <div class="profile-text">
-
-                        <strong>
-                            {{ username }}
-                        </strong>
-
-                        <span>
-                            {{ role }}
-                        </span>
-
-                    </div>
+        <span>
+            {{ session.get('role') }}
+        </span>
+    </div>
+</a>
 
                 </div>
 

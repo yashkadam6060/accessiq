@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AccessIQ | My Profile</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <style>
+        .profile-card {
+            max-width: 720px;
+            margin: 30px auto;
+        }
+
+        .profile-header {
+            text-align: center;
+            padding: 35px 20px 25px;
+        }
+
+        .profile-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 36px;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, #2563eb, #0ea5e9);
+        }
+
+        .profile-info {
+            padding: 0 30px 30px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+        }
+
+        .info-label {
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .info-value {
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .profile-actions a {
+            flex: 1;
+        }
+
+        @media (max-width: 576px) {
+            .info-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .info-value {
+                text-align: left;
+            }
+
+            .profile-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app-wrapper">
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+            <div class="brand-icon">
+                <i class="bi bi-shield-lock-fill"></i>
+            </div>
+
+            <div>
+                <h4>AccessIQ</h4>
+                <span>SECURITY CONSOLE</span>
+            </div>
+        </div>
+
+        <div class="sidebar-label">MAIN MENU</div>
+
+        <nav class="sidebar-nav">
+
+            <a href="{{ url_for('main.dashboard') }}" class="sidebar-link">
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>Dashboard</span>
+            </a>
+
+            {% if session.get("role") == "Admin" %}
+
+            <a href="{{ url_for('main.admin') }}" class="sidebar-link">
+                <i class="bi bi-people-fill"></i>
+                <span>User Management</span>
+            </a>
+
+            <a href="{{ url_for('main.manage_roles') }}" class="sidebar-link">
+                <i class="bi bi-person-badge-fill"></i>
+                <span>Role Management</span>
+            </a>
+
+            {% endif %}
+
+            <a href="{{ url_for('main.audit_logs') }}" class="sidebar-link">
+                <i class="bi bi-journal-text"></i>
+                <span>Audit Logs</span>
+            </a>
+
+            <a href="{{ url_for('main.ai_analysis') }}" class="sidebar-link">
+                <i class="bi bi-robot"></i>
+                <span>AI Security</span>
+                <span class="ai-badge">AI</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-user">
+
+            <div class="user-avatar">
+                {{ session.get("username", "U")[0]|upper }}
+            </div>
+
+            <div class="user-details">
+                <strong>{{ session.get("username") }}</strong>
+                <span>{{ session.get("role") }}</span>
+            </div>
+
+            <a
+                href="{{ url_for('main.logout') }}"
+                class="logout-icon"
+                title="Logout"
+            >
+                <i class="bi bi-box-arrow-right"></i>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main-area">
+
+        <header class="topbar">
+
+            <div class="d-flex align-items-center">
+
+                <button class="mobile-menu-btn" type="button">
+                    <i class="bi bi-list"></i>
+                </button>
+
+                <div class="page-heading">
+                    <h5>My Profile</h5>
+                    <span>View your AccessIQ account information</span>
+                </div>
+
+            </div>
+
+
+            <div class="topbar-actions">
+
+                <a
+                    href="{{ url_for('main.dashboard') }}"
+                    class="topbar-icon"
+                    title="Dashboard"
+                    style="text-decoration:none;"
+                >
+                    <i class="bi bi-grid-1x2-fill"></i>
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <section class="page-content">
+
+            <div class="profile-card card">
+
+                <div class="profile-header">
+
+                    <div class="profile-avatar">
+                        {{ session.get("username", "U")[0]|upper }}
+                    </div>
+
+                    <h2 class="mb-1">
+                        {{ user.username }}
+                    </h2>
+
+                    <p class="text-muted mb-0">
+                        {{ user.role.name if user.role else "No Role Assigned" }}
+                    </p>
+
+                </div>
+
+
+                <div class="profile-info">
+
+                    <div class="info-row">
+                        <span class="info-label">
+                            USERNAME
+                        </span>
+
+                        <span class="info-value">
+                            {{ user.username }}
+                        </span>
+                    </div>
+
+
+                    <div class="info-row">
+                        <span class="info-label">
+                            EMAIL
+                        </span>
+
+                        <span class="info-value">
+                            {{ user.email or "Not provided" }}
+                        </span>
+                    </div>
+
+
+                    <div class="info-row">
+                        <span class="info-label">
+                            ROLE
+                        </span>
+
+                        <span class="info-value">
+                            {{ user.role.name if user.role else "Not Assigned" }}
+                        </span>
+                    </div>
+
+
+                    <div class="info-row">
+                        <span class="info-label">
+                            ACCOUNT STATUS
+                        </span>
+
+                        <span class="info-value">
+                            Active
+                        </span>
+                    </div>
+
+
+                    <div class="profile-actions">
+
+                        <a
+                            href="{{ url_for('main.change_password') }}"
+                            class="btn btn-primary"
+                        >
+                            <i class="bi bi-key-fill me-2"></i>
+                            Change Password
+                        </a>
+
+                        <a
+                            href="{{ url_for('main.logout') }}"
+                            class="btn btn-outline-light"
+                        >
+                            <i class="bi bi-box-arrow-right me-2"></i>
+                            Logout
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+</body>
+</html>
