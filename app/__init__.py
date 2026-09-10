@@ -2,7 +2,6 @@ import os
 
 from flask import Flask
 from dotenv import load_dotenv
-from sqlalchemy import URL
 
 from .models import db
 from .routes import main
@@ -17,25 +16,11 @@ def create_app():
     app.secret_key = os.getenv("SECRET_KEY")
 
     # Database URL
-    database_url = URL.create(
-        drivername="mysql+pymysql",
-        username=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        host=os.getenv("DB_HOST"),
-        port=int(os.getenv("DB_PORT", 3306)),
-        database=os.getenv("DB_NAME")
-    )
+    database_url = os.getenv("NEON_DATABASE_URL")
 
     # Database configuration
     app.config["SQLALCHEMY_DATABASE_URI"] = database_url
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-    # Enable SSL connection for Aiven MySQL
-    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
-        "connect_args": {
-            "ssl": {}
-        }
-    }
 
     # Initialize database
     db.init_app(app)
