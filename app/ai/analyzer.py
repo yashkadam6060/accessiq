@@ -2,6 +2,7 @@ import os
 
 from dotenv import load_dotenv
 from google import genai
+from google.genai import types
 
 load_dotenv()
 
@@ -158,7 +159,12 @@ def analyze_activity(
 
         client = genai.Client(
             api_key=api_key,
-            http_options={"api_version": "v1"}
+            http_options=types.HttpOptions(
+                api_version="v1",
+                retry_options=types.HttpRetryOptions(
+                    attempts=1
+                )
+            )
         )
 
         prompt = f"""

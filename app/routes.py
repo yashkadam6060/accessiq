@@ -1440,13 +1440,17 @@ def ai_analysis():
         ), 403
 
 
-    logs = AuditLog.query.order_by(
-        AuditLog.timestamp.desc()
-    ).all()
+    recent_logs = (
+        AuditLog.query
+        .order_by(AuditLog.timestamp.desc())
+        .limit(20)
+        .all()
+    )
 
 
     analysis = analyze_activity(
-        logs
+        recent_logs,
+        use_ai=True
     )
 
 
