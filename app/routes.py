@@ -340,11 +340,19 @@ def dashboard():
     # AI Security Analysis
     # --------------------------------
 
-    logs = AuditLog.query.order_by(
-        AuditLog.timestamp.desc()
-    ).all()
+    # Load only the most recent audit logs for the dashboard AI analysis.
+    # This avoids loading the complete audit-log table into memory every
+    # time the dashboard is opened.
+    recent_logs = (
+        AuditLog.query
+        .order_by(
+            AuditLog.timestamp.desc()
+        )
+        .limit(20)
+        .all()
+    )
 
-    analysis = analyze_activity(logs)
+    analysis = analyze_activity(recent_logs)
 
 
     # --------------------------------
