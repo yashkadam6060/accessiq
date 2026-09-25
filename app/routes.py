@@ -352,7 +352,7 @@ def dashboard():
         .all()
     )
 
-    analysis = analyze_activity(recent_logs)
+    analysis = analyze_activity(recent_logs, use_ai=False)
 
 
     # --------------------------------
