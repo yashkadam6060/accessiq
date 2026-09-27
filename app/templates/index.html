@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AccessIQ | Intelligent Access & Security</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        :root{
+            --bg:#030b14;
+            --panel:#071522;
+            --panel2:#0a1b2b;
+            --text:#f8fafc;
+            --muted:#8fa4b8;
+            --blue:#249cff;
+            --cyan:#38d5ff;
+            --green:#32e6a1;
+            --purple:#8b6cff;
+            --line:rgba(117,177,220,.16);
+        }
+
+        *{box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{
+            margin:0;
+            color:var(--text);
+            background:var(--bg);
+            font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+            overflow-x:hidden;
+        }
+        a{text-decoration:none}
+
+        .navbar{
+            position:fixed;
+            top:0;
+            width:100%;
+            z-index:100;
+            padding:15px 0;
+            background:rgba(3,11,20,.78);
+            backdrop-filter:blur(16px);
+            border-bottom:1px solid rgba(117,177,220,.12);
+        }
+
+        .brand{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            color:#fff;
+            font-size:22px;
+            font-weight:800;
+        }
+        .brand:hover{color:#fff}
+        .brand-icon{
+            width:39px;height:39px;
+            border:1px solid rgba(56,213,255,.55);
+            border-radius:11px;
+            display:grid;
+            place-items:center;
+            color:#38d5ff;
+            background:rgba(36,156,255,.08);
+            box-shadow:0 0 25px rgba(36,156,255,.12);
+        }
+        .brand span{color:#39b8ff}
+
+        .nav-links a{
+            color:#91a5b8;
+            font-size:14px;
+            margin:0 17px;
+            transition:.2s;
+        }
+        .nav-links a:hover{color:#fff}
+
+        .login-btn{
+            color:#fff;
+            border:1px solid #249cff;
+            border-radius:9px;
+            padding:9px 17px;
+            font-size:14px;
+            background:rgba(36,156,255,.05);
+            transition:.25s;
+        }
+        .login-btn:hover{
+            color:#fff;
+            background:rgba(36,156,255,.15);
+            box-shadow:0 0 25px rgba(36,156,255,.15);
+        }
+
+        .hero{
+            min-height:790px;
+            padding-top:115px;
+            position:relative;
+            display:flex;
+            align-items:center;
+            overflow:hidden;
+            background:
+                radial-gradient(circle at 72% 42%,rgba(36,156,255,.12),transparent 28%),
+                radial-gradient(circle at 20% 35%,rgba(139,108,255,.08),transparent 28%),
+                linear-gradient(180deg,#030b14 0%,#04111d 100%);
+        }
+
+        .hero::before{
+            content:"";
+            position:absolute;
+            inset:0;
+            background-image:
+                linear-gradient(rgba(68,151,207,.045) 1px,transparent 1px),
+                linear-gradient(90deg,rgba(68,151,207,.045) 1px,transparent 1px);
+            background-size:55px 55px;
+            mask-image:linear-gradient(to bottom,#000 0%,transparent 90%);
+        }
+
+        .hero-copy{position:relative;z-index:3}
+        .eyebrow{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            padding:8px 13px;
+            border-radius:8px;
+            color:#43bfff;
+            border:1px solid rgba(36,156,255,.25);
+            background:rgba(36,156,255,.055);
+            font-size:12px;
+            font-weight:700;
+            letter-spacing:.7px;
+            text-transform:uppercase;
+            margin-bottom:22px;
+        }
+        .pulse{
+            width:7px;height:7px;border-radius:50%;
+            background:var(--green);
+            box-shadow:0 0 0 5px rgba(50,230,161,.08);
+        }
+
+        .hero h1{
+            font-size:clamp(46px,5.3vw,74px);
+            line-height:1.02;
+            letter-spacing:-3px;
+            font-weight:850;
+            max-width:700px;
+            margin:0 0 24px;
+        }
+        .blue{color:#249cff}
+        .hero-description{
+            color:#9aabba;
+            font-size:17px;
+            line-height:1.75;
+            max-width:610px;
+            border-left:3px solid #32e6a1;
+            padding-left:17px;
+            margin-bottom:30px;
+        }
+
+        .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+        .btn-main{
+            color:#fff;
+            background:linear-gradient(135deg,#138ef1,#2bb9ff);
+            border:0;
+            border-radius:9px;
+            padding:13px 21px;
+            font-weight:750;
+            box-shadow:0 10px 35px rgba(36,156,255,.17);
+            transition:.25s;
+        }
+        .btn-main:hover{
+            color:#fff;
+            transform:translateY(-2px);
+            box-shadow:0 15px 40px rgba(36,156,255,.27);
+        }
+        .btn-secondary{
+            color:#b9c8d5;
+            border:1px solid rgba(92,154,200,.32);
+            background:rgba(255,255,255,.015);
+            border-radius:9px;
+            padding:13px 21px;
+            transition:.25s;
+        }
+        .btn-secondary:hover{color:#fff;border-color:#249cff}
+
+        .hero-visual{
+            position:relative;
+            min-height:510px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            z-index:2;
+        }
+        .hero-visual::before{
+            content:"";
+            position:absolute;
+            width:410px;height:410px;
+            border-radius:50%;
+            background:rgba(36,156,255,.09);
+            filter:blur(60px);
+        }
+        .hero-image{
+            width:125%;
+            max-width:760px;
+            position:relative;
+            margin-left:-70px;
+            filter:drop-shadow(0 25px 55px rgba(0,0,0,.5));
+            animation:heroFloat 6s ease-in-out infinite;
+        }
+        @keyframes heroFloat{
+            0%,100%{transform:translateY(0)}
+            50%{transform:translateY(-8px)}
+        }
+
+        .scroll-cue{
+            position:absolute;
+            bottom:25px;
+            left:50%;
+            transform:translateX(-50%);
+            color:#5d7589;
+            font-size:11px;
+            letter-spacing:1.5px;
+            text-transform:uppercase;
+            z-index:4;
+        }
+        .scroll-cue i{display:block;text-align:center;margin-top:5px;color:#249cff}
+
+        .section{
+            padding:100px 0;
+            border-top:1px solid rgba(117,177,220,.07);
+            background:#040e18;
+        }
+        .section-heading{text-align:center;max-width:700px;margin:0 auto 55px}
+        .section-heading .label{
+            color:#38b8ff;
+            font-size:11px;
+            font-weight:800;
+            letter-spacing:1.8px;
+            text-transform:uppercase;
+        }
+        .section-heading h2{
+            margin:10px 0 13px;
+            font-size:40px;
+            letter-spacing:-1.5px;
+            font-weight:800;
+        }
+        .section-heading p{color:#8095a8;line-height:1.7}
+
+        .feature-card{
+            height:100%;
+            padding:28px;
+            border:1px solid var(--line);
+            background:linear-gradient(145deg,rgba(9,27,43,.9),rgba(5,18,30,.9));
+            border-radius:15px;
+            transition:.28s;
+            position:relative;
+            overflow:hidden;
+        }
+        .feature-card::after{
+            content:"";
+            position:absolute;
+            width:100px;height:100px;
+            right:-55px;top:-55px;
+            border-radius:50%;
+            background:rgba(36,156,255,.08);
+        }
+        .feature-card:hover{
+            transform:translateY(-6px);
+            border-color:rgba(36,156,255,.35);
+            box-shadow:0 18px 45px rgba(0,0,0,.25);
+        }
+        .feature-icon{
+            width:50px;height:50px;
+            border-radius:12px;
+            display:grid;
+            place-items:center;
+            font-size:21px;
+            margin-bottom:20px;
+            color:#5fc9ff;
+            background:rgba(36,156,255,.09);
+            border:1px solid rgba(36,156,255,.15);
+        }
+        .feature-card:nth-child(2) .feature-icon{
+            color:#45e4a8;background:rgba(50,230,161,.08);
+            border-color:rgba(50,230,161,.14);
+        }
+        .feature-card:nth-child(3) .feature-icon{
+            color:#ae9aff;background:rgba(139,108,255,.08);
+            border-color:rgba(139,108,255,.14);
+        }
+        .feature-card h5{font-size:18px;font-weight:750}
+        .feature-card p{color:#8196a8;font-size:14px;line-height:1.7;margin:9px 0 0}
+
+        .workflow{
+            position:relative;
+            display:grid;
+            grid-template-columns:repeat(6,1fr);
+            gap:10px;
+        }
+        .workflow::before{
+            content:"";
+            position:absolute;
+            top:35px;
+            left:8%;
+            right:8%;
+            height:1px;
+            background:linear-gradient(90deg,transparent,#1f8ed7,transparent);
+        }
+        .step{
+            position:relative;
+            z-index:2;
+            text-align:center;
+        }
+        .step-icon{
+            width:70px;height:70px;
+            margin:0 auto 15px;
+            border-radius:50%;
+            display:grid;
+            place-items:center;
+            border:2px solid #1f8ed7;
+            background:#061522;
+            color:#42bcff;
+            font-size:24px;
+            box-shadow:0 0 25px rgba(36,156,255,.07);
+        }
+        .step:last-child .step-icon{
+            border-color:#32e6a1;color:#32e6a1;
+        }
+        .step-number{font-size:11px;color:#249cff;font-weight:800}
+        .step h6{font-size:15px;font-weight:750;margin:5px 0}
+        .step p{color:#70879a;font-size:12px;line-height:1.5;margin:0}
+
+        .security-panel{
+            border:1px solid rgba(36,156,255,.17);
+            border-radius:20px;
+            padding:40px;
+            background:
+                radial-gradient(circle at 80% 0%,rgba(36,156,255,.09),transparent 30%),
+                linear-gradient(145deg,#071a2b,#05111d);
+        }
+        .security-panel h3{font-size:31px;font-weight:800}
+        .security-panel p{color:#8297aa;line-height:1.75}
+        .check{
+            display:flex;gap:10px;align-items:center;
+            color:#b6c6d3;font-size:14px;margin:13px 0;
+        }
+        .check i{color:#32e6a1}
+
+        .cta{
+            text-align:center;
+            padding:70px 20px;
+            border:1px solid rgba(36,156,255,.16);
+            border-radius:20px;
+            background:radial-gradient(circle at 50% 0%,rgba(36,156,255,.12),transparent 48%),#061421;
+        }
+        .cta h2{font-size:38px;font-weight:800;letter-spacing:-1px}
+        .cta p{max-width:610px;color:#8196a8;line-height:1.7;margin:13px auto 26px}
+
+        footer{
+            padding:25px 0;
+            color:#60788c;
+            font-size:12px;
+            border-top:1px solid rgba(117,177,220,.08);
+            background:#030a12;
+        }
+
+        @media(max-width:991px){
+            .nav-links{display:none}
+            .hero{padding-top:120px;padding-bottom:70px}
+            .hero-visual{min-height:390px;margin-top:15px}
+            .hero-image{width:115%;margin-left:0}
+            .workflow{grid-template-columns:repeat(3,1fr);row-gap:35px}
+            .workflow::before{display:none}
+        }
+
+        @media(max-width:575px){
+            .hero h1{letter-spacing:-2px}
+            .hero-description{font-size:15px}
+            .hero-visual{min-height:290px}
+            .hero-image{width:130%}
+            .section{padding:75px 0}
+            .section-heading h2{font-size:31px}
+            .workflow{grid-template-columns:repeat(2,1fr)}
+            .security-panel{padding:27px}
+            .security-panel h3{font-size:26px}
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="container d-flex align-items-center justify-content-between">
+        <a class="brand" href="{{ url_for('main.home') }}">
+            <span class="brand-icon"><i class="bi bi-shield-lock-fill"></i></span>
+            Access<span>IQ</span>
+        </a>
+
+        <div class="d-flex align-items-center">
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#security">Security</a>
+            </div>
+            <a href="{{ url_for('main.login') }}" class="login-btn">
+                <i class="bi bi-person-fill me-1"></i> Sign In
+            </a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="container position-relative">
+        <div class="row align-items-center">
+
+            <div class="col-lg-6 hero-copy">
+                <div class="eyebrow">
+                    <span class="pulse"></span>
+                    AI-Powered Access Control System
+                </div>
+
+                <h1>
+                    Control <span class="blue">Access.</span><br>
+                    Detect <span class="blue">Risk.</span><br>
+                    Protect <span class="blue">Everything.</span>
+                </h1>
+
+                <p class="hero-description">
+                    A smart and secure platform for managing users, roles,
+                    permissions and system activity with AI-assisted security insights.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="{{ url_for('main.login') }}" class="btn-main">
+                        <i class="bi bi-arrow-right me-2"></i>
+                        Enter Security Console
+                    </a>
+                    <a href="#features" class="btn-secondary">
+                        Explore AccessIQ
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-6 hero-visual">
+                <img
+                    src="{{ url_for('static', filename='images/accessiq-hero.png') }}"
+                    alt="AccessIQ intelligent cybersecurity control center"
+                    class="hero-image"
+                >
+            </div>
+
+        </div>
+    </div>
+
+    <div class="scroll-cue">
+        Explore platform
+        <i class="bi bi-chevron-down"></i>
+    </div>
+</section>
+
+<section class="section" id="features">
+    <div class="container">
+        <div class="section-heading">
+            <div class="label">Core capabilities</div>
+            <h2>One platform. Complete access visibility.</h2>
+            <p>
+                AccessIQ connects identity, permissions, security monitoring
+                and AI-assisted analysis into one centralized system.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-person-lock"></i></div>
+                    <h5>Identity & Access Management</h5>
+                    <p>
+                        Manage users, roles and permissions while applying
+                        role-based access control across the system.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-graph-up-arrow"></i></div>
+                    <h5>AI-Powered Security Analytics</h5>
+                    <p>
+                        Analyze authentication and authorization activity
+                        and use AI-assisted insights to understand security risk.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-journal-text"></i></div>
+                    <h5>Complete Audit Trail</h5>
+                    <p>
+                        Record important system actions, access attempts and
+                        administrative activity for better security visibility.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="how-it-works">
+    <div class="container">
+        <div class="section-heading">
+            <div class="label">Access lifecycle</div>
+            <h2>How AccessIQ works</h2>
+            <p>A complete flow from identity verification to intelligent security analysis.</p>
+        </div>
+
+        <div class="workflow">
+            <div class="step">
+                <div class="step-icon"><i class="bi bi-person"></i></div>
+                <div class="step-number">01</div>
+                <h6>Identity</h6>
+                <p>User signs in with credentials.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-icon"><i class="bi bi-shield-check"></i></div>
+                <div class="step-number">02</div>
+                <h6>Authentication</h6>
+                <p>Credentials are securely verified.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-icon"><i class="bi bi-people"></i></div>
+                <div class="step-number">03</div>
+                <h6>Role & Permission</h6>
+                <p>Access is evaluated using the assigned role.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-icon"><i class="bi bi-lock"></i></div>
+                <div class="step-number">04</div>
+                <h6>Access Decision</h6>
+                <p>Requested system access is allowed or denied.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-icon"><i class="bi bi-file-earmark-text"></i></div>
+                <div class="step-number">05</div>
+                <h6>Audit Log</h6>
+                <p>Important activities are recorded and tracked.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-icon"><i class="bi bi-cpu"></i></div>
+                <div class="step-number">06</div>
+                <h6>AI Security Analysis</h6>
+                <p>Security signals are analyzed for potential risk.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="security">
+    <div class="container">
+        <div class="security-panel">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-7">
+                    <div class="section-heading text-start m-0">
+                        <div class="label">Security intelligence</div>
+                        <h2>Designed to make access activity easier to understand.</h2>
+                        <p>
+                            AccessIQ combines traditional access control with security
+                            analytics and AI-assisted analysis, giving administrators
+                            a centralized view of what is happening in the system.
+                        </p>
+                    </div>
+
+                    <div class="check"><i class="bi bi-check-circle-fill"></i> Role-based access control</div>
+                    <div class="check"><i class="bi bi-check-circle-fill"></i> User and permission management</div>
+                    <div class="check"><i class="bi bi-check-circle-fill"></i> Authentication and security event tracking</div>
+                    <div class="check"><i class="bi bi-check-circle-fill"></i> AI-assisted security analysis</div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="p-4 rounded-4" style="border:1px solid rgba(117,177,220,.14);background:rgba(0,0,0,.14);">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span style="color:#71899d;font-size:12px;">SECURITY ENGINE</span>
+                            <span style="color:#32e6a1;font-size:12px;font-weight:700;">● ACTIVE</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center py-3 border-bottom" style="border-color:rgba(117,177,220,.1)!important;">
+                            <span><i class="bi bi-shield-check me-2" style="color:#32e6a1;"></i>Access Control</span>
+                            <strong style="color:#32e6a1;">Protected</strong>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center py-3 border-bottom" style="border-color:rgba(117,177,220,.1)!important;">
+                            <span><i class="bi bi-journal-check me-2" style="color:#42bcff;"></i>Audit Logging</span>
+                            <strong style="color:#42bcff;">Active</strong>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center py-3">
+                            <span><i class="bi bi-robot me-2" style="color:#ae9aff;"></i>AI Analysis</span>
+                            <strong style="color:#ae9aff;">Available</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="cta">
+            <div class="label" style="color:#38b8ff;font-size:11px;font-weight:800;letter-spacing:1.8px;">ACCESSIQ CONSOLE</div>
+            <h2 class="mt-2">Ready to secure your access environment?</h2>
+            <p>
+                Sign in to manage users, roles, permissions and security activity
+                from the AccessIQ dashboard.
+            </p>
+            <a href="{{ url_for('main.login') }}" class="btn-main">
+                Sign In to AccessIQ <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <span>© 2026 AccessIQ</span>
+        <span>Intelligent Access & Security Management</span>
+    </div>
+</footer>
+
+</body>
+</html>

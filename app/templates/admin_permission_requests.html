@@ -1,407 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>AccessIQ | Permission Requests</title>
-
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='css/style.css') }}"
-    >
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Permission Approvals | AccessIQ</title>
+<style>
+:root{--bg:#08111f;--side:#0b1627;--panel:#0f1c2f;--border:#1b2c45;--text:#edf4ff;--muted:#8fa4bd;--blue:#62a9ff;--purple:#9679ff;--green:#42d6a0;--red:#ff6b7a;--orange:#ffb45c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}a{text-decoration:none;color:inherit}.layout{min-height:100vh;display:flex}.sidebar{position:fixed;inset:0 auto 0 0;width:245px;background:var(--side);border-right:1px solid var(--border);padding:24px 15px}.brand{display:flex;align-items:center;gap:11px;padding:4px 12px 28px;font-size:21px;font-weight:800}.logo{width:35px;height:35px;border-radius:10px;background:linear-gradient(135deg,#62a9ff,#8f72ff);display:grid;place-items:center}.nav-title{font-size:10px;letter-spacing:1.5px;color:#60758e;font-weight:800;padding:14px 12px 8px}.nav a{display:flex;gap:12px;align-items:center;padding:11px 12px;margin:3px 0;border-radius:10px;color:#91a4bb;font-size:13px;font-weight:600}.nav a:hover{background:#122238;color:#fff}.nav a.active{background:#162b47;color:#fff;box-shadow:inset 3px 0 var(--blue)}.icon{width:20px;text-align:center}.main{margin-left:245px;width:calc(100% - 245px);padding:28px 32px 45px}.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}.crumb{font-size:11px;color:var(--muted);letter-spacing:.8px;margin-bottom:6px}h1{font-size:28px;margin:0 0 6px}.sub{font-size:13px;color:var(--muted)}.userbox{display:flex;gap:10px;align-items:center}.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#7560e8,#4d8de8);font-weight:800}.uinfo{text-align:right}.uinfo strong{display:block;font-size:13px}.uinfo span{font-size:11px;color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:18px}.stat{background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:17px}.stat label{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)}.stat strong{display:block;font-size:27px;margin-top:7px}.pending{color:var(--orange)}.approved{color:var(--green)}.rejected{color:var(--red)}.card{background:var(--panel);border:1px solid var(--border);border-radius:17px;overflow:hidden}.cardhead{padding:19px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.cardhead h2{font-size:15px;margin:0}.cardhead span{font-size:11px;color:var(--muted)}.tablewrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:800px}th{padding:12px 17px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:#6f849d;background:#0b1728}td{padding:15px 17px;border-top:1px solid #17283e;font-size:12px;color:#c8d4e2;vertical-align:top}.requestuser{display:flex;align-items:center;gap:10px}.mini{width:34px;height:34px;border-radius:10px;background:#182d48;display:grid;place-items:center;color:#8fc1ff;font-weight:800;font-size:11px}.name{font-weight:700;color:#edf4ff}.muted{font-size:10px;color:var(--muted);margin-top:3px}.permission{display:inline-flex;padding:6px 9px;border-radius:8px;background:#172b45;color:#8fc1ff;font-size:10px;font-weight:700}.reason{max-width:230px;color:#9db0c4;line-height:1.45}.badge{display:inline-flex;padding:6px 9px;border-radius:20px;font-size:10px;font-weight:800}.badge.pending{background:rgba(255,180,92,.1);color:#ffc47d}.badge.approved{background:rgba(66,214,160,.1);color:#70e0b1}.badge.rejected{background:rgba(255,107,122,.1);color:#ff929e}.actions{display:flex;gap:7px}.actions form{margin:0}.btn{border:0;border-radius:8px;padding:8px 10px;font-size:10px;font-weight:800;cursor:pointer}.approve{background:rgba(66,214,160,.12);color:#6ee0b1;border:1px solid rgba(66,214,160,.2)}.reject{background:rgba(255,107,122,.1);color:#ff929e;border:1px solid rgba(255,107,122,.18)}.empty{text-align:center;padding:45px;color:var(--muted);font-size:12px}.info{margin-top:15px;padding:14px 16px;border:1px solid rgba(98,169,255,.15);background:rgba(98,169,255,.05);border-radius:12px;color:#8fa8c2;font-size:11px;line-height:1.55}@media(max-width:700px){.sidebar{position:relative;width:100%;height:auto;border-right:0;border-bottom:1px solid var(--border)}.layout{display:block}.main{margin:0;width:100%;padding:20px}.nav{display:flex;overflow:auto;gap:4px}.nav-title{display:none}.nav a{white-space:nowrap}.brand{padding-bottom:15px}.topbar{align-items:flex-start}.uinfo{display:none}.stats{grid-template-columns:1fr}}
+</style>
 </head>
-
 <body>
-
-<div class="app-wrapper">
-
-    <!-- SIDEBAR -->
-
-    <aside class="sidebar">
-
-        <div class="sidebar-brand">
-
-            <div class="brand-icon">
-                <i class="bi bi-shield-lock-fill"></i>
-            </div>
-
-            <div>
-                <h4>AccessIQ</h4>
-                <span>SECURITY CONSOLE</span>
-            </div>
-
-        </div>
-
-
-        <div class="sidebar-label">
-            MAIN MENU
-        </div>
-
-
-        <nav class="sidebar-nav">
-
-            <a href="{{ url_for('main.dashboard') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-grid-1x2-fill"></i>
-                <span>Dashboard</span>
-
-            </a>
-
-
-            <a href="{{ url_for('main.admin') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-people-fill"></i>
-                <span>User Management</span>
-
-            </a>
-
-
-            <a href="{{ url_for('main.manage_roles') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-person-badge-fill"></i>
-                <span>Role Management</span>
-
-            </a>
-
-
-            <a href="{{ url_for('main.admin_permission_requests') }}"
-               class="sidebar-link active">
-
-                <i class="bi bi-key-fill"></i>
-                <span>Permission Requests</span>
-
-            </a>
-
-
-            <a href="{{ url_for('main.audit_logs') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-journal-text"></i>
-                <span>Audit Logs</span>
-
-            </a>
-
-
-            <a href="{{ url_for('main.ai_analysis') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-robot"></i>
-                <span>AI Security</span>
-
-            </a>
-
-        </nav>
-
-
-        <!-- CURRENT USER -->
-
-        <div class="sidebar-user">
-
-            <div class="user-avatar">
-                {{ session["username"][0]|upper }}
-            </div>
-
-            <div class="user-details">
-
-                <strong>
-                    {{ session["username"] }}
-                </strong>
-
-                <span>
-                    {{ session["role"] }}
-                </span>
-
-            </div>
-
-            <a
-                href="{{ url_for('main.logout') }}"
-                class="logout-icon"
-            >
-
-                <i class="bi bi-box-arrow-right"></i>
-
-            </a>
-
-        </div>
-
-    </aside>
-
-
-    <!-- MAIN AREA -->
-
-    <main class="main-area">
-
-        <header class="topbar">
-
-            <div class="page-heading">
-
-                <h5>
-                    Permission Requests
-                </h5>
-
-                <span>
-                    Review user permission requests
-                </span>
-
-            </div>
-
-        </header>
-
-
-        <section class="page-content">
-
-            <div class="mb-4">
-
-                <h1 class="page-title">
-                    Permission Requests
-                </h1>
-
-                <p class="page-subtitle">
-                    Review and manage permission access requests.
-                </p>
-
-            </div>
-
-
-            <!-- REQUEST TABLE -->
-
-            <div class="card">
-
-                <div class="card-body p-4">
-
-                    <div class="table-responsive">
-
-                        <table class="table table-dark
-                                      table-hover align-middle">
-
-                            <!-- TABLE HEADER -->
-
-                            <thead>
-
-                                <tr>
-
-                                    <th>
-                                        User
-                                    </th>
-
-                                    <th>
-                                        Permission
-                                    </th>
-
-                                    <th>
-                                        Reason
-                                    </th>
-
-                                    <th>
-                                        Status
-                                    </th>
-
-                                    <th>
-                                        Requested
-                                    </th>
-
-                                    <th>
-                                        Actions
-                                    </th>
-
-                                </tr>
-
-                            </thead>
-
-
-                            <!-- TABLE BODY -->
-
-                            <tbody>
-
-                                {% for request_item in requests %}
-
-                                <tr>
-
-                                    <!-- USER -->
-
-                                    <td>
-
-                                        <strong>
-                                            {{ request_item.user.username }}
-                                        </strong>
-
-                                    </td>
-
-
-                                    <!-- PERMISSION -->
-
-                                    <td>
-
-                                        {{ request_item.permission.name }}
-
-                                    </td>
-
-
-                                    <!-- REASON -->
-
-                                    <td>
-
-                                        {{ request_item.reason }}
-
-                                    </td>
-
-
-                                    <!-- STATUS -->
-
-                                    <td>
-
-                                        {% if request_item.status == "Pending" %}
-
-                                        <span class="badge bg-warning">
-                                            Pending
-                                        </span>
-
-                                        {% elif request_item.status == "Approved" %}
-
-                                        <span class="badge bg-success">
-                                            Approved
-                                        </span>
-
-                                        {% else %}
-
-                                        <span class="badge bg-danger">
-                                            Rejected
-                                        </span>
-
-                                        {% endif %}
-
-                                    </td>
-
-
-                                    <!-- REQUESTED -->
-
-                                    <td>
-
-                                        {{ request_item.requested_at }}
-
-                                    </td>
-
-
-                                    <!-- ACTIONS -->
-
-                                    <td>
-
-                                        {% if request_item.status == "Pending" %}
-
-                                        <div class="d-flex gap-2">
-
-                                            <!-- APPROVE -->
-
-                                            <form
-                                                method="POST"
-                                                action="{{ url_for(
-                                                    'main.review_permission_request',
-                                                    request_id=request_item.id,
-                                                    action='approve'
-                                                ) }}"
-                                            >
-
-                                                <button
-                                                    type="submit"
-                                                    class="btn btn-sm btn-success"
-                                                >
-
-                                                    <i class="bi bi-check-circle me-1"></i>
-
-                                                    Approve
-
-                                                </button>
-
-                                            </form>
-
-
-                                            <!-- REJECT -->
-
-                                            <form
-                                                method="POST"
-                                                action="{{ url_for(
-                                                    'main.review_permission_request',
-                                                    request_id=request_item.id,
-                                                    action='reject'
-                                                ) }}"
-                                            >
-
-                                                <button
-                                                    type="submit"
-                                                    class="btn btn-sm btn-danger"
-                                                >
-
-                                                    <i class="bi bi-x-circle me-1"></i>
-
-                                                    Reject
-
-                                                </button>
-
-                                            </form>
-
-                                        </div>
-
-
-                                        {% else %}
-
-                                        <span class="text-muted">
-                                            Reviewed
-                                        </span>
-
-                                        {% endif %}
-
-                                    </td>
-
-                                </tr>
-
-
-                                {% else %}
-
-                                <tr>
-
-                                    <td
-                                        colspan="6"
-                                        class="text-center text-muted py-5"
-                                    >
-
-                                        No permission requests found.
-
-                                    </td>
-
-                                </tr>
-
-                                {% endfor %}
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
+<div class="layout">
+<aside class="sidebar">
+<div class="brand"><div class="logo">A</div>AccessIQ</div>
+<div class="nav-title">OVERVIEW</div><nav class="nav">
+<a href="{{ url_for('main.dashboard') }}"><span class="icon">⌂</span>Dashboard</a>
+<a href="{{ url_for('main.security_analytics') }}"><span class="icon">◈</span>Security Analytics</a>
+</nav>
+<div class="nav-title">MANAGEMENT</div><nav class="nav">
+<a href="{{ url_for('main.admin') }}"><span class="icon">♙</span>User Management</a>
+<a href="{{ url_for('main.manage_roles') }}"><span class="icon">◆</span>Roles & Permissions</a>
+</nav>
+<div class="nav-title">SECURITY</div><nav class="nav">
+<a class="active" href="{{ url_for('main.admin_permission_requests') }}"><span class="icon">✓</span>Permission Approvals</a>
+<a href="{{ url_for('main.audit_logs') }}"><span class="icon">≡</span>Audit Logs</a>
+<a href="{{ url_for('main.ai_analysis') }}"><span class="icon">✦</span>AI Security Analysis</a>
+</nav>
+<div class="nav-title">ACCESS</div><nav class="nav">
+<a href="{{ url_for('main.profile') }}"><span class="icon">◎</span>My Profile</a>
+<a href="{{ url_for('main.change_password') }}"><span class="icon">⌘</span>Change Password</a>
+<a href="{{ url_for('main.logout') }}"><span class="icon">↪</span>Logout</a>
+</nav>
+</aside>
+
+<main class="main">
+<div class="topbar">
+<div><div class="crumb">SECURITY / ACCESS CONTROL</div><h1>Permission Approvals</h1><div class="sub">Review and manage permission requests submitted by users.</div></div>
+<div class="userbox"><div class="uinfo"><strong>{{ session.get('username','Admin') }}</strong><span>{{ session.get('role','Admin') }}</span></div><div class="avatar">{{ session.get('username','A')[:1]|upper }}</div></div>
 </div>
 
-</body>
+{% set pending_count = requests|selectattr('status','equalto','Pending')|list|length %}
+{% set approved_count = requests|selectattr('status','equalto','Approved')|list|length %}
+{% set rejected_count = requests|selectattr('status','equalto','Rejected')|list|length %}
 
+<div class="stats">
+<div class="stat"><label>Pending Requests</label><strong class="pending">{{ pending_count }}</strong></div>
+<div class="stat"><label>Approved Requests</label><strong class="approved">{{ approved_count }}</strong></div>
+<div class="stat"><label>Rejected Requests</label><strong class="rejected">{{ rejected_count }}</strong></div>
+</div>
+
+<div class="card">
+<div class="cardhead"><h2>Access Requests</h2><span>{{ requests|length }} total requests</span></div>
+<div class="tablewrap">
+<table>
+<thead><tr><th>User</th><th>Permission</th><th>Reason</th><th>Requested</th><th>Status</th><th>Action</th></tr></thead>
+<tbody>
+{% for req in requests %}
+<tr>
+<td><div class="requestuser"><div class="mini">{{ req.user.username[:1]|upper }}</div><div><div class="name">{{ req.user.username }}</div><div class="muted">{{ req.user.email }}</div></div></div></td>
+<td><span class="permission">{{ req.permission.name }}</span></td>
+<td><div class="reason">{{ req.reason or 'No reason provided.' }}</div></td>
+<td>{{ req.requested_at.strftime('%d %b %Y') if req.requested_at else '—' }}<div class="muted">{{ req.requested_at.strftime('%H:%M') if req.requested_at else '' }}</div></td>
+<td><span class="badge {{ req.status|lower }}">{{ req.status }}</span></td>
+<td>
+{% if req.status == 'Pending' %}
+<div class="actions">
+<form method="POST" action="{{ url_for('main.review_permission_request', request_id=req.id, action='approve') }}"><button class="btn approve" type="submit">Approve</button></form>
+<form method="POST" action="{{ url_for('main.review_permission_request', request_id=req.id, action='reject') }}"><button class="btn reject" type="submit">Reject</button></form>
+</div>
+{% else %}
+<span class="muted">{% if req.reviewed_at %}Reviewed {{ req.reviewed_at.strftime('%d %b %Y') }}{% else %}Already reviewed{% endif %}</span>
+{% endif %}
+</td>
+</tr>
+{% else %}
+<tr><td colspan="6"><div class="empty">No permission requests have been submitted yet.</div></td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="info">🔐 <strong>Access control:</strong> approving a request adds the requested permission to the user's current role. Rejecting a request records the decision without granting the permission.</div>
+</main>
+</div>
+</body>
 </html>

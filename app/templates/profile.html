@@ -1,310 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>AccessIQ | My Profile</title>
-
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='css/style.css') }}"
-    >
-
-    <style>
-        .profile-card {
-            max-width: 720px;
-            margin: 30px auto;
-        }
-
-        .profile-header {
-            text-align: center;
-            padding: 35px 20px 25px;
-        }
-
-        .profile-avatar {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 15px;
-            font-size: 36px;
-            font-weight: 700;
-            color: #fff;
-            background: linear-gradient(135deg, #2563eb, #0ea5e9);
-        }
-
-        .profile-info {
-            padding: 0 30px 30px;
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            padding: 16px 0;
-            border-bottom: 1px solid rgba(148, 163, 184, 0.12);
-        }
-
-        .info-label {
-            color: #94a3b8;
-            font-size: 13px;
-        }
-
-        .info-value {
-            font-weight: 600;
-            text-align: right;
-        }
-
-        .profile-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 25px;
-        }
-
-        .profile-actions a {
-            flex: 1;
-        }
-
-        @media (max-width: 576px) {
-            .info-row {
-                flex-direction: column;
-                gap: 5px;
-            }
-
-            .info-value {
-                text-align: left;
-            }
-
-            .profile-actions {
-                flex-direction: column;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>My Profile | AccessIQ</title>
+<style>
+:root{--bg:#08111f;--side:#0b1627;--panel:#0f1c2f;--panel2:#122238;--border:#1b2c45;--text:#edf4ff;--muted:#8fa4bd;--blue:#62a9ff;--purple:#9679ff;--green:#42d6a0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}a{text-decoration:none;color:inherit}.layout{min-height:100vh;display:flex}.sidebar{position:fixed;inset:0 auto 0 0;width:245px;background:var(--side);border-right:1px solid var(--border);padding:24px 15px}.brand{display:flex;align-items:center;gap:11px;padding:4px 12px 28px;font-size:21px;font-weight:800}.logo{width:35px;height:35px;border-radius:10px;background:linear-gradient(135deg,#62a9ff,#8f72ff);display:grid;place-items:center}.nav-title{font-size:10px;letter-spacing:1.5px;color:#60758e;font-weight:800;padding:14px 12px 8px}.nav a{display:flex;gap:12px;align-items:center;padding:11px 12px;margin:3px 0;border-radius:10px;color:#91a4bb;font-size:13px;font-weight:600}.nav a:hover{background:#122238;color:#fff}.nav a.active{background:#162b47;color:#fff;box-shadow:inset 3px 0 var(--blue)}.icon{width:20px;text-align:center}.main{margin-left:245px;width:calc(100% - 245px);padding:28px 32px 45px}.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}.crumb{font-size:11px;color:var(--muted);letter-spacing:.8px;margin-bottom:6px}h1{font-size:28px;margin:0 0 6px}.sub{color:var(--muted);font-size:13px}.userbox{display:flex;gap:10px;align-items:center}.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#7560e8,#4d8de8);font-weight:800}.uinfo{text-align:right}.uinfo strong{display:block;font-size:13px}.uinfo span{font-size:11px;color:var(--muted)}.hero{background:linear-gradient(120deg,#10233d,#111d32);border:1px solid var(--border);border-radius:18px;padding:25px;display:flex;align-items:center;gap:22px;margin-bottom:18px}.bigavatar{width:82px;height:82px;border-radius:22px;background:linear-gradient(135deg,#5e9ff5,#9477ff);display:grid;place-items:center;font-size:30px;font-weight:800;box-shadow:0 12px 30px rgba(60,100,190,.2)}.hero h2{margin:0 0 6px;font-size:22px}.hero p{margin:0;color:var(--muted);font-size:13px}.badge{display:inline-flex;margin-top:12px;padding:6px 10px;border-radius:20px;background:rgba(66,214,160,.1);border:1px solid rgba(66,214,160,.25);color:#6de0b1;font-size:10px;font-weight:800}.grid{display:grid;grid-template-columns:1.35fr .75fr;gap:18px}.card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px}.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.head h3{font-size:15px;margin:0}.head span{font-size:11px;color:var(--muted)}.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{background:#0b1728;border:1px solid #182b43;border-radius:12px;padding:13px}.field label{display:block;color:#71879f;font-size:10px;text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px}.field div{font-size:13px;font-weight:650;word-break:break-word}.sidecard{display:flex;flex-direction:column;gap:12px}.info{padding:14px;border-radius:12px;background:#0b1728;border:1px solid #182b43}.info label{font-size:10px;color:#71879f;text-transform:uppercase;letter-spacing:.7px}.info strong{display:block;margin-top:6px;font-size:13px}.action{display:flex;align-items:center;gap:12px;padding:15px;border-radius:12px;background:#111f34;border:1px solid #1d3450}.action .ico{width:35px;height:35px;border-radius:10px;background:#182f4b;display:grid;place-items:center;color:#8fc1ff}.action strong{font-size:12px}.action small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.action:hover{border-color:#31577f;background:#13253d}.security{margin-top:18px}.securityrow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.metric{padding:15px;background:#0b1728;border:1px solid #182b43;border-radius:12px}.metric .n{font-size:23px;font-weight:800}.metric .l{font-size:10px;color:var(--muted);margin-top:4px}.note{margin-top:14px;color:#7890aa;font-size:10px;line-height:1.5}@media(max-width:900px){.grid{grid-template-columns:1fr}}@media(max-width:700px){.sidebar{position:relative;width:100%;height:auto;border-right:0;border-bottom:1px solid var(--border)}.layout{display:block}.main{margin:0;width:100%;padding:20px}.nav{display:flex;overflow:auto;gap:4px}.nav-title{display:none}.nav a{white-space:nowrap}.brand{padding-bottom:15px}.topbar{align-items:flex-start}.uinfo{display:none}.fields{grid-template-columns:1fr}.hero{align-items:flex-start;flex-direction:column}.securityrow{grid-template-columns:1fr}}
+</style>
 </head>
-
 <body>
+<div class="layout">
+<aside class="sidebar">
+<div class="brand"><div class="logo">A</div>AccessIQ</div>
+<div class="nav-title">OVERVIEW</div><nav class="nav">
+<a href="{{ url_for('main.dashboard') }}"><span class="icon">⌂</span>Dashboard</a>
+<a href="{{ url_for('main.security_analytics') }}"><span class="icon">◈</span>Security Analytics</a>
+</nav>
+<div class="nav-title">MANAGEMENT</div><nav class="nav">
+<a href="{{ url_for('main.admin') }}"><span class="icon">♙</span>User Management</a>
+<a href="{{ url_for('main.manage_roles') }}"><span class="icon">◆</span>Roles & Permissions</a>
+</nav>
+<div class="nav-title">SECURITY</div><nav class="nav">
+<a href="{{ url_for('main.admin_permission_requests') }}"><span class="icon">✓</span>Permission Approvals</a>
+<a href="{{ url_for('main.audit_logs') }}"><span class="icon">≡</span>Audit Logs</a>
+<a href="{{ url_for('main.ai_analysis') }}"><span class="icon">✦</span>AI Security Analysis</a>
+</nav>
+<div class="nav-title">ACCESS</div><nav class="nav">
+<a class="active" href="{{ url_for('main.profile') }}"><span class="icon">◎</span>My Profile</a>
+<a href="{{ url_for('main.logout') }}"><span class="icon">↪</span>Logout</a>
+</nav>
+</aside>
 
-<div class="app-wrapper">
-
-    <aside class="sidebar">
-
-        <div class="sidebar-brand">
-            <div class="brand-icon">
-                <i class="bi bi-shield-lock-fill"></i>
-            </div>
-
-            <div>
-                <h4>AccessIQ</h4>
-                <span>SECURITY CONSOLE</span>
-            </div>
-        </div>
-
-        <div class="sidebar-label">MAIN MENU</div>
-
-        <nav class="sidebar-nav">
-
-            <a href="{{ url_for('main.dashboard') }}" class="sidebar-link">
-                <i class="bi bi-grid-1x2-fill"></i>
-                <span>Dashboard</span>
-            </a>
-
-            {% if session.get("role") == "Admin" %}
-
-            <a href="{{ url_for('main.admin') }}" class="sidebar-link">
-                <i class="bi bi-people-fill"></i>
-                <span>User Management</span>
-            </a>
-
-            <a href="{{ url_for('main.manage_roles') }}" class="sidebar-link">
-                <i class="bi bi-person-badge-fill"></i>
-                <span>Role Management</span>
-            </a>
-
-            {% endif %}
-
-            <a href="{{ url_for('main.audit_logs') }}" class="sidebar-link">
-                <i class="bi bi-journal-text"></i>
-                <span>Audit Logs</span>
-            </a>
-
-            <a href="{{ url_for('main.ai_analysis') }}" class="sidebar-link">
-                <i class="bi bi-robot"></i>
-                <span>AI Security</span>
-                <span class="ai-badge">AI</span>
-            </a>
-
-        </nav>
-
-        <div class="sidebar-user">
-
-            <div class="user-avatar">
-                {{ session.get("username", "U")[0]|upper }}
-            </div>
-
-            <div class="user-details">
-                <strong>{{ session.get("username") }}</strong>
-                <span>{{ session.get("role") }}</span>
-            </div>
-
-            <a
-                href="{{ url_for('main.logout') }}"
-                class="logout-icon"
-                title="Logout"
-            >
-                <i class="bi bi-box-arrow-right"></i>
-            </a>
-
-        </div>
-
-    </aside>
-
-
-    <main class="main-area">
-
-        <header class="topbar">
-
-            <div class="d-flex align-items-center">
-
-                <button class="mobile-menu-btn" type="button">
-                    <i class="bi bi-list"></i>
-                </button>
-
-                <div class="page-heading">
-                    <h5>My Profile</h5>
-                    <span>View your AccessIQ account information</span>
-                </div>
-
-            </div>
-
-
-            <div class="topbar-actions">
-
-                <a
-                    href="{{ url_for('main.dashboard') }}"
-                    class="topbar-icon"
-                    title="Dashboard"
-                    style="text-decoration:none;"
-                >
-                    <i class="bi bi-grid-1x2-fill"></i>
-                </a>
-
-            </div>
-
-        </header>
-
-
-        <section class="page-content">
-
-            <div class="profile-card card">
-
-                <div class="profile-header">
-
-                    <div class="profile-avatar">
-                        {{ session.get("username", "U")[0]|upper }}
-                    </div>
-
-                    <h2 class="mb-1">
-                        {{ user.username }}
-                    </h2>
-
-                    <p class="text-muted mb-0">
-                        {{ user.role.name if user.role else "No Role Assigned" }}
-                    </p>
-
-                </div>
-
-
-                <div class="profile-info">
-
-                    <div class="info-row">
-                        <span class="info-label">
-                            USERNAME
-                        </span>
-
-                        <span class="info-value">
-                            {{ user.username }}
-                        </span>
-                    </div>
-
-
-                    <div class="info-row">
-                        <span class="info-label">
-                            EMAIL
-                        </span>
-
-                        <span class="info-value">
-                            {{ user.email or "Not provided" }}
-                        </span>
-                    </div>
-
-
-                    <div class="info-row">
-                        <span class="info-label">
-                            ROLE
-                        </span>
-
-                        <span class="info-value">
-                            {{ user.role.name if user.role else "Not Assigned" }}
-                        </span>
-                    </div>
-
-
-                    <div class="info-row">
-                        <span class="info-label">
-                            ACCOUNT STATUS
-                        </span>
-
-                        <span class="info-value">
-                            Active
-                        </span>
-                    </div>
-
-
-                    <div class="profile-actions">
-
-                        <a
-                            href="{{ url_for('main.change_password') }}"
-                            class="btn btn-primary"
-                        >
-                            <i class="bi bi-key-fill me-2"></i>
-                            Change Password
-                        </a>
-
-                        <a
-                            href="{{ url_for('main.logout') }}"
-                            class="btn btn-outline-light"
-                        >
-                            <i class="bi bi-box-arrow-right me-2"></i>
-                            Logout
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
+<main class="main">
+<div class="topbar">
+<div><div class="crumb">ACCESS / MY PROFILE</div><h1>My Profile</h1><div class="sub">View your account information and security status.</div></div>
+<div class="userbox"><div class="uinfo"><strong>{{ user.username }}</strong><span>{{ user.role.name if user.role else 'No Role' }}</span></div><div class="avatar">{{ user.username[:1]|upper }}</div></div>
 </div>
 
+<section class="hero">
+<div class="bigavatar">{{ user.username[:1]|upper }}</div>
+<div><h2>{{ user.username }}</h2><p>{{ user.designation or 'AccessIQ User' }}{% if user.department %} · {{ user.department }}{% endif %}</p>
+<div class="badge">● {{ user.status or 'Active' }}</div></div>
+</section>
 
-<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<div class="grid">
+<div>
+<div class="card">
+<div class="head"><h3>Account Information</h3><span>Read-only profile details</span></div>
+<div class="fields">
+<div class="field"><label>Username</label><div>{{ user.username }}</div></div>
+<div class="field"><label>Email Address</label><div>{{ user.email }}</div></div>
+<div class="field"><label>Department</label><div>{{ user.department or 'Not specified' }}</div></div>
+<div class="field"><label>Designation</label><div>{{ user.designation or 'Not specified' }}</div></div>
+<div class="field"><label>Role</label><div>{{ user.role.name if user.role else 'Not Assigned' }}</div></div>
+<div class="field"><label>Account Status</label><div>{{ user.status or 'Active' }}</div></div>
+</div>
+</div>
 
+<div class="card security">
+<div class="head"><h3>Security Overview</h3><span>Account activity</span></div>
+<div class="securityrow">
+<div class="metric"><div class="n">{{ user_logs|length }}</div><div class="l">Recorded Activities</div></div>
+<div class="metric"><div class="n">{{ user_logs|selectattr('action','equalto','LOGIN')|list|length }}</div><div class="l">Successful Logins</div></div>
+<div class="metric"><div class="n">{{ user_logs|selectattr('action','equalto','FAILED_LOGIN')|list|length }}</div><div class="l">Failed Logins</div></div>
+</div>
+<div class="note">Your profile information is managed through AccessIQ's role-based access control system. Password changes are handled separately for security.</div>
+</div>
+</div>
+
+<div class="sidecard">
+<div class="card">
+<div class="head"><h3>Account Summary</h3></div>
+<div class="info"><label>Assigned Role</label><strong>{{ user.role.name if user.role else 'Not Assigned' }}</strong></div>
+<div class="info"><label>Department</label><strong>{{ user.department or 'Not specified' }}</strong></div>
+<div class="info"><label>Designation</label><strong>{{ user.designation or 'Not specified' }}</strong></div>
+</div>
+<div class="card">
+<div class="head"><h3>Security Actions</h3></div>
+<a class="action" href="{{ url_for('main.change_password') }}"><div class="ico">⌘</div><div><strong>Change Password</strong><small>Update your account password securely</small></div></a>
+<a class="action" href="{{ url_for('main.dashboard') }}"><div class="ico">⌂</div><div><strong>Back to Dashboard</strong><small>Return to your AccessIQ workspace</small></div></a>
+</div>
+</div>
+</div>
+</main>
+</div>
 </body>
 </html>

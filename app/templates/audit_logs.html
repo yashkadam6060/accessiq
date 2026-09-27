@@ -1,547 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Audit Logs - AccessIQ</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #0b0f19;
-            color: #ffffff;
-        }
-
-        nav {
-            background: #111827;
-            color: white;
-            padding: 18px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-        }
-
-        nav strong {
-            font-size: 20px;
-            letter-spacing: 0.5px;
-        }
-
-        nav a {
-            color: #cbd5e1;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        nav a:hover {
-            color: white;
-        }
-
-        .container {
-            width: 92%;
-            max-width: 1400px;
-            margin: 35px auto;
-        }
-
-        .header {
-            margin-bottom: 25px;
-        }
-
-        .header h1 {
-            margin: 0 0 8px;
-            font-size: 30px;
-        }
-
-        .header p {
-            margin: 0;
-            color: #8b95a7;
-            font-size: 14px;
-        }
-
-        /* Filter card */
-
-        .filter-card {
-            background: #111827;
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 14px;
-            padding: 22px;
-            margin-bottom: 25px;
-        }
-
-        .filter-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 18px;
-        }
-
-        .filters {
-            display: grid;
-            grid-template-columns: 1.4fr 1fr 1fr 1fr auto auto;
-            gap: 12px;
-            align-items: end;
-        }
-
-        .field {
-            display: flex;
-            flex-direction: column;
-            gap: 7px;
-        }
-
-        .field label {
-            color: #9ca3af;
-            font-size: 12px;
-        }
-
-        .field input,
-        .field select {
-            width: 100%;
-            height: 42px;
-            padding: 0 12px;
-
-            background: #0b0f19;
-            color: #ffffff;
-
-            border: 1px solid #273244;
-            border-radius: 8px;
-
-            outline: none;
-        }
-
-        .field input:focus,
-        .field select:focus {
-            border-color: #64748b;
-        }
-
-        .field select option {
-            background: #111827;
-            color: white;
-        }
-
-        .btn {
-            height: 42px;
-            padding: 0 18px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            text-decoration: none;
-
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .btn-apply {
-            background: #ffffff;
-            color: #111827;
-        }
-
-        .btn-apply:hover {
-            background: #e5e7eb;
-        }
-
-        .btn-clear {
-            background: #1f2937;
-            color: #cbd5e1;
-            border: 1px solid #374151;
-        }
-
-        .btn-clear:hover {
-            background: #273244;
-        }
-
-        /* Table */
-
-        .table-card {
-            background: #111827;
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 14px;
-            overflow: hidden;
-        }
-
-        .table-header {
-            padding: 18px 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
-
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .table-header h2 {
-            margin: 0;
-            font-size: 17px;
-        }
-
-        .log-count {
-            color: #8b95a7;
-            font-size: 13px;
-        }
-
-        .table-wrapper {
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 800px;
-        }
-
-        th,
-        td {
-            padding: 14px 16px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-        }
-
-        th {
-            background: #0f172a;
-            color: #aeb7c6;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        td {
-            color: #d7dce5;
-            font-size: 13px;
-        }
-
-        tr:hover td {
-            background: rgba(255,255,255,0.025);
-        }
-
-        .action {
-            font-weight: 600;
-        }
-
-        .details {
-            max-width: 400px;
-            color: #9ca3af;
-        }
-
-        .empty {
-            text-align: center;
-            padding: 45px 20px;
-            color: #7f899a;
-        }
-
-        .back {
-            display: inline-block;
-            margin-top: 20px;
-            color: #9ca3af;
-            text-decoration: none;
-            font-size: 13px;
-        }
-
-        .back:hover {
-            color: white;
-        }
-
-        /* Responsive */
-
-        @media (max-width: 1100px) {
-
-            .filters {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-        }
-
-        @media (max-width: 600px) {
-
-            .container {
-                width: 94%;
-                margin: 25px auto;
-            }
-
-            .filters {
-                grid-template-columns: 1fr;
-            }
-
-            .header h1 {
-                font-size: 25px;
-            }
-
-            .filter-card {
-                padding: 17px;
-            }
-
-            .btn {
-                width: 100%;
-            }
-
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AccessIQ | Audit Logs</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:#08111f;color:#e8eef8}
+.layout{display:flex;min-height:100vh}.sidebar{width:250px;background:#0b1627;border-right:1px solid #1d2c43;padding:24px 16px;position:fixed;inset:0 auto 0 0}
+.logo{font-size:24px;font-weight:800;letter-spacing:.5px;padding:8px 12px 28px}.logo span{color:#62a9ff}.group{font-size:11px;color:#71809a;font-weight:700;letter-spacing:1px;margin:22px 12px 8px}
+.nav a{display:flex;gap:11px;align-items:center;padding:12px;border-radius:10px;color:#aebbd0;text-decoration:none;margin:4px 0;font-size:14px}.nav a:hover,.nav a.active{background:#152944;color:#fff}
+.main{margin-left:250px;width:calc(100% - 250px);padding:28px 34px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}.crumb{color:#7787a0;font-size:13px}
+.user{display:flex;align-items:center;gap:10px}.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#4c8dff,#8c5cff);display:grid;place-items:center;font-weight:700}
+h1{font-size:30px;margin:6px 0 8px}.subtitle{color:#8f9eb5;margin:0 0 24px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.stat,.panel{background:#0d192b;border:1px solid #1b2c45;border-radius:16px;box-shadow:0 12px 30px #0002}.stat{padding:19px}.stat small{color:#8190a7}.stat strong{display:block;font-size:25px;margin-top:7px}
+.filters{padding:18px;margin-bottom:20px}.filters form{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr auto;gap:10px}.input,select{width:100%;background:#0a1525;color:#dce7f7;border:1px solid #263a55;border-radius:9px;padding:11px 12px;outline:none}.input:focus,select:focus{border-color:#559cff}
+.btn{border:0;border-radius:9px;padding:11px 17px;font-weight:700;cursor:pointer;background:#347ff0;color:#fff}.reset{display:inline-flex;align-items:center;text-decoration:none;background:#17263b;color:#9fb0c7}
+.table-panel{padding:0;overflow:hidden}.table-head{padding:20px 22px;border-bottom:1px solid #1b2c45;display:flex;justify-content:space-between;align-items:center}.table-head h2{font-size:18px;margin:0}.count{font-size:12px;color:#7f90a8}
+.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:850px}th,td{text-align:left;padding:15px 18px;border-bottom:1px solid #192b43;font-size:13px}th{color:#778aa4;font-size:11px;letter-spacing:.7px;text-transform:uppercase;background:#0b1728}td{color:#b7c4d6}tr:hover td{background:#101f33}
+.usercell{display:flex;gap:10px;align-items:center}.mini{width:34px;height:34px;border-radius:9px;background:#162e4c;color:#76b5ff;display:grid;place-items:center;font-weight:700}.uname{font-weight:700;color:#e4ebf5}.muted{font-size:11px;color:#718198;margin-top:3px}
+.badge{display:inline-block;padding:5px 9px;border-radius:20px;font-size:10px;font-weight:700}.login{background:#123a2c;color:#62dca5}.failed_login{background:#3c1820;color:#ff8796}.access_denied{background:#3a2d12;color:#ffc95c}.logout{background:#182d43;color:#8eb8e8}.other{background:#25213d;color:#b9a7ff}
+.empty{text-align:center;padding:55px;color:#73839a}.details{max-width:380px;line-height:1.5}
+@media(max-width:1000px){.filters form{grid-template-columns:1fr 1fr}.filters .btn,.filters .reset{width:100%;text-align:center;justify-content:center}.stats{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.sidebar{position:static;width:100%;height:auto}.layout{display:block}.main{margin:0;width:100%;padding:20px}.stats{grid-template-columns:1fr}.filters form{grid-template-columns:1fr}.top{align-items:flex-start}}
+</style>
 </head>
-
 <body>
-
-    <nav>
-
-        <strong>AccessIQ</strong>
-
-        <a href="{{ url_for('main.dashboard') }}">
-            Dashboard
-        </a>
-
-    </nav>
-
-
-    <div class="container">
-
-        <!-- Page Header -->
-
-        <div class="header">
-
-            <h1>Audit Logs</h1>
-
-            <p>
-                Monitor and filter security activity across the AccessIQ system.
-            </p>
-
-        </div>
-
-
-        <!-- Filters -->
-
-        <div class="filter-card">
-
-            <div class="filter-title">
-                🔍 Filter Audit Logs
-            </div>
-
-            <form method="GET"
-                  action="{{ url_for('main.audit_logs') }}">
-
-                <div class="filters">
-
-                    <!-- User -->
-
-                    <div class="field">
-
-                        <label for="user">
-                            User
-                        </label>
-
-                        <input
-                            type="text"
-                            id="user"
-                            name="user"
-                            placeholder="Search username..."
-                            value="{{ user_search or '' }}"
-                        >
-
-                    </div>
-
-
-                    <!-- Action -->
-
-                    <div class="field">
-
-                        <label for="action">
-                            Action
-                        </label>
-
-                        <select
-                            id="action"
-                            name="action"
-                        >
-
-                            <option value="">
-                                All Actions
-                            </option>
-
-                            {% for item in actions %}
-
-                            <option
-                                value="{{ item }}"
-                                {% if selected_action == item %}
-                                    selected
-                                {% endif %}
-                            >
-                                {{ item }}
-                            </option>
-
-                            {% endfor %}
-
-                        </select>
-
-                    </div>
-
-
-                    <!-- From Date -->
-
-                    <div class="field">
-
-                        <label for="date_from">
-                            From Date
-                        </label>
-
-                        <input
-                            type="date"
-                            id="date_from"
-                            name="date_from"
-                            value="{{ date_from or '' }}"
-                        >
-
-                    </div>
-
-
-                    <!-- To Date -->
-
-                    <div class="field">
-
-                        <label for="date_to">
-                            To Date
-                        </label>
-
-                        <input
-                            type="date"
-                            id="date_to"
-                            name="date_to"
-                            value="{{ date_to or '' }}"
-                        >
-
-                    </div>
-
-
-                    <!-- Apply -->
-
-                    <button
-                        type="submit"
-                        class="btn btn-apply"
-                    >
-                        Apply Filters
-                    </button>
-
-
-                    <!-- Clear -->
-
-                    <a
-                        href="{{ url_for('main.audit_logs') }}"
-                        class="btn btn-clear"
-                    >
-                        Clear
-                    </a>
-
-                </div>
-
-            </form>
-
-        </div>
-
-
-        <!-- Logs Table -->
-
-        <div class="table-card">
-
-            <div class="table-header">
-
-                <h2>
-                    Security Activity
-                </h2>
-
-                <span class="log-count">
-                    {{ logs|length }} log(s)
-                </span>
-
-            </div>
-
-
-            <div class="table-wrapper">
-
-                <table>
-
-                    <thead>
-
-                        <tr>
-
-                            <th>ID</th>
-
-                            <th>User ID</th>
-
-                            <th>Action</th>
-
-                            <th>Details</th>
-
-                            <th>Timestamp</th>
-
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody>
-
-                        {% for log in logs %}
-
-                        <tr>
-
-                            <td>
-                                {{ log.id }}
-                            </td>
-
-                            <td>
-                                {{ log.user_id if log.user_id else 'System' }}
-                            </td>
-
-                            <td class="action">
-                                {{ log.action }}
-                            </td>
-
-                            <td class="details">
-                                {{ log.details or '-' }}
-                            </td>
-
-                            <td>
-                                {{ log.timestamp }}
-                            </td>
-
-                        </tr>
-
-                        {% else %}
-
-                        <tr>
-
-                            <td
-                                colspan="5"
-                                class="empty"
-                            >
-                                No audit logs found for the selected filters.
-                            </td>
-
-                        </tr>
-
-                        {% endfor %}
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
-
-        <a
-            class="back"
-            href="{{ url_for('main.dashboard') }}"
-        >
-            ← Back to Dashboard
-        </a>
-
-    </div>
-
+<div class="layout">
+<aside class="sidebar">
+<div class="logo">ACCESS<span>IQ</span></div>
+<div class="group">OVERVIEW</div><div class="nav">
+<a href="{{ url_for('main.dashboard') }}">▦ Dashboard</a><a href="{{ url_for('main.security_analytics') }}">◉ Security Analytics</a>
+</div>
+<div class="group">MANAGEMENT</div><div class="nav">
+<a href="{{ url_for('main.admin') }}">♙ User Management</a><a href="{{ url_for('main.manage_roles') }}">◈ Roles & Permissions</a>
+</div>
+<div class="group">SECURITY</div><div class="nav">
+<a href="{{ url_for('main.admin_permission_requests') }}">✓ Permission Approvals</a><a class="active" href="{{ url_for('main.audit_logs') }}">◷ Audit Logs</a><a href="{{ url_for('main.ai_analysis') }}">✦ AI Security Analysis</a>
+</div>
+<div class="group">ACCESS</div><div class="nav">
+<a href="{{ url_for('main.profile') }}">◎ My Profile</a><a href="{{ url_for('main.logout') }}">↪ Logout</a>
+</div>
+</aside>
+
+<main class="main">
+<div class="top"><div class="crumb">Security / Audit Logs</div><div class="user"><span>{{ session.get('username','Admin') }}</span><div class="avatar">{{ session.get('username','A')[:1]|upper }}</div></div></div>
+<h1>Audit Logs</h1>
+<p class="subtitle">Review recorded authentication, authorization and security activity across AccessIQ.</p>
+
+{% set login_count = logs|selectattr('action','equalto','LOGIN')|list|length %}
+{% set failed_count = logs|selectattr('action','equalto','FAILED_LOGIN')|list|length %}
+{% set denied_count = logs|selectattr('action','equalto','ACCESS_DENIED')|list|length %}
+
+<div class="stats">
+<div class="stat"><small>Total Events</small><strong>{{ logs|length }}</strong></div>
+<div class="stat"><small>Successful Logins</small><strong>{{ login_count }}</strong></div>
+<div class="stat"><small>Security Events</small><strong>{{ failed_count + denied_count }}</strong></div>
+</div>
+
+<section class="panel filters">
+<form method="GET" action="{{ url_for('main.audit_logs') }}">
+<input class="input" type="text" name="user" placeholder="Search by username..." value="{{ user_search or '' }}">
+<select name="action"><option value="">All actions</option>{% for item in actions %}<option value="{{ item }}" {% if selected_action == item %}selected{% endif %}>{{ item }}</option>{% endfor %}</select>
+<input class="input" type="date" name="date_from" value="{{ date_from or '' }}" title="From date">
+<input class="input" type="date" name="date_to" value="{{ date_to or '' }}" title="To date">
+<button class="btn" type="submit">Filter Logs</button>
+</form>
+{% if user_search or selected_action or date_from or date_to %}
+<div style="margin-top:12px"><a class="btn reset" href="{{ url_for('main.audit_logs') }}">Clear Filters</a></div>
+{% endif %}
+</section>
+
+<section class="panel table-panel">
+<div class="table-head"><h2>Security Activity</h2><span class="count">{{ logs|length }} record{% if logs|length != 1 %}s{% endif %}</span></div>
+<div class="table-wrap">
+{% if logs %}
+<table>
+<thead><tr><th>User</th><th>Action</th><th>Details</th><th>Timestamp</th></tr></thead>
+<tbody>
+{% for log in logs %}
+<tr>
+<td><div class="usercell"><div class="mini">{% if log.user %}{{ log.user.username[:1]|upper }}{% else %}?{% endif %}</div><div>{% if log.user %}<div class="uname">{{ log.user.username }}</div><div class="muted">User ID: {{ log.user_id }}</div>{% else %}<div class="uname">System / Unknown</div><div class="muted">No user linked</div>{% endif %}</div></div></td>
+<td>{% set cls=log.action|lower|replace('_','-') %}<span class="badge {% if log.action == 'LOGIN' %}login{% elif log.action == 'FAILED_LOGIN' %}failed_login{% elif log.action == 'ACCESS_DENIED' %}access_denied{% elif log.action == 'LOGOUT' %}logout{% else %}other{% endif %}">{{ log.action }}</span></td>
+<td><div class="details">{{ log.details or 'No details recorded.' }}</div></td>
+<td>{{ log.timestamp.strftime('%d %b %Y') if log.timestamp else '—' }}<div class="muted">{{ log.timestamp.strftime('%I:%M:%S %p') if log.timestamp else '' }}</div></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% else %}
+<div class="empty">No audit events match the selected filters.</div>
+{% endif %}
+</div>
+</section>
+</main>
+</div>
 </body>
 </html>

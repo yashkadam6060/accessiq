@@ -1,381 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>AccessIQ | Add User</title>
-
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='css/style.css') }}"
-    >
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add User | AccessIQ</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+:root{--bg:#070b16;--panel:#0d1424;--panel2:#111a2d;--line:#1e2a42;--text:#eef4ff;--muted:#8d9bb5;--blue:#4f8cff;--cyan:#38d9ff;--purple:#8b6cff;--danger:#ff6b81}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0%,rgba(79,140,255,.12),transparent 30%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}.sidebar{position:fixed;left:0;top:0;width:250px;height:100vh;background:rgba(8,13,25,.96);border-right:1px solid var(--line);padding:24px 16px;z-index:20}.brand{display:flex;align-items:center;gap:11px;padding:4px 10px 30px;font-size:21px;font-weight:800;letter-spacing:.5px}.brand-icon{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#07101d;box-shadow:0 8px 25px rgba(56,217,255,.18)}.section-title{font-size:10px;color:#66748e;letter-spacing:1.5px;font-weight:800;padding:12px 12px 7px}.nav-link{display:flex;align-items:center;gap:12px;color:#9ba8bf;text-decoration:none;padding:11px 12px;border-radius:10px;margin:3px 0;font-size:14px;transition:.2s}.nav-link:hover{background:#121d31;color:#fff}.nav-link.active{background:linear-gradient(90deg,rgba(79,140,255,.2),rgba(56,217,255,.06));color:#fff;border:1px solid rgba(79,140,255,.16)}.nav-link i{font-size:16px;width:18px}.main{margin-left:250px;min-height:100vh}.topbar{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 34px;background:rgba(7,11,22,.7);backdrop-filter:blur(12px);position:sticky;top:0;z-index:10}.crumb{color:var(--muted);font-size:13px}.crumb strong{color:#fff}.profile{display:flex;align-items:center;gap:10px}.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#263d73,#1a8aa3);font-weight:800;color:#fff}.content{padding:34px;max-width:1150px;margin:auto}.page-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px}.eyebrow{color:var(--cyan);font-size:12px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:8px}.page-title{font-size:30px;font-weight:800;margin:0 0 7px}.subtitle{color:var(--muted);margin:0;font-size:14px}.back{border:1px solid var(--line);color:#cbd5e8;background:#0d1526;text-decoration:none;padding:10px 15px;border-radius:10px;font-size:13px}.back:hover{color:#fff;background:#142039}.form-card{background:linear-gradient(145deg,rgba(17,26,45,.97),rgba(10,16,29,.97));border:1px solid var(--line);border-radius:18px;box-shadow:0 20px 55px rgba(0,0,0,.25);overflow:hidden}.card-head{padding:22px 25px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px}.card-icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:rgba(79,140,255,.12);color:var(--cyan);font-size:19px}.card-head h2{font-size:17px;margin:0 0 3px}.card-head p{font-size:12px;color:var(--muted);margin:0}.form-body{padding:28px}.form-label{font-size:12px;color:#b9c5da;font-weight:700;margin-bottom:8px}.form-control,.form-select{background:#0a1221;border:1px solid #26334d;color:#eef4ff;border-radius:10px;padding:12px 13px;font-size:14px}.form-control:focus,.form-select:focus{background:#0a1221;color:#fff;border-color:var(--blue);box-shadow:0 0 0 3px rgba(79,140,255,.12)}.form-control::placeholder{color:#596981}.input-group .btn{border-color:#26334d;background:#111b2d;color:#91a0b9}.help{font-size:11px;color:#66748e;margin-top:7px}.alert-custom{background:rgba(255,107,129,.08);border:1px solid rgba(255,107,129,.25);color:#ffb5c1;border-radius:10px;padding:12px 14px;font-size:13px;margin-bottom:22px}.security-note{margin-top:24px;padding:15px;border:1px solid rgba(56,217,255,.14);background:rgba(56,217,255,.035);border-radius:12px;display:flex;gap:12px;color:#aebbd0;font-size:12px}.security-note i{color:var(--cyan);font-size:17px}.actions{display:flex;justify-content:flex-end;gap:10px;padding-top:26px;margin-top:26px;border-top:1px solid var(--line)}.btn-cancel{background:#10192b;color:#b9c5d8;border:1px solid var(--line);padding:11px 18px;border-radius:10px;text-decoration:none;font-size:13px}.btn-create{background:linear-gradient(135deg,var(--blue),#6c5ce7);color:#fff;border:0;padding:11px 20px;border-radius:10px;font-size:13px;font-weight:700;box-shadow:0 8px 22px rgba(79,140,255,.2)}.btn-create:hover{color:#fff;transform:translateY(-1px)}@media(max-width:850px){.sidebar{width:72px;padding:18px 10px}.brand span,.section-title,.nav-link span{display:none}.brand{padding:4px 8px 25px}.nav-link{justify-content:center}.main{margin-left:72px}.content{padding:24px}.topbar{padding:0 20px}}@media(max-width:600px){.page-head{flex-direction:column;gap:16px}.form-body{padding:20px}.content{padding:18px}.page-title{font-size:25px}}
+</style>
 </head>
-
 <body>
-
-<div class="app-wrapper">
-
-    <!-- SIDEBAR -->
-
-    <aside class="sidebar">
-
-        <div class="sidebar-brand">
-
-            <div class="brand-icon">
-                <i class="bi bi-shield-lock-fill"></i>
-            </div>
-
-            <div>
-                <h4>AccessIQ</h4>
-                <span>SECURITY CONSOLE</span>
-            </div>
-
-        </div>
-
-
-        <div class="sidebar-label">
-            MAIN MENU
-        </div>
-
-
-        <nav class="sidebar-nav">
-
-            <a href="{{ url_for('main.dashboard') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-grid-1x2-fill"></i>
-                <span>Dashboard</span>
-
-            </a>
-
-
-            <a href="{{ url_for('main.admin') }}"
-               class="sidebar-link active">
-
-                <i class="bi bi-people-fill"></i>
-                <span>User Management</span>
-
-            </a>
-
-
-            <a href="{{ url_for('main.manage_roles') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-person-badge-fill"></i>
-                <span>Role Management</span>
-
-            </a>
-
-
-            <a href="{{ url_for('main.audit_logs') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-journal-text"></i>
-                <span>Audit Logs</span>
-
-            </a>
-
-        </nav>
-
-
-        <div class="sidebar-user">
-
-            <div class="user-avatar">
-                {{ session["username"][0]|upper }}
-            </div>
-
-            <div class="user-details">
-
-                <strong>
-                    {{ session["username"] }}
-                </strong>
-
-                <span>
-                    {{ session["role"] }}
-                </span>
-
-            </div>
-
-            <a
-                href="{{ url_for('main.logout') }}"
-                class="logout-icon"
-                title="Logout"
-            >
-
-                <i class="bi bi-box-arrow-right"></i>
-
-            </a>
-
-        </div>
-
-    </aside>
-
-
-    <!-- MAIN AREA -->
-
-    <main class="main-area">
-
-        <header class="topbar">
-
-            <div class="page-heading">
-
-                <h5>
-                    Add User
-                </h5>
-
-                <span>
-                    Create a new AccessIQ user
-                </span>
-
-            </div>
-
-        </header>
-
-
-        <section class="page-content">
-
-            <div class="mb-4">
-
-                <h1 class="page-title">
-                    Create New User
-                </h1>
-
-                <p class="page-subtitle">
-                    Add a user and assign their initial access role.
-                </p>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="card-body p-4">
-
-                    {% if error %}
-
-                    <div class="alert alert-danger">
-                        {{ error }}
-                    </div>
-
-                    {% endif %}
-
-
-                    <form method="POST">
-
-                        <div class="row g-4">
-
-
-                            <!-- Username -->
-
-                            <div class="col-md-6">
-
-                                <label class="form-label">
-                                    Username
-                                </label>
-
-                                <input
-                                    type="text"
-                                    name="username"
-                                    class="form-control"
-                                    required
-                                >
-
-                            </div>
-
-
-                            <!-- Email -->
-
-                            <div class="col-md-6">
-
-                                <label class="form-label">
-                                    Email
-                                </label>
-
-                                <input
-                                    type="email"
-                                    name="email"
-                                    class="form-control"
-                                    required
-                                >
-
-                            </div>
-
-
-                            <!-- Password -->
-
-                            <div class="col-md-6">
-
-                                <label class="form-label">
-                                    Password
-                                </label>
-
-                                <input
-                                    type="password"
-                                    name="password"
-                                    class="form-control"
-                                    required
-                                >
-
-                            </div>
-
-
-                            <!-- Department -->
-
-                            <div class="col-md-6">
-
-                                <label class="form-label">
-                                    Department
-                                </label>
-
-                                <input
-                                    type="text"
-                                    name="department"
-                                    class="form-control"
-                                    placeholder="e.g. IT"
-                                    required
-                                >
-
-                            </div>
-
-
-                            <!-- Designation -->
-
-                            <div class="col-md-6">
-
-                                <label class="form-label">
-                                    Designation
-                                </label>
-
-                                <input
-                                    type="text"
-                                    name="designation"
-                                    class="form-control"
-                                    placeholder="e.g. Software Developer"
-                                    required
-                                >
-
-                            </div>
-
-
-                            <!-- Role -->
-
-                            <div class="col-md-6">
-
-                                <label class="form-label">
-                                    Role
-                                </label>
-
-                                <select
-    name="role_id"
-    class="form-select"
-    required
-    style="color: #ffffff; background-color: #16213e;"
->
-
-    <option value="" style="color: #000000; background-color: #ffffff;">
-        Select Role
-    </option>
-
-    {% for role in roles %}
-
-    <option
-        value="{{ role.id }}"
-        style="color: #000000; background-color: #ffffff;"
-    >
-        {{ role.name }}
-    </option>
-
-    {% endfor %}
-
-</select>
-
-                            </div>
-
-
-                            <!-- Status -->
-
-                            <div class="col-md-6">
-
-                                <label class="form-label">
-                                    Status
-                                </label>
-
-                                
-
-                            </div>
-<select
-    name="status"
-    class="form-select"
-    required
-    style="color: #ffffff; background-color: #16213e;"
->
-
-    <option
-        value="Active"
-        style="color: #000000; background-color: #ffffff;"
-    >
-        Active
-    </option>
-
-    <option
-        value="Inactive"
-        style="color: #000000; background-color: #ffffff;"
-    >
-        Inactive
-    </option>
-
-</select>
-
-                        </div>
-
-
-                        <div class="d-flex gap-3 mt-5">
-
-                            <button
-                                type="submit"
-                                class="btn btn-primary"
-                            >
-
-                                <i class="bi bi-person-plus-fill me-2"></i>
-
-                                Create User
-
-                            </button>
-
-
-                            <a
-                                href="{{ url_for('main.admin') }}"
-                                class="btn btn-outline-light"
-                            >
-
-                                Cancel
-
-                            </a>
-
-                        </div>
-
-                    </form>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-</div>
-
+<aside class="sidebar">
+  <div class="brand"><div class="brand-icon"><i class="bi bi-shield-lock-fill"></i></div><span>ACCESSIQ</span></div>
+  <div class="section-title">OVERVIEW</div>
+  <a class="nav-link" href="{{ url_for('main.dashboard') }}"><i class="bi bi-grid-1x2-fill"></i><span>Dashboard</span></a>
+  <div class="section-title">MANAGEMENT</div>
+  <a class="nav-link active" href="{{ url_for('main.admin') }}"><i class="bi bi-people-fill"></i><span>User Management</span></a>
+  <a class="nav-link" href="{{ url_for('main.manage_roles') }}"><i class="bi bi-diagram-3-fill"></i><span>Roles & Permissions</span></a>
+  <div class="section-title">SECURITY</div>
+  <a class="nav-link" href="{{ url_for('main.security_analytics') }}"><i class="bi bi-bar-chart-fill"></i><span>Security Analytics</span></a>
+  <a class="nav-link" href="{{ url_for('main.audit_logs') }}"><i class="bi bi-journal-text"></i><span>Audit Logs</span></a>
+  <a class="nav-link" href="{{ url_for('main.ai_analysis') }}"><i class="bi bi-stars"></i><span>AI Analysis</span></a>
+  <div class="section-title">ACCESS</div>
+  <a class="nav-link" href="{% if session.get('role') == 'Admin' %}{{ url_for('main.admin_permission_requests') }}{% else %}{{ url_for('main.permission_requests') }}{% endif %}"><i class="bi bi-key-fill"></i><span>Permission Requests</span></a>
+  <a class="nav-link" href="{{ url_for('main.profile') }}"><i class="bi bi-person-circle"></i><span>My Profile</span></a>
+</aside>
+<main class="main">
+  <header class="topbar"><div class="crumb">Management <span class="mx-2">/</span> <strong>Add User</strong></div><div class="profile"><span class="small text-secondary d-none d-sm-inline">{{ session.get('username','Admin') }}</span><div class="avatar">{{ session.get('username','A')[:1]|upper }}</div></div></header>
+  <section class="content">
+    <div class="page-head"><div><div class="eyebrow">User Management</div><h1 class="page-title">Create New User</h1><p class="subtitle">Add a user account and assign the appropriate role and access level.</p></div><a class="back" href="{{ url_for('main.admin') }}"><i class="bi bi-arrow-left me-1"></i> Back to Users</a></div>
+    <div class="form-card">
+      <div class="card-head"><div class="card-icon"><i class="bi bi-person-plus-fill"></i></div><div><h2>User Account Details</h2><p>Enter the account information below.</p></div></div>
+      <div class="form-body">
+        {% if error %}<div class="alert-custom"><i class="bi bi-exclamation-triangle-fill me-2"></i>{{ error }}</div>{% endif %}
+        <form method="POST" action="{{ url_for('main.add_user') }}" autocomplete="off">
+          <div class="row g-4">
+            <div class="col-md-6"><label class="form-label">Username</label><input type="text" class="form-control" name="username" placeholder="e.g. rahul.sharma" required></div>
+            <div class="col-md-6"><label class="form-label">Email Address</label><input type="email" class="form-control" name="email" placeholder="user@example.com" required></div>
+            <div class="col-md-6"><label class="form-label">Password</label><div class="input-group"><input type="password" class="form-control" id="password" name="password" placeholder="Create a secure password" required><button type="button" class="btn" onclick="togglePassword()"><i class="bi bi-eye" id="eye"></i></button></div><div class="help">Use a strong password with a mix of characters.</div></div>
+            <div class="col-md-6"><label class="form-label">Department</label><input type="text" class="form-control" name="department" placeholder="e.g. Computer Science" required></div>
+            <div class="col-md-6"><label class="form-label">Designation</label><input type="text" class="form-control" name="designation" placeholder="e.g. Student / Manager" required></div>
+            <div class="col-md-3"><label class="form-label">Role</label><select class="form-select" name="role_id" required><option value="" selected disabled>Select role</option>{% for role in roles %}<option value="{{ role.id }}">{{ role.name }}</option>{% endfor %}</select></div>
+            <div class="col-md-3"><label class="form-label">Status</label><select class="form-select" name="status" required><option value="Active" selected>Active</option><option value="Inactive">Inactive</option></select></div>
+          </div>
+          <div class="security-note"><i class="bi bi-shield-check"></i><div><strong class="text-light">Access control reminder</strong><br>Choose the user's role carefully. Role permissions determine which protected features and resources the account can access.</div></div>
+          <div class="actions"><a class="btn-cancel" href="{{ url_for('main.admin') }}">Cancel</a><button class="btn-create" type="submit"><i class="bi bi-person-plus-fill me-2"></i>Create User</button></div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+<script>function togglePassword(){const p=document.getElementById('password'),i=document.getElementById('eye');if(p.type==='password'){p.type='text';i.className='bi bi-eye-slash'}else{p.type='password';i.className='bi bi-eye'}}</script>
 </body>
-
 </html>

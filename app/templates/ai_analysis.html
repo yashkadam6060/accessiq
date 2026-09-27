@@ -1,571 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>AccessIQ | AI Security</title>
-
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='css/style.css') }}"
-    >
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AccessIQ | AI Security Analysis</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#08111f;color:#e8eef8;font-family:Inter,Segoe UI,Arial,sans-serif}.layout{display:flex;min-height:100vh}
+.sidebar{width:250px;background:#0b1627;border-right:1px solid #1d2c43;padding:24px 16px;position:fixed;inset:0 auto 0 0}.logo{font-size:24px;font-weight:800;padding:8px 12px 28px}.logo span{color:#62a9ff}.group{font-size:11px;color:#71809a;font-weight:700;letter-spacing:1px;margin:22px 12px 8px}.nav a{display:flex;gap:11px;align-items:center;padding:12px;border-radius:10px;color:#aebbd0;text-decoration:none;margin:4px 0;font-size:14px}.nav a:hover,.nav a.active{background:#152944;color:#fff}
+.main{margin-left:250px;width:calc(100% - 250px);padding:28px 34px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}.crumb{color:#7787a0;font-size:13px}.user{display:flex;align-items:center;gap:10px}.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#4c8dff,#8c5cff);display:grid;place-items:center;font-weight:700}
+h1{font-size:30px;margin:5px 0 8px}.subtitle{color:#8f9eb5;margin:0 0 25px}.panel{background:#0d192b;border:1px solid #1b2c45;border-radius:17px;box-shadow:0 12px 30px #0002}.hero{padding:25px;display:grid;grid-template-columns:1fr 260px;gap:25px;align-items:center;margin-bottom:20px}.eyebrow{color:#73adff;text-transform:uppercase;font-size:11px;font-weight:800;letter-spacing:1.2px}.hero h2{font-size:23px;margin:9px 0}.hero p{color:#91a0b5;line-height:1.6;margin:0}.riskbox{background:#101f34;border:1px solid #263c59;border-radius:15px;padding:20px;text-align:center}.risklabel{font-size:11px;color:#8190a8;text-transform:uppercase;letter-spacing:1px}.risk{font-size:31px;font-weight:800;margin:8px 0}.high{color:#ff7789}.medium{color:#ffc65a}.low{color:#61dda5}.score{font-size:13px;color:#8292aa}.bar{height:8px;background:#1b2b42;border-radius:10px;overflow:hidden;margin-top:12px}.fill{height:100%;background:#5b9dff}
+.grid{display:grid;grid-template-columns:1.25fr .75fr;gap:20px}.card{padding:22px}.card h3{font-size:18px;margin:0 0 7px}.card>p{font-size:13px;color:#8291a8;line-height:1.6}
+.textbox{background:#101e32;border:1px solid #213651;border-radius:12px;padding:17px;color:#b9c5d5;line-height:1.65;font-size:14px;white-space:pre-line}.recommend{border-left:3px solid #5798f5;background:#101e32;padding:16px;border-radius:0 11px 11px 0;color:#b9c5d5;line-height:1.6;font-size:14px}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px}.metric{padding:16px;background:#101e32;border:1px solid #20344f;border-radius:12px}.metric small{color:#7d8da5}.metric strong{display:block;font-size:23px;margin-top:6px}.event{padding:13px 0;border-bottom:1px solid #1d3048}.event:last-child{border-bottom:0}.event strong{font-size:13px}.event span{display:block;color:#8493a9;font-size:12px;margin-top:4px}.tag{display:inline-block;padding:4px 8px;border-radius:15px;font-size:10px;font-weight:700;background:#162b47;color:#8fc1ff}
+.notice{margin-top:20px;padding:14px 16px;border-radius:11px;background:#101e32;border:1px solid #233852;color:#8797ad;font-size:12px;line-height:1.6}
+/* Final readability and report controls */
+h1,h2,h3,.card h3,.riskbox,.metric strong,.event strong{color:#eef5ff}
+.card h3{font-weight:750;letter-spacing:-.01em}
+.card>p,.subtitle{color:#9aabc0}
+.notice{color:#a8b7ca}
+.report-card{margin-top:20px;padding:22px;display:flex;align-items:center;justify-content:space-between;gap:20px;background:linear-gradient(135deg,rgba(16,34,55,.98),rgba(10,23,39,.98));border:1px solid rgba(57,217,255,.16)}
+.report-copy{display:flex;align-items:flex-start;gap:14px}
+.report-icon{width:44px;height:44px;flex:0 0 44px;border-radius:12px;display:grid;place-items:center;background:rgba(57,217,255,.09);border:1px solid rgba(57,217,255,.16);color:#39d9ff;font-size:20px}
+.report-copy h3{margin:0 0 5px;font-size:17px}
+.report-copy p{margin:0;color:#91a2b8;font-size:12px;line-height:1.55}
+.report-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;padding:11px 16px;border-radius:10px;background:linear-gradient(135deg,#39d9ff,#5b7cff);color:#04111a;text-decoration:none;font-size:12px;font-weight:800;border:0;box-shadow:0 8px 24px rgba(57,217,255,.13)}
+.report-btn:hover{color:#04111a;transform:translateY(-1px)}
+@media(max-width:650px){.report-card{align-items:stretch;flex-direction:column}.report-btn{width:100%}}
+@media(max-width:900px){.sidebar{width:210px}.main{margin-left:210px;width:calc(100% - 210px)}.hero,.grid{grid-template-columns:1fr}}
+@media(max-width:650px){.sidebar{position:static;width:100%;height:auto}.layout{display:block}.main{margin:0;width:100%;padding:20px}.metrics{grid-template-columns:1fr}.top{align-items:flex-start}}
+</style>
 </head>
-
-
 <body>
-
-<div class="app-wrapper">
-
-
-    <!-- SIDEBAR -->
-
-    <aside class="sidebar">
-
-        <div class="sidebar-brand">
-
-            <div class="brand-icon">
-                <i class="bi bi-shield-lock-fill"></i>
-            </div>
-
-            <div>
-                <h4>AccessIQ</h4>
-                <span>SECURITY CONSOLE</span>
-            </div>
-
-        </div>
-
-
-        <div class="sidebar-label">
-            MAIN MENU
-        </div>
-
-
-        <nav class="sidebar-nav">
-
-
-            <a href="{{ url_for('main.dashboard') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-grid-1x2-fill"></i>
-
-                <span>
-                    Dashboard
-                </span>
-
-            </a>
-
-
-            {% if session["role"] == "Admin" %}
-
-            <a href="{{ url_for('main.admin') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-people-fill"></i>
-
-                <span>
-                    User Management
-                </span>
-
-            </a>
-
-
-            <a href="{{ url_for('main.manage_roles') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-person-badge-fill"></i>
-
-                <span>
-                    Role Management
-                </span>
-
-            </a>
-
-            {% endif %}
-
-
-            <a href="{{ url_for('main.permission_requests') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-key-fill"></i>
-
-                <span>
-                    Permission Requests
-                </span>
-
-            </a>
-
-
-            <a href="{{ url_for('main.audit_logs') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-journal-text"></i>
-
-                <span>
-                    Audit Logs
-                </span>
-
-            </a>
-
-
-            <a href="{{ url_for('main.ai_analysis') }}"
-               class="sidebar-link active">
-
-                <i class="bi bi-robot"></i>
-
-                <span>
-                    AI Security
-                </span>
-
-            </a>
-
-
-        </nav>
-
-
-        <!-- CURRENT USER -->
-
-        <div class="sidebar-user">
-
-            <div class="user-avatar">
-
-                {{ session["username"][0]|upper }}
-
-            </div>
-
-
-            <div class="user-details">
-
-                <strong>
-                    {{ session["username"] }}
-                </strong>
-
-                <span>
-                    {{ session["role"] }}
-                </span>
-
-            </div>
-
-
-            <a
-                href="{{ url_for('main.logout') }}"
-                class="logout-icon"
-            >
-
-                <i class="bi bi-box-arrow-right"></i>
-
-            </a>
-
-        </div>
-
-
-    </aside>
-
-
-
-    <!-- MAIN AREA -->
-
-    <main class="main-area">
-
-
-        <!-- TOPBAR -->
-
-        <header class="topbar">
-
-            <div class="page-heading">
-
-                <h5>
-                    AI Security
-                </h5>
-
-                <span>
-                    Intelligent security activity analysis
-                </span>
-
-            </div>
-
-
-            <div class="topbar-actions">
-
-                <div class="topbar-profile">
-
-                    <div class="user-avatar small-avatar">
-
-                        {{ session["username"][0]|upper }}
-
-                    </div>
-
-
-                    <div class="profile-text">
-
-                        <strong>
-                            {{ session["username"] }}
-                        </strong>
-
-                        <span>
-                            {{ session["role"] }}
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </header>
-
-
-
-        <!-- PAGE CONTENT -->
-
-        <section class="page-content">
-
-
-            <div class="mb-4">
-
-                <h1 class="page-title">
-                    AI Security Analysis
-                </h1>
-
-                <p class="page-subtitle">
-                    Analyze audit activity and identify potentially suspicious behavior.
-                </p>
-
-            </div>
-
-
-
-            <!-- RISK OVERVIEW -->
-
-            <div class="row g-4 mb-4">
-
-
-                <!-- RISK LEVEL -->
-
-                <div class="col-md-6">
-
-                    <div class="card h-100">
-
-                        <div class="card-body p-4">
-
-                            <h6 class="text-muted mb-3">
-                                Current Risk Level
-                            </h6>
-
-
-                            <h2 class="mb-2">
-
-                                {% if analysis.risk_level == "HIGH" %}
-
-                                <span class="text-danger">
-                                    HIGH
-                                </span>
-
-                                {% elif analysis.risk_level == "MEDIUM" %}
-
-                                <span class="text-warning">
-                                    MEDIUM
-                                </span>
-
-                                {% else %}
-
-                                <span class="text-success">
-                                    LOW
-                                </span>
-
-                                {% endif %}
-
-                            </h2>
-
-
-                            <p class="text-muted mb-0">
-                                {{ analysis.risk_description }}
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- RISK SCORE -->
-
-                <div class="col-md-6">
-
-                    <div class="card h-100">
-
-                        <div class="card-body p-4">
-
-                            <h6 class="text-muted mb-3">
-                                Risk Score
-                            </h6>
-
-
-                            <h2 class="mb-2">
-                                {{ analysis.risk_score }}
-                            </h2>
-
-
-                            <p class="text-muted mb-0">
-                                Calculated from detected security events.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-            </div>
-
-
-
-            <!-- ACTIVITY SUMMARY -->
-
-            <div class="card mb-4">
-
-                <div class="card-body p-4">
-
-
-                    <h5 class="mb-4">
-                        Activity Summary
-                    </h5>
-
-
-                    <div class="row g-4">
-
-
-                        <div class="col-md-4">
-
-                            <div class="p-3 rounded"
-                                 style="background:#16213e;">
-
-                                <small class="text-muted">
-                                    Successful Logins
-                                </small>
-
-                                <h3 class="mt-2 mb-0">
-                                    {{ analysis.successful_logins }}
-                                </h3>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="col-md-4">
-
-                            <div class="p-3 rounded"
-                                 style="background:#16213e;">
-
-                                <small class="text-muted">
-                                    Failed Logins
-                                </small>
-
-                                <h3 class="mt-2 mb-0">
-                                    {{ analysis.failed_logins }}
-                                </h3>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="col-md-4">
-
-                            <div class="p-3 rounded"
-                                 style="background:#16213e;">
-
-                                <small class="text-muted">
-                                    Access Denied
-                                </small>
-
-                                <h3 class="mt-2 mb-0">
-                                    {{ analysis.access_denied }}
-                                </h3>
-
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-
-                </div>
-
-            </div>
-
-
-
-            <!-- DETECTED ISSUES -->
-
-            <div class="card mb-4">
-
-                <div class="card-body p-4">
-
-
-                    <h5 class="mb-4">
-                        🔍 Detected Security Issues
-                    </h5>
-
-
-                    {% if analysis.reasons %}
-
-                    <ul class="mb-0">
-
-                        {% for reason in analysis.reasons %}
-
-                        <li class="mb-2">
-                            {{ reason }}
-                        </li>
-
-                        {% endfor %}
-
-                    </ul>
-
-                    {% else %}
-
-                    <p class="text-muted mb-0">
-                        No suspicious activity detected.
-                    </p>
-
-                    {% endif %}
-
-
-                </div>
-
-            </div>
-
-
-
-            <!-- RECOMMENDED ACTIONS -->
-
-            <div class="card mb-4">
-
-                <div class="card-body p-4">
-
-
-                    <h5 class="mb-4">
-                        🔐 Recommended Actions
-                    </h5>
-
-
-                    {% if analysis.recommended_actions %}
-
-                    <ul class="mb-0">
-
-                        {% for action in analysis.recommended_actions %}
-
-                        <li class="mb-2">
-                            {{ action }}
-                        </li>
-
-                        {% endfor %}
-
-                    </ul>
-
-                    {% else %}
-
-                    <p class="text-muted mb-0">
-                        Continue monitoring system activity.
-                    </p>
-
-                    {% endif %}
-
-
-                </div>
-
-            </div>
-
-
-
-            <!-- AI EXPLANATION -->
-
-            <div class="card mb-4">
-
-                <div class="card-body p-4">
-
-
-                    <h5 class="mb-3">
-                        🤖 AI Security Assessment
-                    </h5>
-
-
-                    <p class="mb-0">
-                        {{ analysis.ai_explanation }}
-                    </p>
-
-
-                </div>
-
-            </div>
-
-
-
-            <!-- RECOMMENDATION -->
-
-            <div class="card mb-4">
-
-                <div class="card-body p-4">
-
-
-                    <h5 class="mb-3">
-                        💡 Security Recommendation
-                    </h5>
-
-
-                    <p class="mb-0">
-                        {{ analysis.recommendation }}
-                    </p>
-
-
-                </div>
-
-            </div>
-
-
-
-            <!-- AUDIT LOG LINK -->
-
-            <div class="mb-4">
-
-                <a
-                    href="{{ url_for('main.audit_logs') }}"
-                    class="btn btn-outline-light"
-                >
-
-                    <i class="bi bi-journal-text me-2"></i>
-
-                    View Audit Logs
-
-                </a>
-
-            </div>
-
-
-        </section>
-
-
-    </main>
-
-
+<div class="layout">
+<aside class="sidebar">
+<div class="logo">ACCESS<span>IQ</span></div>
+<div class="group">OVERVIEW</div><div class="nav"><a href="{{ url_for('main.dashboard') }}">▦ Dashboard</a><a href="{{ url_for('main.security_analytics') }}">◉ Security Analytics</a></div>
+<div class="group">MANAGEMENT</div><div class="nav"><a href="{{ url_for('main.admin') }}">♙ User Management</a><a href="{{ url_for('main.manage_roles') }}">◈ Roles & Permissions</a></div>
+<div class="group">SECURITY</div><div class="nav"><a href="{{ url_for('main.admin_permission_requests') }}">✓ Permission Approvals</a><a href="{{ url_for('main.audit_logs') }}">◷ Audit Logs</a><a class="active" href="{{ url_for('main.ai_analysis') }}">✦ AI Security Analysis</a></div>
+<div class="group">ACCESS</div><div class="nav"><a href="{{ url_for('main.profile') }}">◎ My Profile</a><a href="{{ url_for('main.logout') }}">↪ Logout</a></div>
+</aside>
+
+<main class="main">
+<div class="top"><div class="crumb">Security / AI Security Analysis</div><div class="user"><span>{{ session.get('username','Admin') }}</span><div class="avatar">{{ session.get('username','A')[:1]|upper }}</div></div></div>
+<h1>AI Security Analysis</h1>
+<p class="subtitle">AI-assisted analysis of suspicious login activity and unauthorized access attempts.</p>
+
+{% set level = analysis.risk_level|default('LOW') %}
+<section class="panel hero">
+<div>
+<div class="eyebrow">✦ Intelligent Security Monitoring</div>
+<h2>AI-Powered Security Assessment</h2>
+<p>AccessIQ analyzes recent audit activity to identify security signals, determine the current risk level, and provide a security-focused explanation and recommendation.</p>
+</div>
+<div class="riskbox">
+<div class="risklabel">Current Risk</div>
+<div class="risk {% if level == 'HIGH' %}high{% elif level == 'MEDIUM' %}medium{% else %}low{% endif %}">{{ level }}</div>
+<div class="score">Risk Score: {{ analysis.risk_score|default(0) }}%</div>
+<div class="bar"><div class="fill" style="width:{{ analysis.risk_score|default(0) }}%;"></div></div>
+</div>
+</section>
+
+<div class="grid">
+<section class="panel card">
+<h3>AI Explanation</h3>
+<p>Interpretation generated from the security activity available to the analysis module.</p>
+<div class="textbox">{{ analysis.ai_explanation|default('AI analysis is temporarily unavailable. The local security analysis is still available.') }}</div>
+
+<div style="height:20px"></div>
+<h3>Security Recommendation</h3>
+<p>Suggested action based on the current analysis.</p>
+<div class="recommend">{{ analysis.ai_recommendation|default('Review the audit logs and the local security recommendations shown above.') }}</div>
+</section>
+
+<aside>
+<div class="panel card">
+<h3>Risk Summary</h3>
+<p>Current security indicators returned by AccessIQ.</p>
+<div class="metrics">
+<div class="metric"><small>Risk Level</small><strong>{{ level }}</strong></div>
+<div class="metric"><small>Risk Score</small><strong>{{ analysis.risk_score|default(0) }}%</strong></div>
+</div>
+<div class="notice">The AI result is an assistance layer over the application's security analysis. Review the underlying audit events before taking administrative action.</div>
 </div>
 
+<div class="panel card" style="margin-top:20px">
+<h3>Security Signals</h3>
+<p>Recent activity considered by the security analysis.</p>
+<div class="event"><span class="tag">AUTHENTICATION</span><strong> Login activity</strong><span>Successful and failed login events are part of the security signal.</span></div>
+<div class="event"><span class="tag">AUTHORIZATION</span><strong> Access control</strong><span>Unauthorized access attempts are treated as security events.</span></div>
+<div class="event"><span class="tag">AUDIT</span><strong> Activity records</strong><span>Audit logs provide the underlying evidence for analysis.</span></div>
+</div>
+</aside>
+</div>
 
+<section class="panel report-card">
+<div class="report-copy">
+<div class="report-icon"><i class="bi bi-file-earmark-pdf-fill"></i></div>
+<div>
+<h3>Download Security Report</h3>
+<p>Generate a PDF containing current security statistics and recent security events for administrative review.</p>
+</div>
+</div>
+<a class="report-btn" href="{{ url_for('main.export_security_report') }}">
+<i class="bi bi-download"></i> Download PDF Report
+</a>
+</section>
+
+<div class="notice">If the AI service is temporarily unavailable, AccessIQ continues to display its local security analysis and recommendations rather than leaving the security page empty.</div>
+</main>
+</div>
 </body>
-
 </html>

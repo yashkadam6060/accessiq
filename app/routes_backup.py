@@ -61,7 +61,8 @@ def has_permission(permission_name):
 
 @main.route("/")
 def home():
-    return render_template("index.html")
+
+    return redirect(url_for("main.login"))
 
 
 @main.route("/login", methods=["GET", "POST"])
@@ -339,19 +340,11 @@ def dashboard():
     # AI Security Analysis
     # --------------------------------
 
-    # Load only the most recent audit logs for the dashboard AI analysis.
-    # This avoids loading the complete audit-log table into memory every
-    # time the dashboard is opened.
-    recent_logs = (
-        AuditLog.query
-        .order_by(
-            AuditLog.timestamp.desc()
-        )
-        .limit(20)
-        .all()
-    )
+    logs = AuditLog.query.order_by(
+        AuditLog.timestamp.desc()
+    ).all()
 
-    analysis = analyze_activity(recent_logs, use_ai=False)
+    analysis = analyze_activity(logs)
 
 
     # --------------------------------
@@ -1439,17 +1432,13 @@ def ai_analysis():
         ), 403
 
 
-    recent_logs = (
-        AuditLog.query
-        .order_by(AuditLog.timestamp.desc())
-        .limit(20)
-        .all()
-    )
+    logs = AuditLog.query.order_by(
+        AuditLog.timestamp.desc()
+    ).all()
 
 
     analysis = analyze_activity(
-        recent_logs,
-        use_ai=True
+        logs
     )
 
 

@@ -1,648 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AccessIQ — User Management</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>AccessIQ | User Management</title>
-
-    <!-- Bootstrap -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
-    <!-- Bootstrap Icons -->
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    >
-
-    <!-- AccessIQ CSS -->
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='css/style.css') }}"
-    >
-
+<style>
+:root{
+ --bg:#070b14;--panel:#0d1422;--panel2:#101a2b;--line:rgba(148,163,184,.13);
+ --text:#eef5ff;--muted:#8290a8;--cyan:#39d9ff;--blue:#5b7cff;--green:#32e6a1;
+ --amber:#ffbf5b;--red:#ff6b81;--purple:#a878ff
+}
+*{box-sizing:border-box}
+body{margin:0;color:var(--text);background:
+ radial-gradient(circle at 75% -10%,rgba(91,124,255,.14),transparent 30%),
+ radial-gradient(circle at 10% 20%,rgba(57,217,255,.05),transparent 25%),var(--bg);
+ font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+a{text-decoration:none}
+.app{min-height:100vh;display:flex}
+.sidebar{width:250px;flex:0 0 250px;height:100vh;position:sticky;top:0;padding:24px 16px;
+ background:rgba(7,11,20,.9);border-right:1px solid var(--line);backdrop-filter:blur(20px);z-index:20}
+.brand{display:flex;align-items:center;gap:12px;padding:4px 10px 30px}
+.brand-mark{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;
+ background:linear-gradient(135deg,#35dfff,#526fff);color:#06101b;box-shadow:0 8px 30px rgba(57,217,255,.2)}
+.brand b{font-size:18px;letter-spacing:.12em}.brand small{display:block;color:#65748b;font-size:9px;letter-spacing:.16em;margin-top:2px}
+.nav-title{font-size:10px;letter-spacing:.18em;color:#526077;padding:18px 12px 8px}
+.nav-link{display:flex;align-items:center;gap:12px;color:#8290a8;padding:11px 12px;border-radius:12px;margin:3px 0;font-size:13px;transition:.2s}
+.nav-link i{font-size:17px;width:20px;text-align:center}.nav-link:hover{background:rgba(91,124,255,.08);color:#dce8ff}
+.nav-link.active{background:linear-gradient(90deg,rgba(57,217,255,.12),rgba(91,124,255,.08));color:#fff;border:1px solid rgba(57,217,255,.1)}
+.sidebar-bottom{position:absolute;left:16px;right:16px;bottom:20px;padding:14px;border:1px solid var(--line);border-radius:16px;background:rgba(16,26,43,.65)}
+.dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 12px var(--green)}
+.main{flex:1;min-width:0}
+.topbar{height:76px;padding:0 34px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);
+ background:rgba(7,11,20,.48);backdrop-filter:blur(18px);position:sticky;top:0;z-index:15}
+.search{width:min(430px,42vw);height:40px;border:1px solid var(--line);background:rgba(255,255,255,.035);border-radius:12px;
+ display:flex;align-items:center;gap:10px;padding:0 13px;color:#617089}
+.search input{border:0;outline:0;background:transparent;color:#fff;width:100%;font-size:13px}.search input::placeholder{color:#5e6c83}
+.top-actions{display:flex;align-items:center;gap:12px}.icon-btn{width:40px;height:40px;border:1px solid var(--line);background:rgba(255,255,255,.03);
+ color:#9aa8be;border-radius:12px;display:grid;place-items:center}.icon-btn:hover{color:#fff;border-color:rgba(57,217,255,.3)}
+.profile{display:flex;align-items:center;gap:10px;padding-left:12px;border-left:1px solid var(--line)}
+.avatar{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#1c2e55,#253e78);color:#cfe8ff;font-weight:800}
+.profile strong{font-size:12px}.profile span{display:block;font-size:10px;color:var(--muted);margin-top:2px}
+.content{padding:30px 34px 42px;max-width:1700px;margin:auto}
+.hero{position:relative;overflow:hidden;border:1px solid rgba(91,124,255,.18);border-radius:22px;padding:25px 28px;margin-bottom:18px;
+ background:radial-gradient(circle at 85% 20%,rgba(57,217,255,.1),transparent 28%),linear-gradient(135deg,rgba(16,26,43,.96),rgba(9,16,28,.96))}
+.hero:after{content:"";position:absolute;width:230px;height:230px;border:1px solid rgba(57,217,255,.08);border-radius:50%;right:-60px;top:-100px}
+.eyebrow{font-size:10px;letter-spacing:.18em;color:var(--cyan);font-weight:700}.hero h1{font-size:29px;margin:7px 0 6px;font-weight:760}
+.hero p{color:var(--muted);margin:0;font-size:13px}.hero-actions{position:absolute;right:28px;top:28px;display:flex;gap:8px;z-index:2}
+.btn-main{border:0;border-radius:11px;padding:10px 15px;color:#04111a;background:linear-gradient(135deg,#45e0ff,#6680ff);font-size:12px;font-weight:750}
+.btn-ghost{border:1px solid var(--line);border-radius:11px;padding:9px 14px;color:#b9c6d9;background:rgba(255,255,255,.025);font-size:12px}
+.btn-ghost:hover{color:#fff;border-color:rgba(57,217,255,.25)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:18px}.kpi{background:linear-gradient(145deg,rgba(15,24,40,.95),rgba(10,17,29,.92));
+ border:1px solid var(--line);border-radius:17px;padding:17px;position:relative;overflow:hidden;transition:.22s}
+.kpi:hover{transform:translateY(-3px);border-color:rgba(91,124,255,.25)}.kpi:before{content:"";position:absolute;top:0;left:0;width:48px;height:2px;background:var(--accent)}
+.kpi-top{display:flex;justify-content:space-between}.kpi-icon{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.045);display:grid;place-items:center;color:var(--accent)}
+.kpi-label{font-size:10px;letter-spacing:.08em;color:#718097;margin-top:14px}.kpi-value{font-size:25px;font-weight:780;margin-top:2px}.kpi-meta{font-size:10px;color:#607089;margin-top:3px}
+.card{background:linear-gradient(145deg,rgba(14,23,38,.94),rgba(9,16,28,.94));border:1px solid var(--line);border-radius:20px;padding:20px}
+.toolbar{display:grid;grid-template-columns:minmax(220px,1fr) 180px 180px 150px auto;gap:9px;margin-bottom:18px}
+.field{height:42px;border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:11px;color:#dbe7f7;padding:0 12px;font-size:11px;outline:none}
+.field:focus{border-color:rgba(57,217,255,.35);box-shadow:0 0 0 3px rgba(57,217,255,.04)}select.field option{background:#0d1422}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:15px}.table{margin:0;color:#dce6f4;min-width:920px}
+.table thead th{background:#0b1321;color:#66758c;border:0;font-size:9px;letter-spacing:.12em;padding:14px 15px;white-space:nowrap}
+.table tbody td{background:rgba(255,255,255,.012);border-top:1px solid rgba(148,163,184,.07);border-bottom:0;padding:13px 15px;font-size:11px;vertical-align:middle}
+.table tbody tr{transition:.18s}.table tbody tr:hover td{background:rgba(57,217,255,.025)}
+.user-cell{display:flex;align-items:center;gap:10px}.user-avatar{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,#1b315a,#2b4b86);color:#d8f4ff;font-weight:800;font-size:12px}
+.user-name{font-weight:700}.user-email{font-size:9px;color:#65748b;margin-top:2px}.role-badge{display:inline-flex;padding:6px 9px;border-radius:8px;background:rgba(91,124,255,.09);border:1px solid rgba(91,124,255,.13);color:#9eafff;font-size:9px}
+.status{display:inline-flex;align-items:center;gap:6px;font-size:9px}.status i{font-size:6px}.active{color:#73efbb}.inactive{color:#8491a7}
+.action-btn{width:32px;height:32px;border:1px solid var(--line);background:rgba(255,255,255,.025);color:#91a0b5;border-radius:9px;display:inline-grid;place-items:center}
+.action-btn:hover{color:#fff;border-color:rgba(57,217,255,.25)}.action-btn.danger:hover{color:#ff8b9d;border-color:rgba(255,107,129,.25)}
+.empty{padding:45px;text-align:center;color:#64728a}.empty i{font-size:30px;color:#32e6a1;display:block;margin-bottom:8px}
+.footer{display:flex;justify-content:space-between;color:#4f5c71;font-size:9px;margin-top:18px;padding:0 4px}
+.mobile-toggle{display:none}
+@media(max-width:1100px){.toolbar{grid-template-columns:1fr 1fr}.kpis{grid-template-columns:1fr 1fr}.hero-actions{position:static;margin-top:18px}}
+@media(max-width:900px){.sidebar{position:fixed;left:-270px;transition:.25s}.sidebar.open{left:0}.mobile-toggle{display:grid}.content{padding:22px 18px}.topbar{padding:0 18px}.search{width:42vw}}
+@media(max-width:600px){.kpis{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr}.profile-text{display:none}.top-actions{gap:6px}.hero h1{font-size:24px}}
+</style>
 </head>
 
-
 <body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+    <div class="brand"><div class="brand-mark"><i class="bi bi-shield-lock-fill"></i></div>
+        <div><b>ACCESSIQ</b><small>SECURITY PLATFORM</small></div>
+    </div>
 
-<div class="app-wrapper">
+    <div class="nav-title">OVERVIEW</div>
+    <a class="nav-link" href="{{ url_for('main.dashboard') }}"><i class="bi bi-grid-1x2-fill"></i> Command Center</a>
 
-    <!-- SIDEBAR -->
+    <div class="nav-title">MANAGEMENT</div>
+    <a class="nav-link active" href="{{ url_for('main.admin') }}"><i class="bi bi-people-fill"></i> User Management</a>
+    <a class="nav-link" href="{{ url_for('main.manage_roles') }}"><i class="bi bi-diagram-3"></i> Roles & Permissions</a>
 
-    <aside class="sidebar">
+    <div class="nav-title">SECURITY</div>
+    <a class="nav-link" href="{{ url_for('main.audit_logs') }}"><i class="bi bi-activity"></i> Audit Intelligence</a>
+    <a class="nav-link" href="{{ url_for('main.ai_analysis') }}"><i class="bi bi-stars"></i> AI Security</a>
 
-        <div class="sidebar-brand">
+    <div class="nav-title">ACCESS</div>
+    <a class="nav-link" href="{{ url_for('main.admin_permission_requests') }}"><i class="bi bi-key"></i> Permission Queue</a>
 
-            <div class="brand-icon">
-                <i class="bi bi-shield-lock-fill"></i>
-            </div>
+    <div class="sidebar-bottom"><div class="d-flex align-items-center gap-2 mb-2"><span class="dot"></span><small style="color:#9eabc0">System operational</small></div>
+    <div style="font-size:9px;color:#59677d">AccessIQ Security Core · v1.0</div></div>
+</aside>
 
-            <div>
-                <h4>AccessIQ</h4>
-                <span>SECURITY CONSOLE</span>
-            </div>
+<main class="main">
+<header class="topbar">
+    <div class="d-flex align-items-center gap-2" style="min-width:0;flex:1">
+        <button class="icon-btn mobile-toggle" id="menuBtn" type="button"><i class="bi bi-list"></i></button>
+        <div class="search"><i class="bi bi-search"></i><input id="liveSearch" type="search" placeholder="Search users, email, department..."><span style="font-size:9px;border:1px solid var(--line);padding:3px 6px;border-radius:5px;color:#59677d">/</span></div>
+    </div>
+    <div class="top-actions">
+        <a class="icon-btn" href="{{ url_for('main.ai_analysis') }}" title="AI Security"><i class="bi bi-stars"></i></a>
+        <a class="icon-btn" href="{{ url_for('main.profile') }}" title="Profile"><i class="bi bi-person"></i></a>
+        <div class="profile"><div class="avatar">{{ session["username"][0]|upper }}</div><div class="profile-text"><strong>{{ session["username"] }}</strong><span>{{ session["role"] }}</span></div></div>
+    </div>
+</header>
 
+<section class="content">
+    <section class="hero">
+        <div class="eyebrow">IDENTITY & ACCESS MANAGEMENT</div>
+        <h1>User Management</h1>
+        <p>Manage identities, roles and account status across your AccessIQ environment.</p>
+        <div class="hero-actions">
+            <a class="btn-main" href="{{ url_for('main.add_user') }}"><i class="bi bi-person-plus-fill me-1"></i> Add New User</a>
+            <a class="btn-ghost" href="{{ url_for('main.manage_roles') }}"><i class="bi bi-diagram-3 me-1"></i> Manage Roles</a>
+        </div>
+    </section>
+
+    <section class="kpis">
+        <div class="kpi" style="--accent:#39d9ff"><div class="kpi-top"><span class="kpi-icon"><i class="bi bi-people-fill"></i></span><i class="bi bi-person-check" style="color:#56657c"></i></div>
+            <div class="kpi-label">TOTAL IDENTITIES</div><div class="kpi-value">{{ users|length }}</div><div class="kpi-meta">Users in current view</div></div>
+        <div class="kpi" style="--accent:#32e6a1"><div class="kpi-top"><span class="kpi-icon"><i class="bi bi-shield-check"></i></span><i class="bi bi-check2-circle" style="color:#56657c"></i></div>
+            <div class="kpi-label">ACTIVE ACCOUNTS</div><div class="kpi-value">{{ users|selectattr("status","equalto","Active")|list|length }}</div><div class="kpi-meta">Currently enabled</div></div>
+        <div class="kpi" style="--accent:#a878ff"><div class="kpi-top"><span class="kpi-icon"><i class="bi bi-diagram-3-fill"></i></span><i class="bi bi-lock" style="color:#56657c"></i></div>
+            <div class="kpi-label">ACCESS ROLES</div><div class="kpi-value">{{ roles|length }}</div><div class="kpi-meta">RBAC groups available</div></div>
+        <div class="kpi" style="--accent:#ffbf5b"><div class="kpi-top"><span class="kpi-icon"><i class="bi bi-building"></i></span><i class="bi bi-layers" style="color:#56657c"></i></div>
+            <div class="kpi-label">DEPARTMENTS</div><div class="kpi-value">{{ departments|length }}</div><div class="kpi-meta">Unique departments</div></div>
+    </section>
+
+    <section class="card">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div><div style="font-size:14px;font-weight:720">Identity Directory</div><div style="font-size:10px;color:#65748b;margin-top:4px"><span id="visibleCount">{{ users|length }}</span> users displayed</div></div>
+            <span style="font-size:9px;color:#73efbb;border:1px solid rgba(50,230,161,.14);background:rgba(50,230,161,.05);padding:7px 9px;border-radius:8px"><i class="bi bi-shield-check me-1"></i>RBAC ACTIVE</span>
         </div>
 
+        <form class="toolbar" method="GET" action="{{ url_for('main.admin') }}">
+            <input class="field" name="search" value="{{ search|default('') }}" placeholder="Search username or email...">
+            <select class="field" name="department">
+                <option value="">All departments</option>
+                {% for dept in departments %}<option value="{{ dept }}" {% if selected_department == dept %}selected{% endif %}>{{ dept }}</option>{% endfor %}
+            </select>
+            <select class="field" name="role_id">
+                <option value="">All roles</option>
+                {% for r in roles %}<option value="{{ r.id }}" {% if selected_role|string == r.id|string %}selected{% endif %}>{{ r.name }}</option>{% endfor %}
+            </select>
+            <select class="field" name="status">
+                <option value="">All status</option>
+                <option value="Active" {% if selected_status == "Active" %}selected{% endif %}>Active</option>
+                <option value="Inactive" {% if selected_status == "Inactive" %}selected{% endif %}>Inactive</option>
+            </select>
+            <div class="d-flex gap-2">
+                <button class="btn-main" type="submit" style="white-space:nowrap"><i class="bi bi-funnel me-1"></i> Filter</button>
+                <a class="btn-ghost d-flex align-items-center" href="{{ url_for('main.admin') }}"><i class="bi bi-arrow-counterclockwise"></i></a>
+            </div>
+        </form>
 
-        <div class="sidebar-label">
-            MAIN MENU
+        <div class="table-wrap">
+        <table class="table align-middle" id="usersTable">
+            <thead><tr><th>IDENTITY</th><th>DEPARTMENT</th><th>DESIGNATION</th><th>ROLE</th><th>STATUS</th><th style="text-align:right">ACTIONS</th></tr></thead>
+            <tbody>
+            {% for user in users %}
+            <tr class="user-row" data-search="{{ (user.username ~ ' ' ~ user.email ~ ' ' ~ user.department ~ ' ' ~ user.designation ~ ' ' ~ user.role.name)|lower }}">
+                <td><div class="user-cell"><div class="user-avatar">{{ user.username[0]|upper }}</div><div><div class="user-name">{{ user.username }}</div><div class="user-email">{{ user.email }}</div></div></div></td>
+                <td>{{ user.department or "—" }}</td>
+                <td>{{ user.designation or "—" }}</td>
+                <td><span class="role-badge"><i class="bi bi-shield-lock me-1"></i>{{ user.role.name }}</span></td>
+                <td>{% if user.status == "Active" %}<span class="status active"><i class="bi bi-circle-fill"></i> Active</span>{% else %}<span class="status inactive"><i class="bi bi-circle-fill"></i> {{ user.status }}</span>{% endif %}</td>
+                <td style="text-align:right;white-space:nowrap">
+                    <a class="action-btn" href="{{ url_for('main.edit_user', user_id=user.id) }}" title="Edit user"><i class="bi bi-pencil"></i></a>
+                    <form action="{{ url_for('main.delete_user', user_id=user.id) }}" method="POST" style="display:inline" onsubmit="return confirm('Are you sure you want to delete {{ user.username }}?');">
+                        <button class="action-btn danger" type="submit" title="Delete user"><i class="bi bi-trash3"></i></button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6"><div class="empty"><i class="bi bi-person-x"></i>No users found for the current filters.</div></td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
         </div>
-
-
-        <nav class="sidebar-nav">
-
-            <a href="{{ url_for('main.dashboard') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-grid-1x2-fill"></i>
-
-                <span>Dashboard</span>
-
-            </a>
-
-
-            <a href="{{ url_for('main.admin') }}"
-               class="sidebar-link active">
-
-                <i class="bi bi-people-fill"></i>
-
-                <span>User Management</span>
-
-            </a>
-
-
-            <a href="{{ url_for('main.manage_roles') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-person-badge-fill"></i>
-
-                <span>Role Management</span>
-
-            </a>
-
-
-            <a href="{{ url_for('main.audit_logs') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-journal-text"></i>
-
-                <span>Audit Logs</span>
-
-            </a>
-
-
-            <a href="{{ url_for('main.ai_analysis') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-robot"></i>
-
-                <span>AI Security</span>
-
-                <span class="ai-badge">
-                    AI
-                </span>
-
-            </a>
-
-        </nav>
-
-
-        <!-- CURRENT USER -->
-
-        <div class="sidebar-user">
-
-            <div class="user-avatar">
-
-                {{ session["username"][0]|upper }}
-
-            </div>
-
-
-            <div class="user-details">
-
-                <strong>
-                    {{ session["username"] }}
-                </strong>
-
-                <span>
-                    {{ session["role"] }}
-                </span>
-
-            </div>
-
-
-            <a
-                href="{{ url_for('main.logout') }}"
-                class="logout-icon"
-                title="Logout"
-            >
-
-                <i class="bi bi-box-arrow-right"></i>
-
-            </a>
-
-        </div>
-
-    </aside>
-
-
-    <!-- MAIN AREA -->
-
-    <main class="main-area">
-
-
-        <!-- TOPBAR -->
-
-        <header class="topbar">
-
-            <div class="page-heading">
-
-                <h5>
-                    User Management
-                </h5>
-
-                <span>
-                    Manage AccessIQ system users
-                </span>
-
-            </div>
-
-
-            <div class="topbar-actions">
-
-                <button
-                    class="topbar-icon"
-                    type="button"
-                    title="Notifications"
-                >
-
-                    <i class="bi bi-bell"></i>
-
-                </button>
-
-
-                <div class="topbar-profile">
-
-                    <div class="user-avatar small-avatar">
-
-                        {{ session["username"][0]|upper }}
-
-                    </div>
-
-                    <div class="profile-text">
-
-                        <strong>
-                            {{ session["username"] }}
-                        </strong>
-
-                        <span>
-                            {{ session["role"] }}
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </header>
-
-
-        <!-- PAGE CONTENT -->
-
-        <section class="page-content">
-
-
-            <!-- PAGE HEADER -->
-
-            <div class="mb-4">
-
-                <h1 class="page-title">
-                    User Management
-                </h1>
-
-                <p class="page-subtitle">
-                    View and manage users registered in AccessIQ.
-                </p>
-
-            </div>
-
-
-            <!-- USER TABLE -->
-
-            <div class="card">
-
-                <div class="card-body p-4">
-
-
-                    <div class="d-flex justify-content-between
-                                align-items-center mb-4">
-
-                        <div>
-
-                            <h5 class="mb-1">
-                                System Users
-                            </h5>
-
-                            <small class="text-muted">
-                                {{ users|length }} users found
-                            </small>
-
-                        </div>
-
-
-                        <a
-                         href="{{ url_for('main.add_user') }}"
-                         class="btn btn-primary"
->
-                         <i class="bi bi-person-plus-fill me-2"></i>
-                        Add User
-</a>
-
-                            
-                    </div>
-
-                    <!-- USER FILTERS -->
-
-<form method="GET"
-      action="{{ url_for('main.admin') }}"
-      class="row g-3 mb-4">
-
-    <!-- Search -->
-
-<div class="col-md-4">
-
-    <label class="form-label">
-        Search
-    </label>
-
-    <input
-        type="text"
-        name="search"
-        class="form-control"
-        placeholder="Username or email"
-        value="{{ search }}"
-    >
-
+    </section>
+
+    <div class="footer"><span>ACCESSIQ IDENTITY MANAGEMENT</span><span>Protected administrator session · {{ session["role"] }}</span></div>
+</section>
+</main>
 </div>
 
-
-    <!-- Department -->
-<div class="col-md-2">
-    
-    <label class="form-label">
-        Department
-    </label>
-<select
-    name="department"
-    class="form-select"
-    style="color: #ffffff; background-color: #16213e;"
->
-
-    <option
-        value=""
-        style="color: #000000; background-color: #ffffff;"
-    >
-        All Departments
-    </option>
-
-    {% for dept in departments %}
-
-    <option
-        value="{{ dept }}"
-        {% if selected_department == dept %}
-        selected
-        {% endif %}
-        style="color: #000000; background-color: #ffffff;"
-    >
-        {{ dept }}
-    </option>
-
-    {% endfor %}
-
-</select>
-
-
-    </div>
-
-
-    <!-- Role -->
-
-    <div class="col-md-2">
-
-        <label class="form-label">
-            Role
-        </label>
-
-<select
-    name="role_id"
-    class="form-select"
-    style="color: #ffffff; background-color: #16213e;"
-
->
-
-    <option
-        value=""
-        style="color: #000000; background-color: #ffffff;"
-    >
-        All Roles
-    </option>
-
-    {% for role in roles %}
-
-    <option
-        value="{{ role.id }}"
-        {% if selected_role == role.id|string %}
-        selected
-        {% endif %}
-        style="color: #000000; background-color: #ffffff;"
-    >
-        {{ role.name }}
-    </option>
-
-    {% endfor %}
-
-</select>
-
-    </div>
-
-
-    <!-- Status -->
-
-    <div class="col-md-2">
-
-        <label class="form-label">
-            Status
-        </label>
-
-        <select
-    name="status"
-    class="form-select"
-    style="color: #ffffff; background-color: #16213e;"
->
-
-    <option
-        value=""
-        style="color: #000000; background-color: #ffffff;"
-    >
-        All Status
-    </option>
-
-    <option
-        value="Active"
-        {% if selected_status == "Active" %}
-        selected
-        {% endif %}
-        style="color: #000000; background-color: #ffffff;"
-    >
-        Active
-    </option>
-
-    <option
-        value="Inactive"
-        {% if selected_status == "Inactive" %}
-        selected
-        {% endif %}
-        style="color: #000000; background-color: #ffffff;"
-    >
-        Inactive
-    </option>
-
-</select>
-    </div>
-
-
-    <!-- Buttons -->
-
-    <div class="col-md-2 d-flex align-items-end gap-2">
-
-        <button
-            type="submit"
-            class="btn btn-primary"
-        >
-
-            <i class="bi bi-search me-1"></i>
-            Filter
-
-        </button>
-
-
-        <a
-            href="{{ url_for('main.admin') }}"
-            class="btn btn-outline-light"
-        >
-
-            Clear
-
-        </a>
-
-    </div>
-
-</form>
-                    <div class="table-responsive">
-
-                        <table class="table table-dark
-                                      table-hover align-middle">
-
-                            <thead>
-
-                                <tr>
-
-                                    <th>
-                                        User
-                                    </th>
-
-                                    <th>
-                                        Email
-                                    </th>
-
-                                    <th>
-                                        Department
-                                    </th>
-
-                                    <th>
-                                        Designation
-                                    </th>
-
-                                    <th>
-                                        Role
-                                    </th>
-
-                                    <th>
-                                        Status
-                                    </th>
-
-                                    <th>
-                                        Action
-                                    </th>
-
-                                </tr>
-
-                            </thead>
-
-
-                            <tbody>
-
-                                {% for user in users %}
-
-                                <tr>
-
-                                    <td>
-
-                                        <div class="d-flex
-                                                    align-items-center
-                                                    gap-3">
-
-                                            <div class="user-avatar">
-
-                                                {{ user.username[0]|upper }}
-
-                                            </div>
-
-                                            <strong>
-                                                {{ user.username }}
-                                            </strong>
-
-                                        </div>
-
-                                    </td>
-
-
-                                    <td>
-                                        {{ user.email }}
-                                    </td>
-
-
-                                    <td>
-
-                                        {{ user.department }}
-
-                                    </td>
-
-
-                                    <td>
-
-                                        {{ user.designation }}
-
-                                    </td>
-
-
-                                    <td>
-
-                                        <span class="badge badge-info">
-
-                                            {{ user.role.name }}
-
-                                        </span>
-
-                                    </td>
-
-
-                                    <td>
-
-                                        {% if user.status == "Active" %}
-
-                                        <span class="badge badge-success">
-
-                                            <i class="bi bi-circle-fill me-1"></i>
-                                            Active
-
-                                        </span>
-
-                                        {% else %}
-
-                                        <span class="badge bg-secondary">
-
-                                            {{ user.status }}
-
-                                        </span>
-
-                                        {% endif %}
-
-                                    </td>
-
-
-                                    <td>
-
-                                        <a
-    <a
-    href="{{ url_for('main.user_profile', user_id=user.id) }}"
-    class="btn btn-sm btn-outline-info"
-    title="View Profile"
->
-    <i class="bi bi-person-vcard"></i>
-</a>
-
-<a
-    href="{{ url_for('main.edit_user', user_id=user.id) }}"
-    class="btn btn-sm btn-outline-light"
-    title="Edit User"
->
-    <i class="bi bi-pencil-fill"></i>
-</a>
-
-<form
-    action="{{ url_for('main.delete_user', user_id=user.id) }}"
-    method="POST"
-    style="display: inline;"
-    onsubmit="return confirm('Are you sure you want to delete {{ user.username }}?');"
->
-    <button
-        type="submit"
-        class="btn btn-sm btn-outline-danger"
-        title="Delete User"
-    >
-        <i class="bi bi-trash-fill"></i>
-    </button>
-</form>
-
-                                    </td>
-
-                                </tr>
-
-                                {% else %}
-
-                                <tr>
-
-                                    <td
-                                        colspan="7"
-                                        class="text-center text-muted py-5"
-                                    >
-
-                                        No users found.
-
-                                    </td>
-
-                                </tr>
-
-                                {% endfor %}
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-        </section>
-
-    </main>
-
-</div>
-
+<script>
+const input=document.getElementById("liveSearch");
+const rows=[...document.querySelectorAll(".user-row")];
+const count=document.getElementById("visibleCount");
+if(input){
+ input.addEventListener("input",()=>{
+   const q=input.value.toLowerCase().trim(); let shown=0;
+   rows.forEach(row=>{const ok=!q || row.dataset.search.includes(q);row.style.display=ok?"":"none";if(ok)shown++});
+   count.textContent=shown;
+ });
+ document.addEventListener("keydown",e=>{
+   if(e.key==="/" && document.activeElement!==input && !["INPUT","TEXTAREA","SELECT"].includes(document.activeElement.tagName)){e.preventDefault();input.focus();}
+ });
+}
+const menu=document.getElementById("menuBtn"), side=document.getElementById("sidebar");
+if(menu)menu.addEventListener("click",()=>side.classList.toggle("open"));
+document.querySelectorAll(".sidebar .nav-link").forEach(a=>a.addEventListener("click",()=>{if(innerWidth<=900)side.classList.remove("open")}));
+</script>
 </body>
-
 </html>

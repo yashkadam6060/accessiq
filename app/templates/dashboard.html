@@ -1,1731 +1,538 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>AccessIQ | Dashboard</title>
-
-    <!-- Bootstrap -->
-
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
-    <!-- Bootstrap Icons -->
-
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    >
-
-    <!-- AccessIQ CSS -->
-
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='css/style.css') }}"
-    >
-
-
-    <style>
-        .notification-wrapper { position: relative; }
-        .notification-btn { position: relative; cursor: pointer; }
-        .notification-count {
-            position: absolute; top: -5px; right: -5px; min-width: 18px; height: 18px;
-            padding: 0 5px; display: flex; align-items: center; justify-content: center;
-            border-radius: 999px; background: #ef4444; color: #fff; font-size: 10px;
-            font-weight: 700; line-height: 1; border: 2px solid #111827;
-        }
-        .notification-panel {
-            position: absolute; top: calc(100% + 14px); right: 0; width: 370px;
-            max-width: calc(100vw - 30px); background: #111827;
-            border: 1px solid rgba(148, 163, 184, 0.16); border-radius: 14px;
-            box-shadow: 0 20px 50px rgba(0,0,0,.35); overflow: hidden; z-index: 2000; display: none;
-        }
-        .notification-panel.show { display: block; animation: notificationPanelIn .18s ease-out; }
-        @keyframes notificationPanelIn {
-            from { opacity: 0; transform: translateY(-6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .notification-header {
-            display: flex; align-items: center; justify-content: space-between; padding: 16px 18px;
-            border-bottom: 1px solid rgba(148,163,184,.10);
-        }
-        .notification-header h6 { margin: 0; color: #f8fafc; font-weight: 700; }
-        .notification-header span { color: #94a3b8; font-size: 12px; }
-        .notification-list { max-height: 390px; overflow-y: auto; }
-        .notification-item {
-            display: flex; gap: 12px; padding: 14px 18px;
-            border-bottom: 1px solid rgba(148,163,184,.07); transition: background .18s ease;
-        }
-        .notification-item:hover { background: rgba(56,189,248,.055); }
-        .notification-item:last-child { border-bottom: 0; }
-        .notification-icon {
-            width: 38px; height: 38px; flex: 0 0 38px; display: flex;
-            align-items: center; justify-content: center; border-radius: 10px; font-size: 16px;
-        }
-        .notification-icon.warning { color: #fbbf24; background: rgba(245,158,11,.12); }
-        .notification-icon.danger { color: #f87171; background: rgba(239,68,68,.12); }
-        .notification-icon.success { color: #4ade80; background: rgba(34,197,94,.12); }
-        .notification-content { min-width: 0; flex: 1; }
-        .notification-title { color: #f8fafc; font-size: 13px; font-weight: 700; margin-bottom: 3px; }
-        .notification-message { color: #94a3b8; font-size: 12px; line-height: 1.45; }
-        .notification-time { margin-top: 5px; color: #64748b; font-size: 10px; }
-        .notification-empty { padding: 30px 18px; text-align: center; color: #94a3b8; }
-        .notification-empty i { display: block; margin-bottom: 8px; color: #475569; font-size: 28px; }
-        .notification-footer {
-            padding: 12px 18px; border-top: 1px solid rgba(148,163,184,.10); text-align: center;
-        }
-        .notification-footer a { color: #38bdf8; font-size: 12px; font-weight: 600; text-decoration: none; }
-        .notification-footer a:hover { color: #7dd3fc; }
-        @media (max-width: 576px) {
-            .notification-panel { position: fixed; top: 70px; right: 15px; width: calc(100vw - 30px); max-width: none; }
-        }
-    </style>
-
-</head>
-
-
-<body>
-
-<div class="app-wrapper">
-
-
-    <!-- =====================================================
-         SIDEBAR
-         ===================================================== -->
-
-    <aside class="sidebar">
-
-        <!-- Brand -->
-
-        <div class="sidebar-brand">
-
-            <div class="brand-icon">
-
-                <i class="bi bi-shield-lock-fill"></i>
-
-            </div>
-
-            <div>
-
-                <h4>AccessIQ</h4>
-
-                <span>SECURITY CONSOLE</span>
-
-            </div>
-
-        </div>
-
-
-        <!-- Main Navigation -->
-
-        <div class="sidebar-label">
-
-            MAIN MENU
-
-        </div>
-
-
-        <nav class="sidebar-nav">
-
-
-            <a
-                href="{{ url_for('main.dashboard') }}"
-                class="sidebar-link active"
-            >
-
-                <i class="bi bi-grid-1x2-fill"></i>
-
-                <span>
-                    Dashboard
-                </span>
-
-            </a>
-
-
-            {% if role == "Admin" %}
-
-            <a
-                href="{{ url_for('main.admin') }}"
-                class="sidebar-link"
-            >
-
-                <i class="bi bi-people-fill"></i>
-
-                <span>
-                    User Management
-                </span>
-
-            </a>
-
-
-            <a
-                href="{{ url_for('main.manage_roles') }}"
-                class="sidebar-link"
-            >
-
-                <i class="bi bi-person-badge-fill"></i>
-
-                <span>
-                    Role Management
-                </span>
-
-            </a>
-
-            {% endif %}
-
-
-            <a
-                href="{{ url_for('main.audit_logs') }}"
-                class="sidebar-link"
-            >
-
-                <i class="bi bi-journal-text"></i>
-
-                <span>
-                    Audit Logs
-                </span>
-
-            </a>
-
-{% if role == "Admin" %}
-
-<a
-    href="{{ url_for('main.security_analytics') }}"
-    class="sidebar-link"
->
-
-    <i class="bi bi-bar-chart-fill"></i>
-
-    <span>
-        Security Analytics
-    </span>
-
-</a>
-
-{% endif %}
-            <a
-                href="{{ url_for('main.ai_analysis') }}"
-                class="sidebar-link"
-            >
-
-                <i class="bi bi-robot"></i>
-
-                <span>
-                    AI Security
-                </span>
-
-                <span class="ai-badge">
-                    AI
-                </span>
-
-            </a>
-
-
-        </nav>
-
-
-        <!-- User -->
-
-        <div class="sidebar-user">
-
-    <div class="user-avatar">
-        {{ session.get('username', 'U')[0]|upper }}
-    </div>
-
-    <div class="user-details">
-
-        <strong>
-            {{ session.get('username') }}
-        </strong>
-
-        <span>
-            {{ session.get('role') }}
-        </span>
-
-    </div>
-
-
-    <!-- Change Password -->
-
-    <a href="{{ url_for('main.change_password') }}"
-       class="logout-icon"
-       title="Change Password">
-
-        <i class="bi bi-key"></i>
-
-    </a>
-
-
-    <!-- Logout -->
-
-    <a href="{{ url_for('main.logout') }}"
-       class="logout-icon"
-       title="Logout">
-
-        <i class="bi bi-box-arrow-right"></i>
-
-    </a>
-
-</div>
-
-
-    </aside>
-
-
-
-    <!-- =====================================================
-         MAIN AREA
-         ===================================================== -->
-
-    <main class="main-area">
-
-
-        <!-- TOPBAR -->
-
-        <header class="topbar">
-
-            <div class="d-flex align-items-center">
-
-                <button
-                    class="mobile-menu-btn"
-                    type="button"
-                >
-
-                    <i class="bi bi-list"></i>
-
-                </button>
-
-
-                <div class="page-heading">
-
-                    <h5>
-                        Security Dashboard
-                    </h5>
-
-                    <span>
-                        Monitor and manage your AccessIQ environment
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <div class="topbar-actions">
-
-                <!-- Notification -->
-
-                <div class="notification-wrapper">
-
-                    <button
-                        class="topbar-icon notification-btn"
-                        id="notificationButton"
-                        type="button"
-                        title="Notifications"
-                        aria-label="Open notifications"
-                        aria-expanded="false"
-                    >
-
-                        <i class="bi bi-bell"></i>
-
-                        {% if notification_count > 0 %}
-                        <span class="notification-count">
-                            {{ notification_count if notification_count < 10 else "9+" }}
-                        </span>
-                        {% endif %}
-
-                    </button>
-
-                    <div class="notification-panel" id="notificationPanel" aria-hidden="true">
-
-                        <div class="notification-header">
-                            <h6>Notifications</h6>
-                            <span>{{ notification_count }} active</span>
-                        </div>
-
-                        <div class="notification-list">
-
-                            {% if notifications %}
-
-                                {% for notification in notifications %}
-                                <div class="notification-item">
-                                    <div class="notification-icon {{ notification.type }}">
-                                        <i class="bi {{ notification.icon }}"></i>
-                                    </div>
-                                    <div class="notification-content">
-                                        <div class="notification-title">
-                                            {{ notification.title }}
-                                        </div>
-                                        <div class="notification-message">
-                                            {{ notification.message }}
-                                        </div>
-                                        <div class="notification-time">
-                                            {{ notification.timestamp }}
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endfor %}
-
-                            {% else %}
-                                <div class="notification-empty">
-                                    <i class="bi bi-bell-slash"></i>
-                                    No new notifications
-                                </div>
-                            {% endif %}
-
-                        </div>
-
-                        <div class="notification-footer">
-                            {% if role == "Admin" %}
-                            <a href="{{ url_for('main.admin_permission_requests') }}">
-                                Review Permission Requests
-                            </a>
-                            {% else %}
-                            <a href="{{ url_for('main.permission_requests') }}">
-                                View Permission Requests
-                            </a>
-                            {% endif %}
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Profile -->
-
-                <div class="topbar-profile">
-
-                  <a
-    href="{{ url_for('main.profile') }}"
-    class="topbar-profile"
-    style="text-decoration: none; cursor: pointer;"
-    title="My Profile"
->
-    <div class="user-avatar small-avatar">
-        {{ session.get('username', 'U')[0]|upper }}
-    </div>
-
-    <div class="profile-text">
-        <strong>
-            {{ session.get('username') }}
-        </strong>
-
-        <span>
-            {{ session.get('role') }}
-        </span>
-    </div>
-</a>
-
-                </div>
-
-            </div>
-
-        </header>
-
-
-
-        <!-- =====================================================
-             PAGE CONTENT
-             ===================================================== -->
-
-        <section class="page-content">
-
-
-            <!-- Welcome -->
-
-            <div class="mb-4">
-
-                <h1 class="page-title">
-
-                    Welcome back, {{ username }} 👋
-
-                </h1>
-
-
-                <p class="page-subtitle">
-
-                    Here's what's happening with your security system today.
-
-                </p>
-
-            </div>
-
-
-
-            <!-- =================================================
-                 STAT CARDS
-                 ================================================= -->
-
-            <div class="row g-4 mb-4">
-
-
-                <!-- Users -->
-
-                <div class="col-xl-3 col-md-6">
-
-                    <div class="stat-card">
-
-                        <div class="stat-icon">
-
-                            <i class="bi bi-people-fill"></i>
-
-                        </div>
-
-
-                        <div class="stat-label">
-
-                            SYSTEM USERS
-
-                        </div>
-
-
-                        <div class="stat-value">
-
-                             {{ total_users }}
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- Role -->
-
-                <div class="col-xl-3 col-md-6">
-
-                    <div class="stat-card">
-
-                        <div class="stat-icon">
-
-                            <i class="bi bi-person-badge-fill"></i>
-
-                        </div>
-
-
-                        <div class="stat-label">
-
-                            TOTAL ROLES
-
-                        </div>
-
-
-                        <div class="stat-value">
-
-                            {{ total_roles }}
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- Security -->
-
-                <div class="col-xl-3 col-md-6">
-
-                    <div class="stat-card">
-
-                        <div class="stat-icon">
-
-                            <i class="bi bi-shield-check"></i>
-
-                        </div>
-
-
-                        <div class="stat-label">
-
-                            SECURITY EVENTS
-
-                        </div>
-
-
-                        <div class="stat-value">
-
-                            {{ total_events }}
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- Failed Logins -->
-
-                <div class="col-xl-3 col-md-6">
-
-                    <div class="stat-card">
-
-                        <div class="stat-icon">
-
-                            <i class="bi bi-robot"></i>
-
-                        </div>
-
-
-                        <div class="stat-label">
-
-                            FAILED LOGINS
-
-                        </div>
-
-
-                        <div class="stat-value">
-
-                            {{ failed_logins }}
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-            </div>
-
-
-
-            <!-- =================================================
-                 PENDING PERMISSION REQUESTS
-                 ================================================= -->
-
-            {% if role == "Admin" %}
-
-            <div class="card mb-4">
-
-                <div class="card-body p-4">
-
-
-                    <div class="d-flex justify-content-between align-items-center">
-
-                        <div>
-
-                            <h5 class="mb-1">
-
-                                Permission Requests
-
-                            </h5>
-
-
-                            <small class="text-muted">
-
-                                Pending requests awaiting your review
-
-                            </small>
-
-                        </div>
-
-
-                        <span class="badge bg-warning">
-
-                            {{ pending_requests }} Pending
-
-                        </span>
-
-                    </div>
-
-
-                    {% if pending_requests > 0 %}
-
-                    <div class="mt-3">
-
-                        <p class="mb-3">
-
-                            There are permission requests waiting for Admin review.
-
-                        </p>
-
-
-                        <a
-                            href="{{ url_for('main.admin_permission_requests') }}"
-                            class="btn btn-primary"
-                        >
-
-                            <i class="bi bi-key-fill me-2"></i>
-
-                            Review Requests
-
-                        </a>
-
-                    </div>
-
-                    {% else %}
-
-                    <div class="mt-3">
-
-                        <p class="text-muted mb-0">
-
-                            No pending permission requests.
-
-                        </p>
-
-                    </div>
-
-                    {% endif %}
-
-
-                </div>
-
-            </div>
-
-            {% endif %}
-
-
-
-            <!-- EMPLOYEE PERMISSION REQUEST -->
-
-            {% if role != "Admin" %}
-
-            <div class="card mb-4">
-
-                <div class="card-body p-4">
-
-
-                    <div class="d-flex justify-content-between align-items-center">
-
-                        <div>
-
-                            <h5 class="mb-1">
-
-                                Request Permission
-
-                            </h5>
-
-
-                            <small class="text-muted">
-
-                                Need access to an additional system permission?
-                                Submit a request to an administrator.
-
-                            </small>
-
-                        </div>
-
-
-                        <div>
-
-                            <i class="bi bi-key-fill fs-2"></i>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="mt-3">
-
-                        <a
-                            href="{{ url_for('main.permission_requests') }}"
-                            class="btn btn-primary"
-                        >
-
-                            <i class="bi bi-key-fill me-2"></i>
-
-                            Request Permission
-
-                        </a>
-
-                    </div>
-
-
-                </div>
-
-            </div>
-
-            {% endif %}
-
-
-
-            <!-- =================================================
-                 CHART + AI SECURITY
-                 ================================================= -->
-
-            <div class="row g-4 mb-4">
-
-
-                <!-- Activity Chart -->
-
-                <div class="col-lg-8">
-
-                    <div class="card h-100">
-
-                        <div class="card-body p-4">
-
-
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-
-                                <div>
-
-                                    <h5 class="mb-1">
-
-                                        Security Activity
-
-                                    </h5>
-
-
-                                    <small class="text-muted">
-
-                                        Recent system activity overview
-
-                                    </small>
-
-                                </div>
-
-
-                                <span class="badge badge-info">
-
-                                    LIVE
-
-                                </span>
-
-                            </div>
-
-
-                            <div style="height: 280px;">
-
-                                <canvas id="activityChart"></canvas>
-
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- AI Security -->
-
-                <div class="col-lg-4">
-
-                    <div class="ai-panel h-100">
-
-
-                        <div class="d-flex align-items-center gap-3 mb-4">
-
-
-                            <div class="ai-icon">
-
-                                <i class="bi bi-robot"></i>
-
-                            </div>
-
-
-                            <div>
-
-                                <div class="ai-title">
-
-                                    AI Security
-
-                                </div>
-
-
-                                <small class="text-muted">
-
-                                    Intelligent analysis
-
-                                </small>
-
-                            </div>
-
-
-                        </div>
-
-
-
-                        <p class="ai-text">
-
-                            AccessIQ uses AI-assisted analysis to identify
-                            suspicious login activity and unauthorized
-                            access attempts.
-
-                        </p>
-
-
-
-                        <!-- LIVE RISK -->
-
-                        <div class="mt-4">
-
-
-                            <div class="d-flex justify-content-between mb-2">
-
-
-                                <span class="text-muted">
-
-                                    Current Risk
-
-                                </span>
-
-
-                                {% if analysis.risk_level == "HIGH" %}
-
-                                <strong class="text-danger">
-
-                                    HIGH
-
-                                </strong>
-
-                                {% elif analysis.risk_level == "MEDIUM" %}
-
-                                <strong class="text-warning">
-
-                                    MEDIUM
-
-                                </strong>
-
-                                {% else %}
-
-                                <strong class="text-success">
-
-                                    LOW
-
-                                </strong>
-
-                                {% endif %}
-
-
-                            </div>
-
-
-
-                            <!-- RISK SCORE -->
-
-                            <div class="d-flex justify-content-between mb-2">
-
-                                <small class="text-muted">
-
-                                    Risk Score
-
-                                </small>
-
-
-                                <small class="fw-bold">
-
-                                    {{ analysis.risk_score }}/100
-
-                                </small>
-
-                            </div>
-
-
-
-                            <!-- PROGRESS BAR -->
-
-                            <div
-                                class="progress"
-                                style="height: 7px; background: rgba(255,255,255,0.08);"
-                            >
-
-                                {% if analysis.risk_level == "HIGH" %}
-
-                                <div
-                                    class="progress-bar bg-danger"
-                                    role="progressbar"
-                                    style="width: {{ analysis.risk_score }}%;"
-                                ></div>
-
-                                {% elif analysis.risk_level == "MEDIUM" %}
-
-                                <div
-                                    class="progress-bar bg-warning"
-                                    role="progressbar"
-                                    style="width: {{ analysis.risk_score }}%;"
-                                ></div>
-
-                                {% else %}
-
-                                <div
-                                    class="progress-bar bg-success"
-                                    role="progressbar"
-                                    style="width: {{ analysis.risk_score }}%;"
-                                ></div>
-
-                                {% endif %}
-
-                            </div>
-
-
-
-                            <!-- RISK DESCRIPTION -->
-
-                            <p class="text-muted small mt-3 mb-0">
-
-                                {{ analysis.risk_description }}
-
-                            </p>
-
-
-                        </div>
-
-
-
-                        <!-- AI PAGE BUTTON -->
-
-                        <a
-                            href="{{ url_for('main.ai_analysis') }}"
-                            class="btn btn-primary w-100 mt-4"
-                        >
-
-                            <i class="bi bi-stars me-2"></i>
-
-                            View AI Analysis
-
-                        </a>
-
-
-                    </div>
-
-                </div>
-
-
-            </div>
-
-
-
-            <!-- =================================================
-                 ROLE DISTRIBUTION
-                 ================================================= -->
-
-            <div class="row g-4 mb-4">
-
-
-                <div class="col-lg-8">
-
-                    <div class="card h-100">
-
-                        <div class="card-body p-4">
-
-
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-
-                                <div>
-
-                                    <h5 class="mb-1">
-
-                                        Role Distribution
-
-                                    </h5>
-
-
-                                    <small class="text-muted">
-
-                                        Distribution of users across system roles
-
-                                    </small>
-
-                                </div>
-
-
-                                <span class="badge badge-info">
-
-                                    LIVE
-
-                                </span>
-
-                            </div>
-
-
-                            <div style="height: 300px;">
-
-                                <canvas id="roleChart"></canvas>
-
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-            </div>
-
-
-
-            <!-- =================================================
-                 QUICK ACTIONS
-                 ================================================= -->
-
-            <div class="row g-4">
-
-
-                <div class="col-lg-8">
-
-                    <div class="card">
-
-                        <div class="card-body p-4">
-
-
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-
-                                <div>
-
-                                    <h5 class="mb-1">
-
-                                        Quick Actions
-
-                                    </h5>
-
-
-                                    <small class="text-muted">
-
-                                        Access frequently used security tools
-
-                                    </small>
-
-                                </div>
-
-                            </div>
-
-
-
-                            <div class="row g-3">
-
-
-                                {% if role == "Admin" %}
-
-                                <div class="col-md-6">
-
-                                    <a
-                                        href="{{ url_for('main.admin') }}"
-                                        class="btn btn-outline-light w-100 py-3"
-                                    >
-
-                                        <i class="bi bi-people me-2"></i>
-
-                                        Manage Users
-
-                                    </a>
-
-                                </div>
-
-
-                                <div class="col-md-6">
-
-                                    <a
-                                        href="{{ url_for('main.manage_roles') }}"
-                                        class="btn btn-outline-light w-100 py-3"
-                                    >
-
-                                        <i class="bi bi-shield-lock me-2"></i>
-
-                                        Manage Roles
-
-                                    </a>
-
-                                </div>
-
-                                {% endif %}
-
-
-
-                                <div class="col-md-6">
-
-                                    <a
-                                        href="{{ url_for('main.audit_logs') }}"
-                                        class="btn btn-outline-light w-100 py-3"
-                                    >
-
-                                        <i class="bi bi-journal-text me-2"></i>
-
-                                        View Audit Logs
-
-                                    </a>
-
-                                </div>
-
-
-
-                                <div class="col-md-6">
-
-                                    <a
-                                        href="{{ url_for('main.ai_analysis') }}"
-                                        class="btn btn-outline-light w-100 py-3"
-                                    >
-
-                                        <i class="bi bi-robot me-2"></i>
-
-                                        Run AI Analysis
-
-                                    </a>
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- Current User -->
-
-                <div class="col-lg-4">
-
-                    <div class="card h-100">
-
-                        <div class="card-body p-4">
-
-
-                            <div class="d-flex align-items-center gap-3 mb-4">
-
-
-                                <div class="user-avatar">
-
-                                    {{ username[0]|upper }}
-
-                                </div>
-
-
-                                <div>
-
-                                    <h5 class="mb-1">
-
-                                        {{ username }}
-
-                                    </h5>
-
-
-                                    <small class="text-muted">
-
-                                        Currently logged in
-
-                                    </small>
-
-                                </div>
-
-
-                            </div>
-
-
-
-                            <div class="mb-3">
-
-                                <small class="text-muted d-block">
-
-                                    ACCOUNT ROLE
-
-                                </small>
-
-
-                                <strong>
-
-                                    {{ role }}
-
-                                </strong>
-
-                            </div>
-
-
-
-                            <div>
-
-                                <small class="text-muted d-block">
-
-                                    SECURITY ACCESS
-
-                                </small>
-
-
-                                <span class="badge badge-success mt-1">
-
-                                    Authorized
-
-                                </span>
-
-                            </div>
-
-
-
-                            <a
-                                href="{{ url_for('main.logout') }}"
-                                class="btn btn-outline-light w-100 mt-4"
-                            >
-
-                                <i class="bi bi-box-arrow-right me-2"></i>
-
-                                Logout
-
-                            </a>
-
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-            </div>
-
-
-        </section>
-
-
-    </main>
-
-
-</div>
-
-
-<!-- =========================================================
-     CHART.JS
-     ========================================================= -->
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AccessIQ — Security Command Center</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<style>
+:root{
+    --bg:#070b14;
+    --panel:#0d1422;
+    --panel2:#101a2b;
+    --line:rgba(148,163,184,.13);
+    --text:#eef5ff;
+    --muted:#8290a8;
+    --cyan:#39d9ff;
+    --blue:#5b7cff;
+    --green:#32e6a1;
+    --amber:#ffbf5b;
+    --red:#ff6b81;
+    --purple:#a878ff;
+}
+*{box-sizing:border-box}
+body{
+    margin:0;
+    color:var(--text);
+    background:
+        radial-gradient(circle at 72% -10%,rgba(61,113,255,.16),transparent 32%),
+        radial-gradient(circle at 10% 20%,rgba(41,217,255,.06),transparent 25%),
+        var(--bg);
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+a{text-decoration:none}
+.app{min-height:100vh;display:flex}
+.sidebar{
+    width:250px;flex:0 0 250px;
+    min-height:100vh;
+    background:rgba(7,11,20,.88);
+    border-right:1px solid var(--line);
+    padding:24px 16px;
+    position:sticky;top:0;height:100vh;
+    backdrop-filter:blur(20px);
+    z-index:20;
+}
+.brand{display:flex;align-items:center;gap:12px;padding:4px 10px 30px}
+.brand-mark{
+    width:38px;height:38px;border-radius:12px;
+    display:grid;place-items:center;
+    background:linear-gradient(135deg,#35dfff,#526fff);
+    color:#06101b;font-weight:900;
+    box-shadow:0 8px 30px rgba(57,217,255,.2);
+}
+.brand b{font-size:18px;letter-spacing:.12em}
+.brand small{display:block;color:var(--muted);font-size:9px;letter-spacing:.16em;margin-top:2px}
+.nav-title{font-size:10px;letter-spacing:.18em;color:#526077;padding:18px 12px 8px}
+.nav-link{
+    display:flex;align-items:center;gap:12px;
+    color:#8290a8;padding:11px 12px;border-radius:12px;
+    margin:3px 0;font-size:13px;transition:.2s;
+}
+.nav-link i{font-size:17px;width:20px;text-align:center}
+.nav-link:hover{background:rgba(91,124,255,.08);color:#dce8ff}
+.nav-link.active{
+    background:linear-gradient(90deg,rgba(57,217,255,.12),rgba(91,124,255,.08));
+    color:#fff;border:1px solid rgba(57,217,255,.1);
+}
+.sidebar-bottom{
+    position:absolute;left:16px;right:16px;bottom:20px;
+    padding:14px;border:1px solid var(--line);border-radius:16px;
+    background:rgba(16,26,43,.65);
+}
+.status-dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 12px var(--green)}
+.main{flex:1;min-width:0}
+.topbar{
+    height:76px;padding:0 34px;
+    display:flex;align-items:center;justify-content:space-between;
+    border-bottom:1px solid var(--line);
+    background:rgba(7,11,20,.48);backdrop-filter:blur(18px);
+    position:sticky;top:0;z-index:15;
+}
+.search{
+    width:min(430px,42vw);height:40px;border:1px solid var(--line);
+    background:rgba(255,255,255,.035);border-radius:12px;
+    display:flex;align-items:center;gap:10px;padding:0 13px;color:#617089;
+}
+.search input{border:0;outline:0;background:transparent;color:white;width:100%;font-size:13px}
+.search input::placeholder{color:#5e6c83}
+.top-actions{display:flex;align-items:center;gap:12px}
+.icon-btn{
+    width:40px;height:40px;border:1px solid var(--line);background:rgba(255,255,255,.03);
+    color:#9aa8be;border-radius:12px;position:relative;display:grid;place-items:center;
+}
+.icon-btn:hover{color:white;border-color:rgba(57,217,255,.3)}
+.badge-dot{position:absolute;width:7px;height:7px;background:var(--red);border-radius:50%;right:8px;top:7px}
+.profile{
+    display:flex;align-items:center;gap:10px;padding-left:12px;border-left:1px solid var(--line)
+}
+.avatar{
+    width:38px;height:38px;border-radius:12px;display:grid;place-items:center;
+    background:linear-gradient(135deg,#1c2e55,#253e78);color:#cfe8ff;font-weight:800
+}
+.profile strong{font-size:12px}.profile span{display:block;font-size:10px;color:var(--muted);margin-top:2px}
+
+.content{padding:30px 34px 40px;max-width:1700px;margin:auto}
+.hero{
+    position:relative;overflow:hidden;
+    border:1px solid rgba(91,124,255,.18);border-radius:24px;
+    padding:28px 30px 32px;
+    background:
+      radial-gradient(circle at 85% 25%,rgba(57,217,255,.11),transparent 27%),
+      linear-gradient(135deg,rgba(16,26,43,.96),rgba(9,16,28,.96));
+    margin-bottom:20px;
+}
+.hero:after{
+    content:"";position:absolute;width:260px;height:260px;border:1px solid rgba(57,217,255,.08);
+    border-radius:50%;right:-75px;top:-105px;box-shadow:0 0 0 35px rgba(57,217,255,.018),0 0 0 70px rgba(57,217,255,.012)
+}
+.eyebrow{font-size:10px;letter-spacing:.18em;color:var(--cyan);font-weight:700}
+.hero h1{font-size:31px;line-height:1.15;margin:8px 0 7px;font-weight:760}
+.hero p{color:var(--muted);margin:0;max-width:620px;font-size:13px}
+.hero-right{position:static;display:flex;gap:10px;align-items:center;justify-content:flex-start;margin-bottom:18px;z-index:2}
+.pill{
+    border:1px solid var(--line);background:rgba(255,255,255,.035);
+    border-radius:999px;padding:8px 12px;font-size:10px;color:#9eabc0
+}
+.pill.live{color:#8ff0c9}.pill.live:before{content:"";display:inline-block;width:6px;height:6px;background:var(--green);border-radius:50%;margin-right:7px;box-shadow:0 0 8px var(--green)}
+.hero-actions{margin-top:20px;display:flex;gap:9px;flex-wrap:wrap}
+.btn-main{
+    border:0;border-radius:11px;padding:10px 15px;
+    color:#04111a;background:linear-gradient(135deg,#45e0ff,#6680ff);
+    font-size:12px;font-weight:750;box-shadow:0 8px 25px rgba(57,217,255,.13)
+}
+.btn-ghost{
+    border:1px solid var(--line);border-radius:11px;padding:9px 14px;
+    color:#b9c6d9;background:rgba(255,255,255,.025);font-size:12px
+}
+.btn-ghost:hover{color:white;border-color:rgba(57,217,255,.25)}
+
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:13px;margin-bottom:20px}
+.kpi{
+    background:linear-gradient(145deg,rgba(15,24,40,.95),rgba(10,17,29,.92));
+    border:1px solid var(--line);border-radius:17px;padding:17px;
+    position:relative;overflow:hidden;transition:.22s
+}
+.kpi:hover{transform:translateY(-3px);border-color:rgba(91,124,255,.25);box-shadow:0 14px 35px rgba(0,0,0,.2)}
+.kpi:before{content:"";position:absolute;top:0;left:0;width:48px;height:2px;background:var(--accent)}
+.kpi-top{display:flex;justify-content:space-between;align-items:center}
+.kpi-icon{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.045);display:grid;place-items:center;color:var(--accent)}
+.kpi-label{font-size:10px;letter-spacing:.08em;color:#91a3bb;margin-top:14px;font-weight:700}
+.kpi-value{font-size:25px;font-weight:780;margin-top:2px}
+.kpi-meta{font-size:10px;color:#8293aa;margin-top:3px}
+.kpi-meta i{color:var(--green)}
+
+.grid-main{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(310px,.75fr);gap:18px;margin-bottom:18px}
+.card{
+    background:linear-gradient(145deg,rgba(14,23,38,.94),rgba(9,16,28,.94));
+    border:1px solid var(--line);border-radius:20px;padding:20px;
+}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
+.card-title{font-size:14px;font-weight:750;color:#eef5ff}.card-sub{font-size:10px;color:#8fa0b8;margin-top:4px}
+.chart-wrap{height:285px}
+.legend{display:flex;gap:15px;font-size:10px;color:#74829a}
+.legend span:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px}
+.legend .one:before{background:#39d9ff}.legend .two:before{background:#a878ff}
+
+.ai-card{
+    min-height:100%;position:relative;overflow:hidden;
+    background:
+      radial-gradient(circle at 85% 12%,rgba(168,120,255,.12),transparent 30%),
+      linear-gradient(145deg,#11182b,#0b1220);
+}
+.ai-orbit{width:112px;height:112px;border-radius:50%;border:1px dashed rgba(168,120,255,.28);display:grid;place-items:center;margin:4px auto 18px;position:relative}
+.ai-orbit:before,.ai-orbit:after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(57,217,255,.18)}
+.ai-orbit:before{inset:12px}.ai-orbit:after{inset:25px}
+.ai-core{width:55px;height:55px;border-radius:18px;background:linear-gradient(135deg,#637cff,#a878ff);display:grid;place-items:center;color:white;font-size:25px;box-shadow:0 0 35px rgba(168,120,255,.22);z-index:2}
+.risk-row{display:flex;justify-content:space-between;align-items:center;margin:13px 0 8px}
+.risk{font-size:11px;font-weight:800;letter-spacing:.1em}
+.riskbar{height:7px;background:#1a2435;border-radius:20px;overflow:hidden}
+.riskbar span{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,#32e6a1,#ffbf5b,#ff6b81);width:{{ analysis.risk_score|default(35) }}%}
+.ai-desc{font-size:11px;line-height:1.6;color:#7f8ca3;margin-top:14px}
+.ai-actions{display:flex;gap:8px;margin-top:18px}.ai-actions a{flex:1;text-align:center}
+
+.bottom-grid{display:grid;grid-template-columns:1.05fr 1fr 1fr;gap:18px}
+.feed{display:flex;flex-direction:column;gap:8px;max-height:310px;overflow:auto}
+.feed::-webkit-scrollbar{width:4px}.feed::-webkit-scrollbar-thumb{background:#26334a;border-radius:10px}
+.event{
+    display:flex;gap:11px;padding:11px;border-radius:13px;
+    border:1px solid transparent;background:rgba(255,255,255,.022)
+}
+.event:hover{border-color:var(--line);background:rgba(255,255,255,.035)}
+.event-icon{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex:0 0 30px}
+.event-icon.danger{color:#ff8b9d;background:rgba(255,107,129,.09)}
+.event-icon.warning{color:#ffd084;background:rgba(255,191,91,.09)}
+.event-icon.success{color:#73efbb;background:rgba(50,230,161,.08)}
+.event-title{font-size:11px;font-weight:700}.event-msg{font-size:10px;color:#6f7d94;margin-top:2px;line-height:1.4}.event-time{font-size:9px;color:#536077;margin-top:4px}
+.role-row{margin:15px 0}.role-top{display:flex;justify-content:space-between;font-size:10px;color:#c0ccdc;margin-bottom:6px}
+.role-track{height:8px;background:#182235;border-radius:20px;overflow:hidden}.role-track span{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,#39d9ff,#5b7cff)}
+.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.quick{
+    min-height:84px;padding:13px;border:1px solid var(--line);border-radius:14px;
+    background:rgba(255,255,255,.022);color:#a7b4c8;transition:.2s
+}
+.quick:hover{color:white;border-color:rgba(57,217,255,.24);transform:translateY(-2px)}
+.quick i{font-size:20px;color:#5fcbff}.quick b{display:block;font-size:11px;margin-top:9px;color:#eef5ff}.quick small{font-size:9px;color:#5f6d83}
+.footer-line{display:flex;justify-content:space-between;color:#4f5c71;font-size:9px;margin-top:20px;padding:0 4px}
+
+.toast-panel{
+    position:fixed;right:22px;top:84px;width:330px;max-width:calc(100vw - 30px);
+    background:#101a2b;border:1px solid rgba(91,124,255,.22);border-radius:16px;
+    box-shadow:0 20px 55px rgba(0,0,0,.45);padding:15px;z-index:100;
+    transform:translateY(-15px);opacity:0;pointer-events:none;transition:.25s
+}
+.toast-panel.show{transform:translateY(0);opacity:1;pointer-events:auto}
+.toast-head{display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:10px}
+.mobile-toggle{display:none}
+
+@media(max-width:1200px){
+    .kpis{grid-template-columns:repeat(3,1fr)}
+    .bottom-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:900px){
+    .sidebar{position:fixed;left:-270px;transition:.25s}.sidebar.open{left:0}
+    .mobile-toggle{display:grid}.grid-main{grid-template-columns:1fr}.bottom-grid{grid-template-columns:1fr}
+    .content{padding:22px 18px}.topbar{padding:0 18px}.search{width:42vw}
+    .hero-right{position:static;margin-top:0;margin-bottom:18px}.hero{padding:22px}
+}
+@media(max-width:650px){
+    .kpis{grid-template-columns:1fr 1fr}.profile-text{display:none}.search{width:48vw}
+    .hero h1{font-size:24px}.kpi-value{font-size:21px}
+}
+@media(max-width:430px){
+    .kpis{grid-template-columns:1fr}.topbar{gap:8px}.search{width:100%}.top-actions{display:none}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+    <div class="brand">
+        <div class="brand-mark"><i class="bi bi-shield-lock-fill"></i></div>
+        <div><b>ACCESSIQ</b><small>SECURITY PLATFORM</small></div>
+    </div>
+
+    <div class="nav-title">OVERVIEW</div>
+    <a class="nav-link active" href="{{ url_for('main.dashboard') }}"><i class="bi bi-grid-1x2-fill"></i> Command Center</a>
+
+    <div class="nav-title">MANAGEMENT</div>
+    <a class="nav-link" href="{{ url_for('main.admin') }}"><i class="bi bi-people"></i> Users</a>
+    <a class="nav-link" href="{{ url_for('main.manage_roles') }}"><i class="bi bi-diagram-3"></i> Roles & Permissions</a>
+
+    <div class="nav-title">SECURITY</div>
+    <a class="nav-link" href="{{ url_for('main.audit_logs') }}"><i class="bi bi-activity"></i> Audit Intelligence</a>
+    <a class="nav-link" href="{{ url_for('main.ai_analysis') }}"><i class="bi bi-stars"></i> AI Security</a>
+
+    <div class="nav-title">ACCESS</div>
+    {% if role == "Admin" %}
+    <a class="nav-link" href="{{ url_for('main.admin_permission_requests') }}"><i class="bi bi-key"></i> Permission Queue
+        {% if pending_requests|default(0) > 0 %}<span class="ms-auto badge rounded-pill text-bg-warning">{{ pending_requests }}</span>{% endif %}
+    </a>
+    {% else %}
+    <a class="nav-link" href="{{ url_for('main.permission_requests') }}"><i class="bi bi-key"></i> My Requests</a>
+    {% endif %}
+
+    <div class="sidebar-bottom">
+        <div class="d-flex align-items-center gap-2 mb-2"><span class="status-dot"></span><small style="color:#9eabc0">System operational</small></div>
+        <div style="font-size:9px;color:#59677d">AccessIQ Security Core · v1.0</div>
+    </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+    <div class="d-flex align-items-center gap-2" style="min-width:0;flex:1">
+        <button class="icon-btn mobile-toggle" id="menuBtn" type="button"><i class="bi bi-list"></i></button>
+        <div class="search">
+            <i class="bi bi-search"></i>
+            <input id="globalSearch" type="search" placeholder="Search security events..." aria-label="Search security events">
+            <span style="font-size:9px;border:1px solid var(--line);padding:3px 6px;border-radius:5px;color:#59677d">/</span>
+        </div>
+    </div>
+    <div class="top-actions">
+        <button class="icon-btn" id="notificationBtn" type="button" aria-label="Notifications">
+            <i class="bi bi-bell"></i>
+            {% if notification_count|default(0) > 0 %}<span class="badge-dot"></span>{% endif %}
+        </button>
+        <a class="icon-btn" href="{{ url_for('main.profile') }}" aria-label="Profile"><i class="bi bi-person"></i></a>
+        <div class="profile">
+            <div class="avatar">{{ username[:1]|upper }}</div>
+            <div class="profile-text"><strong>{{ username }}</strong><span>{{ role }}</span></div>
+        </div>
+    </div>
+</header>
+
+<section class="content">
+
+    <section class="hero">
+        <div class="hero-right">
+            <span class="pill live">LIVE MONITORING</span>
+            <span class="pill">{{ role|upper }} ACCESS</span>
+        </div>
+        <div class="eyebrow">SECURITY COMMAND CENTER</div>
+        <h1>Good evening, {{ username }}.</h1>
+        <p>Monitor identity, permissions and security activity from one intelligent control surface.</p>
+        <div class="hero-actions">
+            <a class="btn-main" href="{{ url_for('main.ai_analysis') }}"><i class="bi bi-stars me-1"></i> Run AI Analysis</a>
+            <a class="btn-ghost" href="{{ url_for('main.audit_logs') }}"><i class="bi bi-activity me-1"></i> Inspect Audit Trail</a>
+        </div>
+    </section>
+
+    <section class="kpis">
+        <div class="kpi" style="--accent:#39d9ff">
+            <div class="kpi-top"><span class="kpi-icon"><i class="bi bi-people-fill"></i></span><i class="bi bi-arrow-up-right" style="color:#56657c"></i></div>
+            <div class="kpi-label">IDENTITIES</div><div class="kpi-value">{{ total_users }}</div><div class="kpi-meta">Registered users</div>
+        </div>
+        <div class="kpi" style="--accent:#a878ff">
+            <div class="kpi-top"><span class="kpi-icon"><i class="bi bi-diagram-3-fill"></i></span><i class="bi bi-shield-check" style="color:#56657c"></i></div>
+            <div class="kpi-label">RBAC ROLES</div><div class="kpi-value">{{ total_roles }}</div><div class="kpi-meta">Permission groups</div>
+        </div>
+        <div class="kpi" style="--accent:#5b7cff">
+            <div class="kpi-top"><span class="kpi-icon"><i class="bi bi-activity"></i></span><i class="bi bi-activity" style="color:#56657c"></i></div>
+            <div class="kpi-label">AUDIT EVENTS</div><div class="kpi-value">{{ total_events }}</div><div class="kpi-meta">Recorded system events</div>
+        </div>
+        <div class="kpi" style="--accent:#ff6b81">
+            <div class="kpi-top"><span class="kpi-icon"><i class="bi bi-shield-exclamation"></i></span><i class="bi bi-exclamation-triangle" style="color:#56657c"></i></div>
+            <div class="kpi-label">FAILED LOGINS</div><div class="kpi-value">{{ failed_logins }}</div><div class="kpi-meta">Authentication failures</div>
+        </div>
+        <div class="kpi" style="--accent:#ffbf5b">
+            <div class="kpi-top"><span class="kpi-icon"><i class="bi bi-lock-fill"></i></span><i class="bi bi-eye" style="color:#56657c"></i></div>
+            <div class="kpi-label">ACCESS DENIED</div><div class="kpi-value">{{ access_denied }}</div><div class="kpi-meta">Blocked attempts</div>
+        </div>
+    </section>
+
+    <section class="grid-main">
+        <div class="card">
+            <div class="card-head">
+                <div><div class="card-title">Security Activity</div><div class="card-sub">Authentication and threat events · last 7 days</div></div>
+                <div class="legend"><span class="one">Successful logins</span><span class="two">Security events</span></div>
+            </div>
+            <div class="chart-wrap"><canvas id="activityChart"></canvas></div>
+        </div>
+
+        <div class="card ai-card">
+            <div class="card-head">
+                <div><div class="card-title">AI Security Engine</div><div class="card-sub">Intelligent threat assessment</div></div>
+                <i class="bi bi-stars" style="color:#a878ff"></i>
+            </div>
+            <div class="ai-orbit"><div class="ai-core"><i class="bi bi-robot"></i></div></div>
+            <div class="text-center">
+                {% set risk = analysis.risk_level|default("LOW") %}
+                <div style="font-size:9px;letter-spacing:.16em;color:#66758d">CURRENT RISK</div>
+                <div class="risk mt-1 {% if risk == 'HIGH' %}text-danger{% elif risk == 'MEDIUM' %}text-warning{% else %}text-success{% endif %}">{{ risk }}</div>
+            </div>
+            <div class="risk-row"><span style="font-size:10px;color:#68768d">Risk score</span><strong style="font-size:11px">{{ analysis.risk_score|default(0) }}%</strong></div>
+            <div class="riskbar"><span></span></div>
+            <div class="ai-desc">{{ analysis.risk_description|default("Local security analysis is monitoring authentication and access activity.") }}</div>
+            <div class="ai-actions">
+                <a class="btn-ghost" href="{{ url_for('main.ai_analysis') }}">Open Analysis <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="bottom-grid">
+
+        <div class="card">
+            <div class="card-head">
+                <div><div class="card-title">Live Security Feed</div><div class="card-sub">Recent alerts and access activity</div></div>
+                <span class="pill">{{ notification_count|default(0) }} EVENTS</span>
+            </div>
+            <div class="feed" id="securityFeed">
+                {% if notifications %}
+                    {% for n in notifications %}
+                    <div class="event" data-search="{{ (n.title ~ ' ' ~ n.message)|lower }}">
+                        <div class="event-icon {{ n.type|default('success') }}"><i class="bi {{ n.icon|default('bi-info-circle') }}"></i></div>
+                        <div style="min-width:0"><div class="event-title">{{ n.title }}</div><div class="event-msg">{{ n.message }}</div><div class="event-time">{{ n.timestamp }}</div></div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-5" style="color:#5e6c83;font-size:11px"><i class="bi bi-shield-check" style="font-size:28px;display:block;margin-bottom:8px;color:#32e6a1"></i>No recent security alerts.</div>
+                {% endif %}
+            </div>
+            <a href="{{ url_for('main.audit_logs') }}" style="display:block;margin-top:12px;text-align:center;color:#5fcfff;font-size:10px">View complete audit trail →</a>
+        </div>
+
+        <div class="card">
+            <div class="card-head">
+                <div><div class="card-title">RBAC Distribution</div><div class="card-sub">Users mapped to access roles</div></div>
+                <i class="bi bi-diagram-3" style="color:#5b7cff"></i>
+            </div>
+            {% set max_role = role_data.values()|max if role_data else 1 %}
+            {% for role_name, count in role_data.items() %}
+            <div class="role-row">
+                <div class="role-top"><span>{{ role_name }}</span><strong>{{ count }}</strong></div>
+                <div class="role-track"><span style="width:{{ ((count / max_role * 100) if max_role else 0)|round(0) }}%"></span></div>
+            </div>
+            {% endfor %}
+            <div style="margin-top:24px;padding:12px;border-radius:12px;background:rgba(57,217,255,.04);border:1px solid rgba(57,217,255,.08);font-size:10px;color:#a9b7ca">
+                <i class="bi bi-shield-lock me-1" style="color:#39d9ff"></i>
+                Role-based access control is active across the platform.
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-head">
+                <div><div class="card-title">Quick Operations</div><div class="card-sub">Jump directly to security controls</div></div>
+                <i class="bi bi-command" style="color:#39d9ff"></i>
+            </div>
+            <div class="quick-grid">
+                {% if role == "Admin" %}
+                <a class="quick" href="{{ url_for('main.admin') }}"><i class="bi bi-person-plus"></i><b>Manage Users</b><small>Identity control</small></a>
+                <a class="quick" href="{{ url_for('main.manage_roles') }}"><i class="bi bi-shield-lock"></i><b>Manage Roles</b><small>RBAC policies</small></a>
+                <a class="quick" href="{{ url_for('main.admin_permission_requests') }}"><i class="bi bi-key"></i><b>Requests</b><small>{{ pending_requests }} pending</small></a>
+                {% else %}
+                <a class="quick" href="{{ url_for('main.permission_requests') }}"><i class="bi bi-key"></i><b>My Requests</b><small>Permission access</small></a>
+                {% endif %}
+                <a class="quick" href="{{ url_for('main.ai_analysis') }}"><i class="bi bi-stars"></i><b>AI Analysis</b><small>Threat insights</small></a>
+                <a class="quick" href="{{ url_for('main.audit_logs') }}"><i class="bi bi-journal-text"></i><b>Audit Logs</b><small>Investigate events</small></a>
+                <a class="quick" href="{{ url_for('main.profile') }}"><i class="bi bi-person-circle"></i><b>My Profile</b><small>Account settings</small></a>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="footer-line"><span>ACCESSIQ SECURITY PLATFORM</span><span>Protected session · {{ role }}</span></div>
+</section>
+</main>
+</div>
+
+<div class="toast-panel" id="notificationPanel">
+    <div class="toast-head"><span>Security Notifications</span><button class="btn btn-sm p-0 text-secondary" id="closeNotify" type="button"><i class="bi bi-x-lg"></i></button></div>
+    {% if notifications %}
+        {% for n in notifications[:4] %}
+        <div style="padding:9px 0;border-top:1px solid var(--line);font-size:10px">
+            <strong>{{ n.title }}</strong><div style="color:#6f7d94;margin-top:2px">{{ n.message }}</div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div style="color:#6f7d94;font-size:10px;padding:10px 0">No new notifications.</div>
+    {% endif %}
+</div>
+
 <script>
+const labels = {{ chart_labels|tojson }};
+const logins = {{ successful_logins_data|tojson }};
+const security = {{ security_events_data|tojson }};
 
-const chartLabels =
-    {{ chart_labels | tojson | safe }};
-
-const successfulLoginsData =
-    {{ successful_logins_data | tojson | safe }};
-
-const securityEventsData =
-    {{ security_events_data | tojson | safe }};
-
-const roleData =
-    {{ role_data | tojson | safe }};
-
-
-/* =========================================================
-   SECURITY ACTIVITY CHART
-   ========================================================= */
-
-const chartCanvas =
-    document.getElementById("activityChart");
-
-if (chartCanvas) {
-
-    new Chart(chartCanvas, {
-
-        type: "line",
-
-        data: {
-
-            labels: chartLabels,
-
-            datasets: [
-
+const ctx = document.getElementById("activityChart");
+if(ctx){
+    new Chart(ctx,{
+        type:"line",
+        data:{
+            labels:labels,
+            datasets:[
                 {
-                    label: "Successful Logins",
-
-                    data: successfulLoginsData,
-
-                    borderWidth: 2.5,
-
-                    tension: 0.45,
-
-                    fill: true,
-
-                    backgroundColor:
-                        "rgba(56, 189, 248, 0.08)",
-
-                    borderColor:
-                        "#38bdf8",
-
-                    pointBackgroundColor:
-                        "#38bdf8",
-
-                    pointBorderColor:
-                        "#0f172a",
-
-                    pointBorderWidth: 2,
-
-                    pointRadius: 4,
-
-                    pointHoverRadius: 7
+                    label:"Successful Logins",
+                    data:logins,
+                    borderColor:"#39d9ff",
+                    backgroundColor:"rgba(57,217,255,.08)",
+                    borderWidth:2,
+                    fill:true,
+                    tension:.42,
+                    pointRadius:3,
+                    pointHoverRadius:6,
+                    pointBackgroundColor:"#39d9ff"
                 },
-
                 {
-
-                    label: "Security Events",
-
-                    data: securityEventsData,
-
-                    borderWidth: 2.5,
-
-                    tension: 0.45,
-
-                    fill: true,
-
-                    backgroundColor:
-                        "rgba(245, 158, 11, 0.07)",
-
-                    borderColor:
-                        "#f59e0b",
-
-                    pointBackgroundColor:
-                        "#f59e0b",
-
-                    pointBorderColor:
-                        "#0f172a",
-
-                    pointBorderWidth: 2,
-
-                    pointRadius: 4,
-
-                    pointHoverRadius: 7
+                    label:"Security Events",
+                    data:security,
+                    borderColor:"#a878ff",
+                    backgroundColor:"rgba(168,120,255,.05)",
+                    borderWidth:2,
+                    fill:true,
+                    tension:.42,
+                    pointRadius:3,
+                    pointHoverRadius:6,
+                    pointBackgroundColor:"#a878ff"
                 }
-
             ]
-
         },
-
-        options: {
-
-            responsive: true,
-
-            maintainAspectRatio: false,
-
-            interaction: {
-                mode: "index",
-                intersect: false
-            },
-
-            plugins: {
-
-                legend: {
-
-                    position: "top",
-
-                    align: "end",
-
-                    labels: {
-
-                        color: "#94a3b8",
-
-                        usePointStyle: true,
-
-                        pointStyle: "circle",
-
-                        padding: 20,
-
-                        font: {
-                            size: 12
-                        }
-
-                    }
-
-                },
-
-                tooltip: {
-
-                    backgroundColor: "#111827",
-
-                    titleColor: "#f8fafc",
-
-                    bodyColor: "#cbd5e1",
-
-                    borderColor:
-                        "rgba(148, 163, 184, 0.15)",
-
-                    borderWidth: 1,
-
-                    padding: 12,
-
-                    displayColors: true,
-
-                    titleFont: {
-                        size: 12,
-                        weight: "600"
-                    },
-
-                    bodyFont: {
-                        size: 12
-                    }
+        options:{
+            responsive:true,
+            maintainAspectRatio:false,
+            interaction:{mode:"index",intersect:false},
+            plugins:{
+                legend:{display:false},
+                tooltip:{
+                    backgroundColor:"#0b1220",
+                    borderColor:"rgba(148,163,184,.18)",
+                    borderWidth:1,
+                    titleColor:"#fff",
+                    bodyColor:"#a9b5c8",
+                    padding:12
                 }
-
             },
-
-            scales: {
-
-                x: {
-
-                    grid: {
-
-                        display: false
-
-                    },
-
-                    border: {
-
-                        display: false
-
-                    },
-
-                    ticks: {
-
-                        color: "#64748b",
-
-                        font: {
-                            size: 11
-                        },
-
-                        padding: 8
-                    }
-
-                },
-
-                y: {
-
-                    beginAtZero: true,
-
-                    grid: {
-
-                        color:
-                            "rgba(148, 163, 184, 0.06)"
-
-                    },
-
-                    border: {
-
-                        display: false
-
-                    },
-
-                    ticks: {
-
-                        color: "#64748b",
-
-                        precision: 0,
-
-                        font: {
-                            size: 11
-                        },
-
-                        padding: 8
-                    }
-
-                }
-
+            scales:{
+                x:{grid:{display:false},ticks:{color:"#617089",font:{size:9}}},
+                y:{beginAtZero:true,grid:{color:"rgba(148,163,184,.07)"},ticks:{color:"#617089",font:{size:9},precision:0}}
             }
-
         }
-
     });
-
 }
 
-
-/* =========================================================
-   ROLE DISTRIBUTION CHART
-   ========================================================= */
-
-const roleCanvas =
-    document.getElementById("roleChart");
-
-if (roleCanvas) {
-
-    const roleLabels =
-        Object.keys(roleData);
-
-    const roleValues =
-        Object.values(roleData);
-
-    new Chart(roleCanvas, {
-
-        type: "doughnut",
-
-        data: {
-
-            labels: roleLabels,
-datasets: [
-
-    {
-
-        label: "Users",
-
-        data: roleValues,
-
-        backgroundColor: [
-            "#38bdf8",
-            "#8b5cf6",
-            "#22c55e",
-            "#f59e0b",
-            "#ef4444",
-            "#ec4899"
-        ],
-
-        borderWidth: 3,
-
-        borderColor: "#111827",
-
-        hoverOffset: 8
-
-    }
-
-]
-            
-        },
-
-        options: {
-
-            responsive: true,
-
-            maintainAspectRatio: false,
-
-            cutout: "68%",
-
-            animation: {
-
-                animateRotate: true,
-
-                animateScale: true,
-
-                duration: 900
-
-            },
-
-            plugins: {
-
-                legend: {
-
-                    position: "right",
-
-                    labels: {
-
-                        color: "#94a3b8",
-
-                        usePointStyle: true,
-
-                        pointStyle: "circle",
-
-                        padding: 16,
-
-                        font: {
-                            size: 12
-                        }
-                    }
-
-                },
-
-                tooltip: {
-
-                    backgroundColor: "#111827",
-
-                    titleColor: "#f8fafc",
-
-                    bodyColor: "#cbd5e1",
-
-                    borderColor:
-                        "rgba(148, 163, 184, 0.15)",
-
-                    borderWidth: 1,
-
-                    padding: 12,
-
-                    callbacks: {
-
-                        label: function(context) {
-
-                            const value =
-                                context.raw;
-
-                            const total =
-                                context.dataset.data
-                                    .reduce(
-                                        (sum, item) =>
-                                            sum + item,
-                                        0
-                                    );
-
-                            const percentage =
-                                total > 0
-                                    ? ((value / total) * 100)
-                                        .toFixed(1)
-                                    : 0;
-
-                            return (
-                                " " +
-                                context.label +
-                                ": " +
-                                value +
-                                " users (" +
-                                percentage +
-                                "%)"
-                            );
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }
-
+const search = document.getElementById("globalSearch");
+if(search){
+    search.addEventListener("input",()=>{
+        const q=search.value.toLowerCase().trim();
+        document.querySelectorAll("#securityFeed .event").forEach(el=>{
+            el.style.display=(!q || (el.dataset.search||"").includes(q)) ? "" : "none";
+        });
     });
-
+    document.addEventListener("keydown",e=>{
+        if(e.key==="/" && document.activeElement!==search && !["INPUT","TEXTAREA"].includes(document.activeElement.tagName)){
+            e.preventDefault();search.focus();
+        }
+    });
 }
 
+const panel=document.getElementById("notificationPanel");
+const notify=document.getElementById("notificationBtn");
+const closeNotify=document.getElementById("closeNotify");
+if(notify) notify.addEventListener("click",()=>panel.classList.toggle("show"));
+if(closeNotify) closeNotify.addEventListener("click",()=>panel.classList.remove("show"));
+document.addEventListener("click",e=>{
+    if(panel.classList.contains("show") && !panel.contains(e.target) && !notify.contains(e.target)) panel.classList.remove("show");
+});
+
+const menu=document.getElementById("menuBtn"), side=document.getElementById("sidebar");
+if(menu) menu.addEventListener("click",()=>side.classList.toggle("open"));
+document.querySelectorAll(".sidebar .nav-link").forEach(a=>{
+    a.addEventListener("click",()=>{if(window.innerWidth<=900) side.classList.remove("open")});
+});
 </script>
-
-
-
-
-
-
-
-
-<script>
-    const notificationButton = document.getElementById("notificationButton");
-    const notificationPanel = document.getElementById("notificationPanel");
-
-    if (notificationButton && notificationPanel) {
-        notificationButton.addEventListener("click", function (event) {
-            event.stopPropagation();
-            const isOpen = notificationPanel.classList.toggle("show");
-            notificationButton.setAttribute("aria-expanded", isOpen ? "true" : "false");
-            notificationPanel.setAttribute("aria-hidden", isOpen ? "false" : "true");
-        });
-
-        document.addEventListener("click", function (event) {
-            if (!notificationPanel.contains(event.target) && !notificationButton.contains(event.target)) {
-                notificationPanel.classList.remove("show");
-                notificationButton.setAttribute("aria-expanded", "false");
-                notificationPanel.setAttribute("aria-hidden", "true");
-            }
-        });
-
-        document.addEventListener("keydown", function (event) {
-            if (event.key === "Escape") {
-                notificationPanel.classList.remove("show");
-                notificationButton.setAttribute("aria-expanded", "false");
-                notificationPanel.setAttribute("aria-hidden", "true");
-            }
-        });
-    }
-</script>
-
-<!-- AccessIQ JavaScript -->
-
-<script src="{{ url_for('static', filename='js/app.js') }}"></script>
-
-
 </body>
-
 </html>

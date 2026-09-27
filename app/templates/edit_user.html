@@ -1,345 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>AccessIQ | Edit User</title>
-
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='css/style.css') }}"
-    >
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit User | AccessIQ</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+:root{--bg:#07111f;--panel:#0d1a2b;--panel2:#101f33;--line:rgba(148,163,184,.15);--text:#e8f0fb;--muted:#8fa3bd;--blue:#38bdf8;--purple:#8b5cf6;--green:#34d399;--red:#fb7185}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0%,rgba(56,189,248,.08),transparent 28%),radial-gradient(circle at 30% 20%,rgba(139,92,246,.07),transparent 30%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.sidebar{position:fixed;left:0;top:0;width:250px;height:100vh;background:rgba(7,17,31,.96);border-right:1px solid var(--line);padding:25px 16px;z-index:20}.brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:20px;letter-spacing:.5px;padding:0 10px 30px}.brand-mark{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;box-shadow:0 8px 25px rgba(56,189,248,.18)}.nav-title{font-size:10px;letter-spacing:1.5px;color:#5f7490;margin:20px 10px 8px}.nav-link{display:flex;align-items:center;gap:12px;color:#8fa3bd;text-decoration:none;padding:11px 12px;border-radius:10px;margin:3px 0;font-size:14px;transition:.2s}.nav-link:hover,.nav-link.active{color:#fff;background:linear-gradient(90deg,rgba(56,189,248,.12),rgba(139,92,246,.08));}.nav-link i{font-size:17px}.main{margin-left:250px;min-height:100vh;padding:25px 34px 45px}.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:34px}.crumb{color:var(--muted);font-size:13px}.crumb strong{color:#fff}.top-actions{display:flex;align-items:center;gap:15px}.search{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:10px;padding:9px 13px;color:var(--muted)}.search input{background:none;border:0;outline:0;color:#fff;width:150px}.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#1e88d5,#7c3aed);font-weight:700}.hero{margin-bottom:26px}.eyebrow{color:var(--blue);font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px}.hero h1{font-size:31px;margin:0 0 8px;font-weight:800}.hero p{color:var(--muted);margin:0}.layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.75fr);gap:22px}.cardx{background:linear-gradient(145deg,rgba(16,31,51,.94),rgba(10,23,39,.94));border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 45px rgba(0,0,0,.16)}.form-card{padding:28px}.section-head{display:flex;align-items:center;gap:13px;padding-bottom:20px;margin-bottom:22px;border-bottom:1px solid var(--line)}.section-icon{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:rgba(56,189,248,.1);color:var(--blue);font-size:20px}.section-head h3{font-size:17px;margin:0}.section-head p{font-size:12px;color:var(--muted);margin:3px 0 0}.form-label{font-size:12px;color:#a9bad0;font-weight:600;margin-bottom:8px}.form-control,.form-select{background:#081525;border:1px solid rgba(148,163,184,.18);color:#edf5ff;border-radius:10px;padding:11px 13px}.form-control:focus,.form-select:focus{background:#081525;color:#fff;border-color:var(--blue);box-shadow:0 0 0 3px rgba(56,189,248,.09)}.form-select option{background:#081525;color:#fff}.input-group .form-control{border-right:0}.input-group .btn{border:1px solid rgba(148,163,184,.18);border-left:0;background:#081525;color:#8fa3bd}.alert{border-radius:11px;background:rgba(251,113,133,.09);border:1px solid rgba(251,113,133,.2);color:#fecdd3}.btn-primary{border:0;background:linear-gradient(135deg,#1596d8,#6d4ce8);padding:11px 20px;border-radius:10px;font-weight:700;box-shadow:0 10px 25px rgba(56,189,248,.13)}.btn-secondary{background:rgba(255,255,255,.045);border:1px solid var(--line);color:#cbd7e6;padding:11px 20px;border-radius:10px;font-weight:600}.btn-secondary:hover{background:rgba(255,255,255,.08);color:#fff}.side-card{padding:24px}.profile{display:flex;align-items:center;gap:14px;padding-bottom:20px;border-bottom:1px solid var(--line)}.big-avatar{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(56,189,248,.2),rgba(139,92,246,.25));color:var(--blue);font-size:23px}.profile h4{font-size:15px;margin:0 0 4px}.profile p{margin:0;color:var(--muted);font-size:12px;word-break:break-all}.info{padding-top:20px}.info-row{display:flex;justify-content:space-between;gap:15px;padding:11px 0;border-bottom:1px solid rgba(148,163,184,.08);font-size:13px}.info-row span:first-child{color:var(--muted)}.badge-status{padding:5px 9px;border-radius:999px;font-size:11px;font-weight:700;background:rgba(52,211,153,.1);color:var(--green)}.hint{margin-top:20px;padding:14px;border-radius:12px;background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.12);color:#9db2ca;font-size:12px;line-height:1.6}.actions{display:flex;gap:10px;justify-content:flex-end;margin-top:26px;padding-top:20px;border-top:1px solid var(--line)}@media(max-width:900px){.sidebar{transform:translateX(-100%)}.main{margin-left:0;padding:22px 18px}.layout{grid-template-columns:1fr}.search{display:none}}
+</style>
 </head>
-
 <body>
-
-<div class="app-wrapper">
-
-    <!-- SIDEBAR -->
-
-    <aside class="sidebar">
-
-        <div class="sidebar-brand">
-
-            <div class="brand-icon">
-                <i class="bi bi-shield-lock-fill"></i>
-            </div>
-
-            <div>
-                <h4>AccessIQ</h4>
-                <span>SECURITY CONSOLE</span>
-            </div>
-
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark"><i class="bi bi-shield-lock-fill"></i></div>ACCESSIQ</div>
+  <div class="nav-title">OVERVIEW</div>
+  <a class="nav-link" href="{{ url_for('main.dashboard') }}"><i class="bi bi-grid-1x2-fill"></i>Dashboard</a>
+  <div class="nav-title">MANAGEMENT</div>
+  <a class="nav-link active" href="{{ url_for('main.admin') }}"><i class="bi bi-people-fill"></i>User Management</a>
+  <a class="nav-link" href="{{ url_for('main.manage_roles') }}"><i class="bi bi-diagram-3-fill"></i>Roles & Permissions</a>
+  <div class="nav-title">SECURITY</div>
+  <a class="nav-link" href="{{ url_for('main.security_analytics') }}"><i class="bi bi-bar-chart-fill"></i>Security Analytics</a>
+  <a class="nav-link" href="{{ url_for('main.audit_logs') }}"><i class="bi bi-journal-text"></i>Audit Logs</a>
+  <a class="nav-link" href="{{ url_for('main.ai_analysis') }}"><i class="bi bi-stars"></i>AI Security Analysis</a>
+  <div class="nav-title">ACCESS</div>
+  <a class="nav-link" href="{{ url_for('main.profile') }}"><i class="bi bi-person-circle"></i>My Profile</a>
+  <a class="nav-link" href="{{ url_for('main.logout') }}"><i class="bi bi-box-arrow-right"></i>Logout</a>
+</aside>
+<main class="main">
+  <div class="topbar"><div class="crumb"><i class="bi bi-house me-1"></i> / User Management / <strong>Edit User</strong></div><div class="top-actions"><div class="search"><i class="bi bi-search"></i><input placeholder="Search..."></div><div class="avatar">{{ (session.get('username','A')[:1])|upper }}</div></div></div>
+  <section class="hero"><div class="eyebrow">Account Administration</div><h1>Edit User</h1><p>Update access details, role assignment and account status.</p></section>
+  <div class="layout">
+    <section class="cardx form-card">
+      <div class="section-head"><div class="section-icon"><i class="bi bi-person-gear"></i></div><div><h3>User Information</h3><p>Modify the account attributes managed by administrators.</p></div></div>
+      <form method="POST" action="{{ url_for('main.edit_user', user_id=user.id) }}">
+        <div class="row g-4">
+          <div class="col-md-6"><label class="form-label">Username</label><input class="form-control" value="{{ user.username }}" readonly></div>
+          <div class="col-md-6"><label class="form-label">Email Address</label><input class="form-control" value="{{ user.email }}" readonly></div>
+          <div class="col-md-6"><label class="form-label">Department</label><input class="form-control" name="department" value="{{ user.department or '' }}" placeholder="e.g. Computer Science" required></div>
+          <div class="col-md-6"><label class="form-label">Designation</label><input class="form-control" name="designation" value="{{ user.designation or '' }}" placeholder="e.g. Student / Manager" required></div>
+          <div class="col-md-6"><label class="form-label">Role</label><select class="form-select" name="role_id" required>{% for role in roles %}<option value="{{ role.id }}" {% if user.role_id == role.id %}selected{% endif %}>{{ role.name }}</option>{% endfor %}</select></div>
+          <div class="col-md-6"><label class="form-label">Account Status</label><select class="form-select" name="status" required><option value="Active" {% if user.status == 'Active' %}selected{% endif %}>Active</option><option value="Inactive" {% if user.status == 'Inactive' %}selected{% endif %}>Inactive</option></select></div>
         </div>
-
-
-        <div class="sidebar-label">
-            MAIN MENU
-        </div>
-
-
-        <nav class="sidebar-nav">
-
-            <a href="{{ url_for('main.dashboard') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-grid-1x2-fill"></i>
-                <span>Dashboard</span>
-
-            </a>
-
-
-            <a href="{{ url_for('main.admin') }}"
-               class="sidebar-link active">
-
-                <i class="bi bi-people-fill"></i>
-                <span>User Management</span>
-
-            </a>
-
-
-            <a href="{{ url_for('main.manage_roles') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-person-badge-fill"></i>
-                <span>Role Management</span>
-
-            </a>
-
-
-            <a href="{{ url_for('main.audit_logs') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-journal-text"></i>
-                <span>Audit Logs</span>
-
-            </a>
-
-
-            <a href="{{ url_for('main.ai_analysis') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-robot"></i>
-                <span>AI Security</span>
-
-            </a>
-
-        </nav>
-
-
-        <div class="sidebar-user">
-
-            <div class="user-avatar">
-                {{ session["username"][0]|upper }}
-            </div>
-
-            <div class="user-details">
-
-                <strong>
-                    {{ session["username"] }}
-                </strong>
-
-                <span>
-                    {{ session["role"] }}
-                </span>
-
-            </div>
-
-            <a
-                href="{{ url_for('main.logout') }}"
-                class="logout-icon"
-            >
-
-                <i class="bi bi-box-arrow-right"></i>
-
-            </a>
-
-        </div>
-
+        <div class="actions"><a href="{{ url_for('main.admin') }}" class="btn btn-secondary">Cancel</a><button type="submit" class="btn btn-primary"><i class="bi bi-check2-circle me-2"></i>Save Changes</button></div>
+      </form>
+    </section>
+    <aside class="cardx side-card">
+      <div class="profile"><div class="big-avatar"><i class="bi bi-person-fill"></i></div><div><h4>{{ user.username }}</h4><p>{{ user.email }}</p></div></div>
+      <div class="info"><div class="info-row"><span>Current Role</span><strong>{{ user.role.name if user.role else 'Unassigned' }}</strong></div><div class="info-row"><span>Department</span><strong>{{ user.department or '—' }}</strong></div><div class="info-row"><span>Status</span><span class="badge-status">{{ user.status or 'Unknown' }}</span></div></div>
+      <div class="hint"><i class="bi bi-shield-check me-1"></i> Changes to role and status affect this user's access to protected AccessIQ resources.</div>
     </aside>
-
-
-    <!-- MAIN AREA -->
-
-    <main class="main-area">
-
-        <header class="topbar">
-
-            <div class="page-heading">
-
-                <h5>
-                    Edit User
-                </h5>
-
-                <span>
-                    Update user access information
-                </span>
-
-            </div>
-
-        </header>
-
-
-        <section class="page-content">
-
-            <div class="mb-4">
-
-                <h1 class="page-title">
-                    Edit User
-                </h1>
-
-                <p class="page-subtitle">
-                    Update department, designation, role and status.
-                </p>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="card-body p-4">
-
-                    <div class="mb-4">
-
-                        <h5>
-                            {{ user.username }}
-                        </h5>
-
-                        <small class="text-muted">
-                            {{ user.email }}
-                        </small>
-
-                    </div>
-
-
-                    <form method="POST">
-
-                        <div class="row g-4">
-
-
-                            <!-- Department -->
-
-                            <div class="col-md-6">
-
-                                <label class="form-label">
-                                    Department
-                                </label>
-
-                                <input
-                                    type="text"
-                                    name="department"
-                                    class="form-control"
-                                    value="{{ user.department }}"
-                                    required
-                                >
-
-                            </div>
-
-
-                            <!-- Designation -->
-
-                            <div class="col-md-6">
-
-                                <label class="form-label">
-                                    Designation
-                                </label>
-
-                                <input
-                                    type="text"
-                                    name="designation"
-                                    class="form-control"
-                                    value="{{ user.designation }}"
-                                    required
-                                >
-
-                            </div>
-
-
-                            <!-- Role -->
-
-                            <div class="col-md-6">
-
-                                <label class="form-label">
-                                    Role
-                                </label>
-
-                                <select
-                                    name="role_id"
-                                    class="form-select"
-                                    required
-                                    style="color: #ffffff; background-color: #16213e;"
-                                >
-
-                                    {% for role in roles %}
-
-                                    <option
-                                        value="{{ role.id }}"
-                                        {% if user.role_id == role.id %}
-                                        selected
-                                        {% endif %}
-                                        style="color: #000000; background-color: #ffffff;"
-                                    >
-                                        {{ role.name }}
-                                    </option>
-
-                                    {% endfor %}
-
-                                </select>
-
-                            </div>
-
-
-                            <!-- Status -->
-
-                            <div class="col-md-6">
-
-                                <label class="form-label">
-                                    Status
-                                </label>
-
-                                <select
-                                    name="status"
-                                    class="form-select"
-                                    required
-                                    style="color: #ffffff; background-color: #16213e;"
-                                >
-
-                                    <option
-                                        value="Active"
-                                        {% if user.status == "Active" %}
-                                        selected
-                                        {% endif %}
-                                        style="color: #000000; background-color: #ffffff;"
-                                    >
-                                        Active
-                                    </option>
-
-                                    <option
-                                        value="Inactive"
-                                        {% if user.status == "Inactive" %}
-                                        selected
-                                        {% endif %}
-                                        style="color: #000000; background-color: #ffffff;"
-                                    >
-                                        Inactive
-                                    </option>
-
-                                </select>
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="d-flex gap-3 mt-5">
-
-                            <button
-                                type="submit"
-                                class="btn btn-primary"
-                            >
-
-                                <i class="bi bi-check-circle me-2"></i>
-
-                                Save Changes
-
-                            </button>
-
-
-                            <a
-                                href="{{ url_for('main.admin') }}"
-                                class="btn btn-outline-light"
-                            >
-
-                                Cancel
-
-                            </a>
-
-                        </div>
-
-                    </form>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-</div>
-
+  </div>
+</main>
+<script>document.querySelectorAll('.form-control,.form-select').forEach(el=>el.addEventListener('input',()=>el.classList.remove('is-invalid')));</script>
 </body>
-
 </html>
