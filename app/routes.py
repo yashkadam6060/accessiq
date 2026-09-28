@@ -1,4 +1,5 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 from io import BytesIO
 
 from flask import (
@@ -29,6 +30,35 @@ from .ai.analyzer import analyze_activity
 
 
 main = Blueprint("main", __name__)
+
+
+UTC = timezone.utc
+IST = ZoneInfo("Asia/Kolkata")
+
+
+def to_ist(dt):
+    """Convert a database UTC timestamp to Asia/Kolkata for display."""
+    if not dt:
+        return None
+
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=UTC)
+
+    return dt.astimezone(IST)
+
+
+def ist_day_bounds(day):
+    """Return naive UTC start/end timestamps for one IST calendar day."""
+    start_ist = datetime.combine(day, datetime.min.time(), tzinfo=IST)
+    end_ist = start_ist + timedelta(days=1)
+    start_utc = start_ist.astimezone(UTC).replace(tzinfo=None)
+    end_utc = end_ist.astimezone(UTC).replace(tzinfo=None)
+    return start_utc, end_utc
+
+
+@main.app_context_processor
+def inject_timezone_helpers():
+    return {"to_ist": to_ist}
 
 
 def log_activity(user_id, action, details=None):
@@ -201,7 +231,7 @@ def dashboard():
                     f"requested {permission_request.permission.name}."
                 ),
                 "timestamp": (
-                    permission_request.requested_at.strftime(
+                    to_ist(permission_request.requested_at).strftime(
                         "%d %b %Y, %I:%M %p"
                     )
                     if permission_request.requested_at
@@ -229,7 +259,7 @@ def dashboard():
                 "title": "Failed Login Attempt",
                 "message": log.details or "Failed login attempt detected.",
                 "timestamp": (
-                    log.timestamp.strftime(
+                    to_ist(log.timestamp).strftime(
                         "%d %b %Y, %I:%M %p"
                     )
                     if log.timestamp
@@ -257,7 +287,7 @@ def dashboard():
                 "title": "Access Denied",
                 "message": log.details or "Unauthorized access attempt detected.",
                 "timestamp": (
-                    log.timestamp.strftime(
+                    to_ist(log.timestamp).strftime(
                         "%d %b %Y, %I:%M %p"
                     )
                     if log.timestamp
@@ -299,7 +329,7 @@ def dashboard():
                         f"was approved."
                     ),
                     "timestamp": (
-                        permission_request.reviewed_at.strftime(
+                        to_ist(permission_request.reviewed_at).strftime(
                             "%d %b %Y, %I:%M %p"
                         )
                         if permission_request.reviewed_at
@@ -319,7 +349,7 @@ def dashboard():
                         f"was rejected."
                     ),
                     "timestamp": (
-                        permission_request.reviewed_at.strftime(
+                        to_ist(permission_request.reviewed_at).strftime(
                             "%d %b %Y, %I:%M %p"
                         )
                         if permission_request.reviewed_at
@@ -378,20 +408,19 @@ def dashboard():
     security_events_data = []
 
 
-    today = datetime.now().date()
+    today = datetime.now(IST).date()
 
 
     for i in range(6, -1, -1):
 
         current_date = today - timedelta(days=i)
-
-        next_date = current_date + timedelta(days=1)
+        start_utc, end_utc = ist_day_bounds(current_date)
 
 
         successful_logins = AuditLog.query.filter(
             AuditLog.action == "LOGIN",
-            AuditLog.timestamp >= current_date,
-            AuditLog.timestamp < next_date
+            AuditLog.timestamp >= start_utc,
+            AuditLog.timestamp < end_utc
         ).count()
 
 
@@ -402,8 +431,8 @@ def dashboard():
                     "ACCESS_DENIED"
                 ]
             ),
-            AuditLog.timestamp >= current_date,
-            AuditLog.timestamp < next_date
+            AuditLog.timestamp >= start_utc,
+            AuditLog.timestamp < end_utc
         ).count()
 
 
@@ -526,10 +555,12 @@ def audit_logs():
             from_date = datetime.strptime(
                 date_from,
                 "%Y-%m-%d"
-            )
+            ).date()
+
+            from_utc, _ = ist_day_bounds(from_date)
 
             query = query.filter(
-                AuditLog.timestamp >= from_date
+                AuditLog.timestamp >= from_utc
             )
 
         except ValueError:
@@ -541,10 +572,12 @@ def audit_logs():
             to_date = datetime.strptime(
                 date_to,
                 "%Y-%m-%d"
-            ) + timedelta(days=1)
+            ).date()
+
+            _, to_utc = ist_day_bounds(to_date)
 
             query = query.filter(
-                AuditLog.timestamp < to_date
+                AuditLog.timestamp < to_utc
             )
 
         except ValueError:
@@ -601,18 +634,28 @@ def logout():
 @main.route("/admin")
 def admin():
 
-    if "user_id" not in session:
+    # --------------------------------
+    # Check login
+    # --------------------------------
 
+    if "user_id" not in session:
         return redirect(
             url_for("main.login")
         )
 
-    if session.get("role") != "Admin":
+    # --------------------------------
+    # Admin only
+    # --------------------------------
 
+    if session.get("role") != "Admin":
         return render_template(
             "access_denied.html",
             permission="Administrator Access"
         ), 403
+
+    # --------------------------------
+    # Get filters
+    # --------------------------------
 
     search = request.args.get(
         "search",
@@ -634,88 +677,98 @@ def admin():
         ""
     ).strip()
 
+    # --------------------------------
+    # Base query
+    # --------------------------------
 
     query = User.query
 
+    # --------------------------------
+    # Search by username or email
+    # --------------------------------
 
     if search:
-
         query = query.filter(
-
             (User.username.ilike(
                 f"%{search}%"
-            ))
-
-            |
-
+            )) |
             (User.email.ilike(
                 f"%{search}%"
             ))
-
         )
 
+    # --------------------------------
+    # Filter by department
+    # --------------------------------
 
     if department:
-
         query = query.filter(
             User.department == department
         )
 
+    # --------------------------------
+    # Filter by role
+    # --------------------------------
 
     if role_id:
+        try:
+            role_id = int(role_id)
 
-        query = query.filter(
-            User.role_id == role_id
-        )
+            query = query.filter(
+                User.role_id == role_id
+            )
 
+        except (ValueError, TypeError):
+            role_id = ""
+
+    # --------------------------------
+    # Filter by status
+    # --------------------------------
 
     if status:
-
         query = query.filter(
             User.status == status
         )
 
+    # --------------------------------
+    # Get filtered users
+    # --------------------------------
 
     users = query.all()
 
+    # --------------------------------
+    # Get departments
+    # --------------------------------
 
     departments = db.session.query(
         User.department
     ).distinct().all()
 
-
     departments = [
-
         department[0]
-
         for department in departments
-
         if department[0]
-
     ]
 
+    # --------------------------------
+    # Get roles
+    # --------------------------------
 
     roles = Role.query.all()
 
+    # --------------------------------
+    # Render admin page
+    # --------------------------------
 
     return render_template(
-
         "admin.html",
-
         users=users,
-
         departments=departments,
-
         roles=roles,
-
         search=search,
-
         selected_department=department,
-
         selected_role=role_id,
-
         selected_status=status
-
     )
 # =========================================================
 # SECURITY ANALYTICS
@@ -764,29 +817,29 @@ def security_analytics():
     access_denied_data = []
     successful_login_data = []
 
-    today = datetime.now().date()
+    today = datetime.now(IST).date()
 
     for i in range(6, -1, -1):
 
         current_date = today - timedelta(days=i)
-        next_date = current_date + timedelta(days=1)
+        start_utc, end_utc = ist_day_bounds(current_date)
 
         failed = AuditLog.query.filter(
             AuditLog.action == "FAILED_LOGIN",
-            AuditLog.timestamp >= current_date,
-            AuditLog.timestamp < next_date
+            AuditLog.timestamp >= start_utc,
+            AuditLog.timestamp < end_utc
         ).count()
 
         denied = AuditLog.query.filter(
             AuditLog.action == "ACCESS_DENIED",
-            AuditLog.timestamp >= current_date,
-            AuditLog.timestamp < next_date
+            AuditLog.timestamp >= start_utc,
+            AuditLog.timestamp < end_utc
         ).count()
 
         successful = AuditLog.query.filter(
             AuditLog.action == "LOGIN",
-            AuditLog.timestamp >= current_date,
-            AuditLog.timestamp < next_date
+            AuditLog.timestamp >= start_utc,
+            AuditLog.timestamp < end_utc
         ).count()
 
         chart_labels.append(
@@ -1048,6 +1101,11 @@ def add_user():
             "role_id"
         )
 
+        try:
+            role_id = int(role_id) if role_id else None
+        except (ValueError, TypeError):
+            role_id = None
+
         status = request.form.get(
             "status"
         )
@@ -1165,9 +1223,14 @@ def edit_user(user_id):
             "designation"
         )
 
-        user.role_id = request.form.get(
+        role_id = request.form.get(
             "role_id"
         )
+
+        try:
+            user.role_id = int(role_id) if role_id else None
+        except (ValueError, TypeError):
+            user.role_id = None
 
         user.status = request.form.get(
             "status"
@@ -1700,7 +1763,7 @@ def review_permission_request(
         )
 
 
-    permission_request.reviewed_at = datetime.now()
+    permission_request.reviewed_at = datetime.now(UTC).replace(tzinfo=None)
 
     permission_request.reviewed_by = session["user_id"]
 
@@ -1950,7 +2013,7 @@ def export_security_report():
     elements.append(
         Paragraph(
             f"Generated on: "
-            f"{datetime.now().strftime('%d %b %Y, %I:%M %p')}",
+            f"{datetime.now(IST).strftime('%d %b %Y, %I:%M %p')}",
             normal_style
         )
     )
@@ -2076,7 +2139,7 @@ def export_security_report():
         )
 
         timestamp = (
-            log.timestamp.strftime(
+            to_ist(log.timestamp).strftime(
                 "%d %b %Y %I:%M %p"
             )
             if log.timestamp

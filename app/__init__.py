@@ -19,7 +19,11 @@ def create_app():
     database_url = os.getenv("NEON_DATABASE_URL")
 
     # Database configuration
-    app.config["SQLALCHEMY_DATABASE_URI"] = database_url
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_url.replace(
+    "postgresql://",
+    "postgresql+psycopg://",
+    1
+)
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     # Neon PostgreSQL connection settings

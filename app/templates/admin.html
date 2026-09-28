@@ -10,7 +10,7 @@
 <style>
 :root{
  --bg:#070b14;--panel:#0d1422;--panel2:#101a2b;--line:rgba(148,163,184,.13);
- --text:#eef5ff;--muted:#8290a8;--cyan:#39d9ff;--blue:#5b7cff;--green:#32e6a1;
+ --text:#f3f7ff;--muted:#aebdd2;--cyan:#39d9ff;--blue:#5b7cff;--green:#32e6a1;
  --amber:#ffbf5b;--red:#ff6b81;--purple:#a878ff
 }
 *{box-sizing:border-box}
@@ -25,19 +25,20 @@ a{text-decoration:none}
 .brand{display:flex;align-items:center;gap:12px;padding:4px 10px 30px}
 .brand-mark{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;
  background:linear-gradient(135deg,#35dfff,#526fff);color:#06101b;box-shadow:0 8px 30px rgba(57,217,255,.2)}
-.brand b{font-size:18px;letter-spacing:.12em}.brand small{display:block;color:#65748b;font-size:9px;letter-spacing:.16em;margin-top:2px}
-.nav-title{font-size:10px;letter-spacing:.18em;color:#526077;padding:18px 12px 8px}
-.nav-link{display:flex;align-items:center;gap:12px;color:#8290a8;padding:11px 12px;border-radius:12px;margin:3px 0;font-size:13px;transition:.2s}
-.nav-link i{font-size:17px;width:20px;text-align:center}.nav-link:hover{background:rgba(91,124,255,.08);color:#dce8ff}
-.nav-link.active{background:linear-gradient(90deg,rgba(57,217,255,.12),rgba(91,124,255,.08));color:#fff;border:1px solid rgba(57,217,255,.1)}
+.brand b{font-size:18px;letter-spacing:.12em}.brand small{display:block;color:#aebed4;font-size:9px;letter-spacing:.16em;margin-top:2px}
+.nav-title{font-size:10px;letter-spacing:.18em;color:#91a4c3;padding:18px 12px 8px;font-weight:700}
+.nav-link{display:flex;align-items:center;gap:12px;color:#d8e4f5;padding:11px 12px;border-radius:12px;margin:3px 0;font-size:13px;transition:.2s}
+.nav-link i{color:#b8c9df}
+.nav-link:hover{background:rgba(91,124,255,.08);color:#ffffff}.nav-link:hover i{color:#ffffff}
+.nav-link i{font-size:17px;width:20px;text-align:center}.nav-link.active{background:linear-gradient(90deg,rgba(57,217,255,.12),rgba(91,124,255,.08));color:#fff;border:1px solid rgba(57,217,255,.1)}
 .sidebar-bottom{position:absolute;left:16px;right:16px;bottom:20px;padding:14px;border:1px solid var(--line);border-radius:16px;background:rgba(16,26,43,.65)}
 .dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 12px var(--green)}
 .main{flex:1;min-width:0}
 .topbar{height:76px;padding:0 34px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);
  background:rgba(7,11,20,.48);backdrop-filter:blur(18px);position:sticky;top:0;z-index:15}
 .search{width:min(430px,42vw);height:40px;border:1px solid var(--line);background:rgba(255,255,255,.035);border-radius:12px;
- display:flex;align-items:center;gap:10px;padding:0 13px;color:#617089}
-.search input{border:0;outline:0;background:transparent;color:#fff;width:100%;font-size:13px}.search input::placeholder{color:#5e6c83}
+ display:flex;align-items:center;gap:10px;padding:0 13px;color:#a8b8cd}
+.search input{border:0;outline:0;background:transparent;color:#fff;width:100%;font-size:13px}.search input::placeholder{color:#9eafc5}
 .top-actions{display:flex;align-items:center;gap:12px}.icon-btn{width:40px;height:40px;border:1px solid var(--line);background:rgba(255,255,255,.03);
  color:#9aa8be;border-radius:12px;display:grid;place-items:center}.icon-btn:hover{color:#fff;border-color:rgba(57,217,255,.3)}
 .profile{display:flex;align-items:center;gap:10px;padding-left:12px;border-left:1px solid var(--line)}
@@ -56,22 +57,28 @@ a{text-decoration:none}
  border:1px solid var(--line);border-radius:17px;padding:17px;position:relative;overflow:hidden;transition:.22s}
 .kpi:hover{transform:translateY(-3px);border-color:rgba(91,124,255,.25)}.kpi:before{content:"";position:absolute;top:0;left:0;width:48px;height:2px;background:var(--accent)}
 .kpi-top{display:flex;justify-content:space-between}.kpi-icon{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.045);display:grid;place-items:center;color:var(--accent)}
-.kpi-label{font-size:10px;letter-spacing:.08em;color:#718097;margin-top:14px}.kpi-value{font-size:25px;font-weight:780;margin-top:2px}.kpi-meta{font-size:10px;color:#607089;margin-top:3px}
+.kpi-label{font-size:10px;letter-spacing:.08em;color:#aebdd2;margin-top:14px}.kpi-value{font-size:25px;font-weight:780;margin-top:2px}.kpi-meta{font-size:10px;color:#a2b1c6;margin-top:3px}
 .card{background:linear-gradient(145deg,rgba(14,23,38,.94),rgba(9,16,28,.94));border:1px solid var(--line);border-radius:20px;padding:20px}
 .toolbar{display:grid;grid-template-columns:minmax(220px,1fr) 180px 180px 150px auto;gap:9px;margin-bottom:18px}
 .field{height:42px;border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:11px;color:#dbe7f7;padding:0 12px;font-size:11px;outline:none}
 .field:focus{border-color:rgba(57,217,255,.35);box-shadow:0 0 0 3px rgba(57,217,255,.04)}select.field option{background:#0d1422}
-.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:15px}.table{margin:0;color:#dce6f4;min-width:920px}
-.table thead th{background:#0b1321;color:#66758c;border:0;font-size:9px;letter-spacing:.12em;padding:14px 15px;white-space:nowrap}
-.table tbody td{background:rgba(255,255,255,.012);border-top:1px solid rgba(148,163,184,.07);border-bottom:0;padding:13px 15px;font-size:11px;vertical-align:middle}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:15px}.table{margin:0;color:#f1f6ff !important;--bs-table-color:#f1f6ff;--bs-table-bg:transparent;min-width:920px}
+.table thead th{background:#0b1321;color:#b9c9df !important;border:0;font-size:9px;letter-spacing:.12em;padding:14px 15px;white-space:nowrap}
+.table tbody td{background:rgba(255,255,255,.012);color:#edf4ff !important;border-top:1px solid rgba(148,163,184,.07);border-bottom:0;padding:13px 15px;font-size:11px;vertical-align:middle}
+.table tbody td *{color:inherit}
+.table tbody td .user-name{color:#ffffff !important}
+.table tbody td .user-email{color:#aebed4 !important}
+.table tbody td .role-badge{color:#c6d2ff !important}
+.table tbody td .status.active{color:#73efbb !important}
+.table tbody td .status.inactive{color:#b7c4d8 !important}
 .table tbody tr{transition:.18s}.table tbody tr:hover td{background:rgba(57,217,255,.025)}
 .user-cell{display:flex;align-items:center;gap:10px}.user-avatar{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,#1b315a,#2b4b86);color:#d8f4ff;font-weight:800;font-size:12px}
-.user-name{font-weight:700}.user-email{font-size:9px;color:#65748b;margin-top:2px}.role-badge{display:inline-flex;padding:6px 9px;border-radius:8px;background:rgba(91,124,255,.09);border:1px solid rgba(91,124,255,.13);color:#9eafff;font-size:9px}
+.user-name{font-weight:700}.user-email{font-size:9px;color:#aebed4;margin-top:2px}.role-badge{display:inline-flex;padding:6px 9px;border-radius:8px;background:rgba(91,124,255,.09);border:1px solid rgba(91,124,255,.13);color:#9eafff;font-size:9px}
 .status{display:inline-flex;align-items:center;gap:6px;font-size:9px}.status i{font-size:6px}.active{color:#73efbb}.inactive{color:#8491a7}
 .action-btn{width:32px;height:32px;border:1px solid var(--line);background:rgba(255,255,255,.025);color:#91a0b5;border-radius:9px;display:inline-grid;place-items:center}
 .action-btn:hover{color:#fff;border-color:rgba(57,217,255,.25)}.action-btn.danger:hover{color:#ff8b9d;border-color:rgba(255,107,129,.25)}
-.empty{padding:45px;text-align:center;color:#64728a}.empty i{font-size:30px;color:#32e6a1;display:block;margin-bottom:8px}
-.footer{display:flex;justify-content:space-between;color:#4f5c71;font-size:9px;margin-top:18px;padding:0 4px}
+.empty{padding:45px;text-align:center;color:#aab9ce}.empty i{font-size:30px;color:#32e6a1;display:block;margin-bottom:8px}
+.footer{display:flex;justify-content:space-between;color:#97a8bf;font-size:9px;margin-top:18px;padding:0 4px}
 .mobile-toggle{display:none}
 @media(max-width:1100px){.toolbar{grid-template-columns:1fr 1fr}.kpis{grid-template-columns:1fr 1fr}.hero-actions{position:static;margin-top:18px}}
 @media(max-width:900px){.sidebar{position:fixed;left:-270px;transition:.25s}.sidebar.open{left:0}.mobile-toggle{display:grid}.content{padding:22px 18px}.topbar{padding:0 18px}.search{width:42vw}}
@@ -95,6 +102,7 @@ a{text-decoration:none}
 
     <div class="nav-title">SECURITY</div>
     <a class="nav-link" href="{{ url_for('main.audit_logs') }}"><i class="bi bi-activity"></i> Audit Intelligence</a>
+    <a class="nav-link" href="{{ url_for('main.security_analytics') }}"><i class="bi bi-bar-chart-fill"></i> Security Analytics</a>
     <a class="nav-link" href="{{ url_for('main.ai_analysis') }}"><i class="bi bi-stars"></i> AI Security</a>
 
     <div class="nav-title">ACCESS</div>
@@ -129,19 +137,19 @@ a{text-decoration:none}
     </section>
 
     <section class="kpis">
-        <div class="kpi" style="--accent:#39d9ff"><div class="kpi-top"><span class="kpi-icon"><i class="bi bi-people-fill"></i></span><i class="bi bi-person-check" style="color:#56657c"></i></div>
+        <div class="kpi" style="--accent:#39d9ff"><div class="kpi-top"><span class="kpi-icon"><i class="bi bi-people-fill"></i></span><i class="bi bi-person-check" style="color:#9aacbf"></i></div>
             <div class="kpi-label">TOTAL IDENTITIES</div><div class="kpi-value">{{ users|length }}</div><div class="kpi-meta">Users in current view</div></div>
-        <div class="kpi" style="--accent:#32e6a1"><div class="kpi-top"><span class="kpi-icon"><i class="bi bi-shield-check"></i></span><i class="bi bi-check2-circle" style="color:#56657c"></i></div>
+        <div class="kpi" style="--accent:#32e6a1"><div class="kpi-top"><span class="kpi-icon"><i class="bi bi-shield-check"></i></span><i class="bi bi-check2-circle" style="color:#9aacbf"></i></div>
             <div class="kpi-label">ACTIVE ACCOUNTS</div><div class="kpi-value">{{ users|selectattr("status","equalto","Active")|list|length }}</div><div class="kpi-meta">Currently enabled</div></div>
-        <div class="kpi" style="--accent:#a878ff"><div class="kpi-top"><span class="kpi-icon"><i class="bi bi-diagram-3-fill"></i></span><i class="bi bi-lock" style="color:#56657c"></i></div>
+        <div class="kpi" style="--accent:#a878ff"><div class="kpi-top"><span class="kpi-icon"><i class="bi bi-diagram-3-fill"></i></span><i class="bi bi-lock" style="color:#9aacbf"></i></div>
             <div class="kpi-label">ACCESS ROLES</div><div class="kpi-value">{{ roles|length }}</div><div class="kpi-meta">RBAC groups available</div></div>
-        <div class="kpi" style="--accent:#ffbf5b"><div class="kpi-top"><span class="kpi-icon"><i class="bi bi-building"></i></span><i class="bi bi-layers" style="color:#56657c"></i></div>
+        <div class="kpi" style="--accent:#ffbf5b"><div class="kpi-top"><span class="kpi-icon"><i class="bi bi-building"></i></span><i class="bi bi-layers" style="color:#9aacbf"></i></div>
             <div class="kpi-label">DEPARTMENTS</div><div class="kpi-value">{{ departments|length }}</div><div class="kpi-meta">Unique departments</div></div>
     </section>
 
     <section class="card">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <div><div style="font-size:14px;font-weight:720">Identity Directory</div><div style="font-size:10px;color:#65748b;margin-top:4px"><span id="visibleCount">{{ users|length }}</span> users displayed</div></div>
+            <div><div style="font-size:14px;font-weight:720">Identity Directory</div><div style="font-size:10px;color:#aebed4;margin-top:4px"><span id="visibleCount">{{ users|length }}</span> users displayed</div></div>
             <span style="font-size:9px;color:#73efbb;border:1px solid rgba(50,230,161,.14);background:rgba(50,230,161,.05);padding:7px 9px;border-radius:8px"><i class="bi bi-shield-check me-1"></i>RBAC ACTIVE</span>
         </div>
 

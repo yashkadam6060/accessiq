@@ -1,161 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Role • AccessIQ</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        :root{
-            --bg:#070b16; --panel:#0d1424; --panel2:#111a2d; --line:#1e2a40;
-            --text:#eef4ff; --muted:#8d9ab2; --blue:#38bdf8; --purple:#8b5cf6;
-        }
-        *{box-sizing:border-box}
-        body{margin:0;background:radial-gradient(circle at 80% 0%,rgba(56,189,248,.09),transparent 30%),#070b16;color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
-        a{text-decoration:none;color:inherit}
-        .sidebar{position:fixed;left:0;top:0;width:250px;height:100vh;background:#090f1c;border-right:1px solid var(--line);padding:24px 16px;z-index:20}
-        .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:21px;letter-spacing:.5px;margin:0 10px 30px}
-        .brand-icon{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,var(--blue),var(--purple));color:white}
-        .section-label{font-size:10px;letter-spacing:1.4px;color:#65728a;font-weight:700;margin:22px 12px 9px}
-        .nav-link{display:flex;align-items:center;gap:12px;color:#91a0b8;border-radius:10px;padding:10px 12px;margin:3px 0;font-size:13px}
-        .nav-link:hover,.nav-link.active{background:#121d31;color:white}
-        .nav-link.active{box-shadow:inset 2px 0 0 var(--blue)}
-        .nav-link i{font-size:16px;width:20px;text-align:center}
-        .main{margin-left:250px;min-height:100vh;padding:0 34px 45px}
-        .topbar{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(30,42,64,.65)}
-        .crumb{font-size:13px;color:var(--muted)}
-        .crumb strong{color:white}
-        .profile{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#1e293b,#334155);border:1px solid #334155}
-        .page-head{padding:32px 0 24px;display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
-        .eyebrow{color:var(--blue);font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}
-        h1{font-size:31px;margin:6px 0 7px;font-weight:800}
-        .subtitle{color:var(--muted);font-size:14px;margin:0}
-        .layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.7fr);gap:22px}
-        .cardx{background:linear-gradient(145deg,rgba(17,26,45,.97),rgba(10,17,30,.97));border:1px solid var(--line);border-radius:18px;padding:25px;box-shadow:0 18px 45px rgba(0,0,0,.18)}
-        .card-title{font-size:17px;font-weight:750;margin-bottom:5px}
-        .card-sub{font-size:12px;color:var(--muted);margin-bottom:23px}
-        label{font-size:12px;font-weight:650;color:#cbd5e1;margin-bottom:8px}
-        .form-control,.form-select{background:#09111f!important;border:1px solid #25334b!important;color:#eef4ff!important;border-radius:10px;padding:11px 13px;font-size:13px}
-        .form-control:focus,.form-select:focus{border-color:#38bdf8!important;box-shadow:0 0 0 3px rgba(56,189,248,.1)!important}
-        .form-control:disabled{opacity:.65}
-        .permission-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:6px}
-        .permission{display:flex;align-items:flex-start;gap:11px;padding:14px;border:1px solid #233149;border-radius:12px;background:#0a1220;cursor:pointer;transition:.18s}
-        .permission:hover{border-color:#38506e;background:#0d1728}
-        .permission input{accent-color:#38bdf8;margin-top:3px}
-        .permission strong{display:block;font-size:13px}
-        .permission span{display:block;color:var(--muted);font-size:11px;margin-top:3px;line-height:1.4}
-        .actions{display:flex;justify-content:flex-end;gap:10px;margin-top:25px;padding-top:20px;border-top:1px solid var(--line)}
-        .btn-main{border:0;border-radius:10px;padding:10px 18px;background:linear-gradient(135deg,var(--blue),var(--purple));color:white;font-weight:750;font-size:13px}
-        .btn-secondary{border:1px solid #2b3a53;background:#0b1423;color:#b9c5d8;border-radius:10px;padding:10px 18px;font-size:13px}
-        .role-icon{width:58px;height:58px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(56,189,248,.16),rgba(139,92,246,.16));color:var(--blue);font-size:25px;border:1px solid #263a55;margin-bottom:18px}
-        .info-row{padding:13px 0;border-bottom:1px solid var(--line)}
-        .info-row:last-child{border-bottom:0}
-        .info-label{font-size:10px;color:#71809a;text-transform:uppercase;letter-spacing:1px}
-        .info-value{font-size:13px;color:#e5edf9;margin-top:4px}
-        .mobile-toggle{display:none}
-        @media(max-width:950px){
-            .sidebar{transform:translateX(-100%);transition:.2s}.sidebar.open{transform:none}
-            .main{margin-left:0;padding:0 18px 35px}.mobile-toggle{display:block;border:0;background:none;color:white;font-size:23px}
-            .topbar{gap:12px}.layout{grid-template-columns:1fr}.permission-grid{grid-template-columns:1fr}
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Role • AccessIQ</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+:root{--bg:#070b14;--panel:#0d1422;--panel2:#101a2b;--line:rgba(148,163,184,.13);--text:#eef5ff;--muted:#b8c5d8;--cyan:#39d9ff;--blue:#5b7cff;--purple:#a878ff;--green:#32e6a1;--amber:#ffbf5b}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 80% 0%,rgba(57,217,255,.08),transparent 30%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+a{text-decoration:none;color:inherit}
+.app{min-height:100vh;display:flex}
+.sidebar{width:250px;flex:0 0 250px;min-height:100vh;background:rgba(7,11,20,.9);border-right:1px solid var(--line);padding:24px 16px;position:sticky;top:0;height:100vh;backdrop-filter:blur(20px);z-index:20}
+.brand{display:flex;align-items:center;gap:12px;padding:4px 10px 30px}.brand-mark{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#35dfff,#526fff);color:#06101b;font-weight:900;box-shadow:0 8px 30px rgba(57,217,255,.2)}
+.brand b{font-size:18px;letter-spacing:.12em}.brand small{display:block;color:#9aa8bb;font-size:9px;letter-spacing:.16em;margin-top:2px}
+.nav-title{font-size:10px;letter-spacing:.18em;color:#8b9bb0;padding:18px 12px 8px}
+.nav-link{display:flex;align-items:center;gap:12px;color:#b7c4d6;padding:11px 12px;border-radius:12px;margin:3px 0;font-size:13px;transition:.2s}
+.nav-link i{font-size:17px;width:20px;text-align:center}.nav-link:hover{background:rgba(91,124,255,.08);color:#fff}.nav-link.active{background:linear-gradient(90deg,rgba(57,217,255,.12),rgba(91,124,255,.08));color:#fff;border:1px solid rgba(57,217,255,.1)}
+.sidebar-bottom{position:absolute;left:16px;right:16px;bottom:20px;padding:14px;border:1px solid var(--line);border-radius:16px;background:rgba(16,26,43,.65)}
+.status-dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 12px var(--green)}
+.main{flex:1;min-width:0}.topbar{height:76px;padding:0 34px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:rgba(7,11,20,.48);backdrop-filter:blur(18px);position:sticky;top:0;z-index:15}
+.search{width:min(430px,42vw);height:40px;border:1px solid var(--line);background:rgba(255,255,255,.035);border-radius:12px;display:flex;align-items:center;gap:10px;padding:0 13px;color:#aab7c9}
+.search input{border:0;outline:0;background:transparent;color:#fff;width:100%;font-size:13px}.search input::placeholder{color:#a3b0c3}.top-actions{display:flex;align-items:center;gap:12px}.icon-btn{width:40px;height:40px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:#b4c0d0;border-radius:12px;display:grid;place-items:center}.icon-btn:hover{color:#fff;border-color:rgba(57,217,255,.3)}
+.profile{display:flex;align-items:center;gap:10px;padding-left:12px;border-left:1px solid var(--line)}.avatar{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#1c2e55,#253e78);color:#d9ebff;font-weight:800}.profile strong{font-size:12px}.profile span{display:block;font-size:10px;color:#aebbd0;margin-top:2px}
+.content{padding:30px 34px 42px;max-width:1500px;margin:auto}
+.hero{position:relative;overflow:hidden;border:1px solid rgba(91,124,255,.18);border-radius:22px;padding:25px 28px;margin-bottom:18px;background:radial-gradient(circle at 85% 20%,rgba(168,120,255,.11),transparent 28%),linear-gradient(135deg,rgba(16,26,43,.96),rgba(9,16,28,.96))}
+.eyebrow{font-size:10px;letter-spacing:.18em;color:var(--purple);font-weight:700}.hero h1{font-size:29px;margin:7px 0 6px;font-weight:760}.hero p{color:#b7c4d6;margin:0;font-size:13px}
+.btn-ghost{display:inline-block;border:1px solid var(--line);border-radius:11px;padding:9px 14px;color:#c9d4e3;background:rgba(255,255,255,.025);font-size:12px}.btn-ghost:hover{color:#fff;border-color:rgba(57,217,255,.25)}
+.layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.7fr);gap:20px}
+.card{background:linear-gradient(145deg,rgba(14,23,38,.96),rgba(9,16,28,.96));border:1px solid var(--line);border-radius:20px;padding:22px}
+.card-title{font-size:16px;font-weight:750;color:#f2f6ff;margin-bottom:5px}.card-sub{font-size:11px;color:#b2bfd2;margin-bottom:20px}
+.permission-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.permission{display:flex;align-items:flex-start;gap:11px;padding:14px;border:1px solid #2a3b55;border-radius:12px;background:#0a1220;cursor:pointer;transition:.18s}
+.permission:hover{border-color:#38506e;background:#0d1728}.permission input{accent-color:#38bdf8;margin-top:3px}
+.permission strong{display:block;font-size:13px;color:#f2f6ff}.permission span{display:block;color:#b2bfd2;font-size:11px;margin-top:3px;line-height:1.4}
+.actions{display:flex;justify-content:flex-end;gap:10px;margin-top:25px;padding-top:20px;border-top:1px solid var(--line)}
+.btn-main{border:0;border-radius:10px;padding:10px 18px;background:linear-gradient(135deg,var(--cyan),var(--blue));color:#07111b;font-weight:800;font-size:13px}.btn-secondary{border:1px solid #344660;background:#0b1423;color:#d0d9e6;border-radius:10px;padding:10px 18px;font-size:13px}
+.btn-secondary:hover{color:#fff;background:#101c2d}.role-icon{width:58px;height:58px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(57,217,255,.16),rgba(168,120,255,.16));color:var(--cyan);font-size:25px;border:1px solid #2b405d;margin-bottom:18px}
+.info-row{padding:13px 0;border-bottom:1px solid var(--line)}.info-row:last-child{border-bottom:0}.info-label{font-size:10px;color:#aebbd0;text-transform:uppercase;letter-spacing:1px}.info-value{font-size:13px;color:#edf4ff;margin-top:4px}
+.mobile-toggle{display:none}
+@media(max-width:950px){.sidebar{position:fixed;left:-270px;transition:.25s}.sidebar.open{left:0}.mobile-toggle{display:grid}.layout{grid-template-columns:1fr}.permission-grid{grid-template-columns:1fr}.content{padding:22px 18px}.topbar{padding:0 18px}.search{width:42vw}}
+@media(max-width:650px){.profile-text{display:none}}
+</style>
 </head>
 <body>
+<div class="app">
 <aside class="sidebar" id="sidebar">
-    <div class="brand"><div class="brand-icon"><i class="bi bi-shield-lock-fill"></i></div>ACCESSIQ</div>
-
-    <div class="section-label">OVERVIEW</div>
-    <a class="nav-link" href="{{ url_for('main.dashboard') }}"><i class="bi bi-grid-1x2-fill"></i>Dashboard</a>
-    <a class="nav-link" href="{{ url_for('main.audit_logs') }}"><i class="bi bi-clock-history"></i>Audit Logs</a>
-
-    <div class="section-label">MANAGEMENT</div>
-    <a class="nav-link active" href="{{ url_for('main.manage_roles') }}"><i class="bi bi-diagram-3-fill"></i>Roles & Permissions</a>
-    {% if session.get("role") == "Admin" %}
-    <a class="nav-link" href="{{ url_for('main.admin') }}"><i class="bi bi-people-fill"></i>User Management</a>
-    {% endif %}
-
-    <div class="section-label">SECURITY</div>
-    {% if session.get("role") == "Admin" %}
-    <a class="nav-link" href="{{ url_for('main.security_analytics') }}"><i class="bi bi-bar-chart-fill"></i>Security Analytics</a>
-    <a class="nav-link" href="{{ url_for('main.ai_analysis') }}"><i class="bi bi-stars"></i>AI Security Analysis</a>
-    {% endif %}
-
-    <div class="section-label">ACCESS</div>
-    <a class="nav-link" href="{% if session.get('role') == 'Admin' %}{{ url_for('main.admin_permission_requests') }}{% else %}{{ url_for('main.permission_requests') }}{% endif %}"><i class="bi bi-key-fill"></i>Permission Requests</a>
-    <a class="nav-link" href="{{ url_for('main.profile') }}"><i class="bi bi-person-circle"></i>My Profile</a>
+<div class="brand"><div class="brand-mark"><i class="bi bi-shield-lock-fill"></i></div><div><b>ACCESSIQ</b><small>SECURITY PLATFORM</small></div></div>
+<div class="nav-title">OVERVIEW</div>
+<a class="nav-link" href="{{ url_for('main.dashboard') }}"><i class="bi bi-grid-1x2-fill"></i>Command Center</a>
+<div class="nav-title">MANAGEMENT</div>
+<a class="nav-link" href="{{ url_for('main.admin') }}"><i class="bi bi-people"></i>User Management</a>
+<a class="nav-link active" href="{{ url_for('main.manage_roles') }}"><i class="bi bi-diagram-3"></i>Roles & Permissions</a>
+<div class="nav-title">SECURITY</div>
+<a class="nav-link" href="{{ url_for('main.audit_logs') }}"><i class="bi bi-activity"></i>Audit Intelligence</a>
+<a class="nav-link" href="{{ url_for('main.security_analytics') }}"><i class="bi bi-bar-chart"></i>Security Analytics</a>
+<a class="nav-link" href="{{ url_for('main.ai_analysis') }}"><i class="bi bi-stars"></i>AI Security</a>
+<div class="nav-title">ACCESS</div>
+{% if session.get("role") == "Admin" %}
+<a class="nav-link" href="{{ url_for('main.admin_permission_requests') }}"><i class="bi bi-key"></i>Permission Queue</a>
+{% else %}
+<a class="nav-link" href="{{ url_for('main.permission_requests') }}"><i class="bi bi-key"></i>My Requests</a>
+{% endif %}
+<div class="sidebar-bottom"><div class="d-flex align-items-center gap-2 mb-2"><span class="status-dot"></span><small style="color:#c0cad8">System operational</small></div><div style="font-size:9px;color:#9aa8bb">AccessIQ Security Core · v1.0</div></div>
 </aside>
-
 <main class="main">
-    <div class="topbar">
-        <div class="d-flex align-items-center gap-3">
-            <button class="mobile-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')"><i class="bi bi-list"></i></button>
-            <div class="crumb"><strong>Roles & Permissions</strong> <span class="mx-2">/</span> Edit Role</div>
-        </div>
-        <div class="profile"><i class="bi bi-person"></i></div>
-    </div>
-
-    <div class="page-head">
-        <div>
-            <div class="eyebrow">Access Control</div>
-            <h1>Edit Role</h1>
-            <p class="subtitle">Review and update the permissions assigned to this role.</p>
-        </div>
-        <a href="{{ url_for('main.manage_roles') }}" class="btn-secondary"><i class="bi bi-arrow-left me-1"></i> Back to Roles</a>
-    </div>
-
-    <div class="layout">
-        <section class="cardx">
-            <div class="card-title">Role Permissions</div>
-            <div class="card-sub">Select the permissions this role should have access to.</div>
-
-            <form method="POST">
-                <div class="permission-grid">
-                    {% for permission in permissions %}
-                    <label class="permission">
-                        <input type="checkbox" name="permissions" value="{{ permission.id }}"
-                               {% if permission in role.permissions %}checked{% endif %}>
-                        <div>
-                            <strong>{{ permission.name }}</strong>
-                            <span>{{ permission.description or 'Permission available within AccessIQ.' }}</span>
-                        </div>
-                    </label>
-                    {% endfor %}
-                </div>
-
-                <div class="actions">
-                    <a href="{{ url_for('main.manage_roles') }}" class="btn-secondary">Cancel</a>
-                    <button type="submit" class="btn-main"><i class="bi bi-check2-circle me-1"></i> Save Permissions</button>
-                </div>
-            </form>
-        </section>
-
-        <aside class="cardx">
-            <div class="role-icon"><i class="bi bi-shield-check"></i></div>
-            <div class="card-title">{{ role.name }}</div>
-            <div class="card-sub">Current role configuration</div>
-
-            <div class="info-row">
-                <div class="info-label">Role ID</div>
-                <div class="info-value">#{{ role.id }}</div>
-            </div>
-            <div class="info-row">
-                <div class="info-label">Description</div>
-                <div class="info-value">{{ role.description or 'No description provided.' }}</div>
-            </div>
-            <div class="info-row">
-                <div class="info-label">Assigned Permissions</div>
-                <div class="info-value">{{ role.permissions|length }}</div>
-            </div>
-        </aside>
-    </div>
+<header class="topbar">
+<div class="d-flex align-items-center gap-2" style="min-width:0;flex:1">
+<button class="icon-btn mobile-toggle" id="menuBtn" type="button"><i class="bi bi-list"></i></button>
+<div class="search"><i class="bi bi-search"></i><input type="search" placeholder="Search role permissions..." aria-label="Search role permissions"><span style="font-size:9px;border:1px solid var(--line);padding:3px 6px;border-radius:5px;color:#9aa8bb">/</span></div>
+</div>
+<div class="top-actions"><a class="icon-btn" href="{{ url_for('main.security_analytics') }}" aria-label="Security Analytics"><i class="bi bi-bar-chart"></i></a><a class="icon-btn" href="{{ url_for('main.profile') }}" aria-label="Profile"><i class="bi bi-person"></i></a><div class="profile"><div class="avatar">{{ session.get("username","U")[:1]|upper }}</div><div class="profile-text"><strong>{{ session.get("username") }}</strong><span>{{ session.get("role") }}</span></div></div></div>
+</header>
+<section class="content">
+<section class="hero"><div class="eyebrow">ACCESS CONTROL</div><h1>Edit Role</h1><p>Review and update the permissions assigned to this role.</p><div style="margin-top:18px"><a href="{{ url_for('main.manage_roles') }}" class="btn-ghost"><i class="bi bi-arrow-left me-1"></i>Back to Roles</a></div></section>
+<div class="layout">
+<section class="card">
+<div class="card-title">Role Permissions</div>
+<div class="card-sub">Select the permissions this role should have access to.</div>
+<form method="POST">
+<div class="permission-grid">
+{% for permission in permissions %}
+<label class="permission">
+<input type="checkbox" name="permissions" value="{{ permission.id }}" {% if permission in role.permissions %}checked{% endif %}>
+<div><strong>{{ permission.name }}</strong><span>{{ permission.description or 'Permission available within AccessIQ.' }}</span></div>
+</label>
+{% endfor %}
+</div>
+<div class="actions"><a href="{{ url_for('main.manage_roles') }}" class="btn-secondary">Cancel</a><button type="submit" class="btn-main"><i class="bi bi-check2-circle me-1"></i>Save Permissions</button></div>
+</form>
+</section>
+<aside class="card">
+<div class="role-icon"><i class="bi bi-shield-check"></i></div>
+<div class="card-title">{{ role.name }}</div>
+<div class="card-sub">Current role configuration</div>
+<div class="info-row"><div class="info-label">Role ID</div><div class="info-value">#{{ role.id }}</div></div>
+<div class="info-row"><div class="info-label">Description</div><div class="info-value">{{ role.description or 'No description provided.' }}</div></div>
+<div class="info-row"><div class="info-label">Assigned Permissions</div><div class="info-value">{{ role.permissions|length }}</div></div>
+</aside>
+</div>
+</section>
 </main>
+</div>
 <script>
-document.querySelectorAll('.permission input').forEach(input=>{
-    input.addEventListener('change',()=>{
-        input.closest('.permission').style.borderColor = input.checked ? '#38bdf8' : '';
-    });
-});
+const menu=document.getElementById('menuBtn'),side=document.getElementById('sidebar');
+if(menu)menu.addEventListener('click',()=>side.classList.toggle('open'));
+document.querySelectorAll('.permission input').forEach(input=>input.addEventListener('change',()=>input.closest('.permission').style.borderColor=input.checked?'#39d9ff':''));
 </script>
 </body>
 </html>

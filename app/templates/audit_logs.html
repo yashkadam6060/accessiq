@@ -3,96 +3,1382 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AccessIQ | Audit Logs</title>
+<title>AccessIQ — Audit Intelligence</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:#08111f;color:#e8eef8}
-.layout{display:flex;min-height:100vh}.sidebar{width:250px;background:#0b1627;border-right:1px solid #1d2c43;padding:24px 16px;position:fixed;inset:0 auto 0 0}
-.logo{font-size:24px;font-weight:800;letter-spacing:.5px;padding:8px 12px 28px}.logo span{color:#62a9ff}.group{font-size:11px;color:#71809a;font-weight:700;letter-spacing:1px;margin:22px 12px 8px}
-.nav a{display:flex;gap:11px;align-items:center;padding:12px;border-radius:10px;color:#aebbd0;text-decoration:none;margin:4px 0;font-size:14px}.nav a:hover,.nav a.active{background:#152944;color:#fff}
-.main{margin-left:250px;width:calc(100% - 250px);padding:28px 34px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}.crumb{color:#7787a0;font-size:13px}
-.user{display:flex;align-items:center;gap:10px}.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#4c8dff,#8c5cff);display:grid;place-items:center;font-weight:700}
-h1{font-size:30px;margin:6px 0 8px}.subtitle{color:#8f9eb5;margin:0 0 24px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
-.stat,.panel{background:#0d192b;border:1px solid #1b2c45;border-radius:16px;box-shadow:0 12px 30px #0002}.stat{padding:19px}.stat small{color:#8190a7}.stat strong{display:block;font-size:25px;margin-top:7px}
-.filters{padding:18px;margin-bottom:20px}.filters form{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr auto;gap:10px}.input,select{width:100%;background:#0a1525;color:#dce7f7;border:1px solid #263a55;border-radius:9px;padding:11px 12px;outline:none}.input:focus,select:focus{border-color:#559cff}
-.btn{border:0;border-radius:9px;padding:11px 17px;font-weight:700;cursor:pointer;background:#347ff0;color:#fff}.reset{display:inline-flex;align-items:center;text-decoration:none;background:#17263b;color:#9fb0c7}
-.table-panel{padding:0;overflow:hidden}.table-head{padding:20px 22px;border-bottom:1px solid #1b2c45;display:flex;justify-content:space-between;align-items:center}.table-head h2{font-size:18px;margin:0}.count{font-size:12px;color:#7f90a8}
-.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:850px}th,td{text-align:left;padding:15px 18px;border-bottom:1px solid #192b43;font-size:13px}th{color:#778aa4;font-size:11px;letter-spacing:.7px;text-transform:uppercase;background:#0b1728}td{color:#b7c4d6}tr:hover td{background:#101f33}
-.usercell{display:flex;gap:10px;align-items:center}.mini{width:34px;height:34px;border-radius:9px;background:#162e4c;color:#76b5ff;display:grid;place-items:center;font-weight:700}.uname{font-weight:700;color:#e4ebf5}.muted{font-size:11px;color:#718198;margin-top:3px}
-.badge{display:inline-block;padding:5px 9px;border-radius:20px;font-size:10px;font-weight:700}.login{background:#123a2c;color:#62dca5}.failed_login{background:#3c1820;color:#ff8796}.access_denied{background:#3a2d12;color:#ffc95c}.logout{background:#182d43;color:#8eb8e8}.other{background:#25213d;color:#b9a7ff}
-.empty{text-align:center;padding:55px;color:#73839a}.details{max-width:380px;line-height:1.5}
-@media(max-width:1000px){.filters form{grid-template-columns:1fr 1fr}.filters .btn,.filters .reset{width:100%;text-align:center;justify-content:center}.stats{grid-template-columns:1fr 1fr}}
-@media(max-width:650px){.sidebar{position:static;width:100%;height:auto}.layout{display:block}.main{margin:0;width:100%;padding:20px}.stats{grid-template-columns:1fr}.filters form{grid-template-columns:1fr}.top{align-items:flex-start}}
+:root{
+    --bg:#070b14;
+    --panel:#0d1422;
+    --panel2:#101a2b;
+    --line:rgba(148,163,184,.13);
+    --text:#eef5ff;
+    --muted:#b7c4d6;
+    --cyan:#39d9ff;
+    --blue:#5b7cff;
+    --purple:#a878ff;
+    --green:#32e6a1;
+    --amber:#ffbf5b;
+    --red:#ff6b81;
+}
+
+*{
+    box-sizing:border-box
+}
+
+body{
+    margin:0;
+    color:var(--text);
+    background:
+      radial-gradient(circle at 76% -10%,rgba(91,124,255,.15),transparent 31%),
+      radial-gradient(circle at 8% 18%,rgba(57,217,255,.05),transparent 25%),
+      var(--bg);
+    font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+
+a{
+    text-decoration:none;
+    color:inherit
+}
+
+.app{
+    min-height:100vh;
+    display:flex
+}
+
+.sidebar{
+    width:250px;
+    flex:0 0 250px;
+    min-height:100vh;
+    background:rgba(7,11,20,.9);
+    border-right:1px solid var(--line);
+    padding:24px 16px;
+    position:sticky;
+    top:0;
+    height:100vh;
+    backdrop-filter:blur(20px);
+    z-index:20;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:4px 10px 30px
+}
+
+.brand-mark{
+    width:38px;
+    height:38px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,#35dfff,#526fff);
+    color:#06101b;
+    font-weight:900;
+    box-shadow:0 8px 30px rgba(57,217,255,.2);
+}
+
+.brand b{
+    font-size:18px;
+    letter-spacing:.12em
+}
+
+.brand small{
+    display:block;
+    color:#9aa8bb;
+    font-size:9px;
+    letter-spacing:.16em;
+    margin-top:2px
+}
+
+.nav-title{
+    font-size:10px;
+    letter-spacing:.18em;
+    color:#8b9bb0;
+    padding:18px 12px 8px
+}
+
+.nav-link{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    color:#b7c4d6;
+    padding:11px 12px;
+    border-radius:12px;
+    margin:3px 0;
+    font-size:13px;
+    transition:.2s
+}
+
+.nav-link i{
+    font-size:17px;
+    width:20px;
+    text-align:center
+}
+
+.nav-link:hover{
+    background:rgba(91,124,255,.08);
+    color:#fff
+}
+
+.nav-link.active{
+    background:linear-gradient(
+        90deg,
+        rgba(57,217,255,.12),
+        rgba(91,124,255,.08)
+    );
+    color:#fff;
+    border:1px solid rgba(57,217,255,.1)
+}
+
+.sidebar-bottom{
+    position:absolute;
+    left:16px;
+    right:16px;
+    bottom:20px;
+    padding:14px;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:rgba(16,26,43,.65)
+}
+
+.status-dot{
+    width:8px;
+    height:8px;
+    background:var(--green);
+    border-radius:50%;
+    box-shadow:0 0 12px var(--green)
+}
+
+.main{
+    flex:1;
+    min-width:0
+}
+
+.topbar{
+    height:76px;
+    padding:0 34px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid var(--line);
+    background:rgba(7,11,20,.48);
+    backdrop-filter:blur(18px);
+    position:sticky;
+    top:0;
+    z-index:15
+}
+
+.search{
+    width:min(430px,42vw);
+    height:40px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.035);
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:0 13px;
+    color:#b0bccd
+}
+
+.search input{
+    border:0;
+    outline:0;
+    background:transparent;
+    color:#fff;
+    width:100%;
+    font-size:13px
+}
+
+.search input::placeholder{
+    color:#a3b0c3
+}
+
+.top-actions{
+    display:flex;
+    align-items:center;
+    gap:12px
+}
+
+.icon-btn{
+    width:40px;
+    height:40px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.03);
+    color:#b6c2d2;
+    border-radius:12px;
+    display:grid;
+    place-items:center
+}
+
+.icon-btn:hover{
+    color:#fff;
+    border-color:rgba(57,217,255,.3)
+}
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding-left:12px;
+    border-left:1px solid var(--line)
+}
+
+.avatar{
+    width:38px;
+    height:38px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,#1c2e55,#253e78);
+    color:#d9ebff;
+    font-weight:800
+}
+
+.profile strong{
+    font-size:12px
+}
+
+.profile span{
+    display:block;
+    font-size:10px;
+    color:#aebbd0;
+    margin-top:2px
+}
+
+.content{
+    padding:30px 34px 42px;
+    max-width:1700px;
+    margin:auto
+}
+
+.hero{
+    position:relative;
+    overflow:hidden;
+    border:1px solid rgba(91,124,255,.18);
+    border-radius:22px;
+    padding:25px 28px;
+    margin-bottom:18px;
+    background:
+      radial-gradient(
+        circle at 85% 20%,
+        rgba(57,217,255,.08),
+        transparent 28%
+      ),
+      linear-gradient(
+        135deg,
+        rgba(16,26,43,.96),
+        rgba(9,16,28,.96)
+      )
+}
+
+.hero h1{
+    font-size:29px;
+    margin:7px 0 6px;
+    font-weight:760
+}
+
+.hero p{
+    color:#b7c4d6;
+    margin:0;
+    font-size:13px
+}
+
+.eyebrow{
+    font-size:10px;
+    letter-spacing:.18em;
+    color:var(--cyan);
+    font-weight:700
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:13px;
+    margin-bottom:18px
+}
+
+.stat{
+    background:
+      linear-gradient(
+        145deg,
+        rgba(15,24,40,.95),
+        rgba(10,17,29,.92)
+      );
+    border:1px solid var(--line);
+    border-radius:17px;
+    padding:17px;
+    position:relative;
+    overflow:hidden
+}
+
+.stat:before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:48px;
+    height:2px;
+    background:var(--accent)
+}
+
+.stat-icon{
+    width:34px;
+    height:34px;
+    border-radius:10px;
+    background:rgba(255,255,255,.045);
+    display:grid;
+    place-items:center;
+    color:var(--accent)
+}
+
+.stat-label{
+    font-size:10px;
+    letter-spacing:.08em;
+    color:#aebbd0;
+    margin-top:14px;
+    font-weight:700
+}
+
+.stat-value{
+    font-size:25px;
+    font-weight:780;
+    margin-top:2px;
+    color:#f4f7ff
+}
+
+.card{
+    background:
+      linear-gradient(
+        145deg,
+        rgba(14,23,38,.94),
+        rgba(9,16,28,.94)
+      );
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:20px
+}
+
+.filter-card{
+    margin-bottom:18px
+}
+
+.card-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:18px
+}
+
+.card-title{
+    font-size:14px;
+    font-weight:750;
+    color:#f0f4fb
+}
+
+.card-sub{
+    font-size:10px;
+    color:#b0bdd0;
+    margin-top:4px
+}
+
+.filters{
+    display:grid;
+    grid-template-columns:1.2fr 1fr 1fr 1fr auto;
+    gap:10px;
+    align-items:end
+}
+
+.field-label{
+    display:block;
+    font-size:9px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:#afbbcd;
+    margin-bottom:6px
+}
+
+.input,
+.select{
+    width:100%;
+    height:40px;
+    background:#0a1220;
+    border:1px solid #2a3b55;
+    border-radius:10px;
+    color:#eef5ff;
+    padding:0 12px;
+    font-size:12px;
+    outline:none
+}
+
+.input::placeholder{
+    color:#a3b0c3
+}
+
+.input:focus,
+.select:focus{
+    border-color:var(--cyan);
+    box-shadow:0 0 0 3px rgba(57,217,255,.08)
+}
+
+.select option{
+    background:#0a1220;
+    color:#fff
+}
+
+.btn-main{
+    height:40px;
+    border:0;
+    border-radius:10px;
+    padding:0 16px;
+    background:linear-gradient(
+        135deg,
+        var(--cyan),
+        var(--blue)
+    );
+    color:#07111b;
+    font-weight:800;
+    font-size:12px;
+    white-space:nowrap
+}
+
+.btn-ghost{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    height:38px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:0 14px;
+    color:#ccd6e4;
+    background:rgba(255,255,255,.025);
+    font-size:11px
+}
+
+.btn-ghost:hover{
+    color:#fff;
+    border-color:rgba(57,217,255,.25)
+}
+
+.table-wrap{
+    overflow:auto
+}
+
+.table-wrap table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:780px
+}
+
+.table-wrap th{
+    text-align:left;
+    padding:11px 10px;
+    color:#b1bdcf;
+    font-size:9px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    border-bottom:1px solid var(--line);
+    white-space:nowrap
+}
+
+.table-wrap td{
+    padding:12px 10px;
+    border-bottom:1px solid rgba(148,163,184,.08);
+    font-size:11px;
+    color:#edf3fc;
+    vertical-align:middle
+}
+
+.table-wrap tbody tr:hover{
+    background:rgba(255,255,255,.02)
+}
+
+.usercell{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    min-width:150px
+}
+
+.mini{
+    width:30px;
+    height:30px;
+    border-radius:9px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,#1c2e55,#253e78);
+    color:#d7e8ff;
+    font-size:11px;
+    font-weight:800
+}
+
+.uname{
+    font-weight:700;
+    color:#f3f7ff
+}
+
+.muted{
+    font-size:9px;
+    color:#a8b5c8;
+    margin-top:2px
+}
+
+.details{
+    max-width:460px;
+    line-height:1.45;
+    color:#d6e0ed
+}
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    padding:5px 8px;
+    border-radius:8px;
+    font-size:9px;
+    font-weight:800;
+    border:1px solid transparent;
+    white-space:nowrap
+}
+
+.badge.login{
+    background:rgba(50,230,161,.10);
+    color:#7cf0c0;
+    border-color:rgba(50,230,161,.16)
+}
+
+.badge.failed_login{
+    background:rgba(255,107,129,.10);
+    color:#ff9aaa;
+    border-color:rgba(255,107,129,.16)
+}
+
+.badge.access_denied{
+    background:rgba(255,191,91,.10);
+    color:#ffd286;
+    border-color:rgba(255,191,91,.16)
+}
+
+.badge.logout{
+    background:rgba(91,124,255,.10);
+    color:#b4c4ff;
+    border-color:rgba(91,124,255,.16)
+}
+
+.badge.other{
+    background:rgba(168,120,255,.10);
+    color:#cdb3ff;
+    border-color:rgba(168,120,255,.16)
+}
+
+.empty{
+    text-align:center;
+    padding:55px 20px;
+    color:#b0bdcf;
+    font-size:12px
+}
+
+.footer-line{
+    display:flex;
+    justify-content:space-between;
+    color:#98a6ba;
+    font-size:9px;
+    margin-top:18px;
+    padding:0 4px
+}
+
+.mobile-toggle{
+    display:none
+}
+
+@media(max-width:1000px){
+
+    .filters{
+        grid-template-columns:1fr 1fr
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr
+    }
+}
+
+@media(max-width:900px){
+
+    .sidebar{
+        position:fixed;
+        left:-270px;
+        transition:.25s
+    }
+
+    .sidebar.open{
+        left:0
+    }
+
+    .mobile-toggle{
+        display:grid
+    }
+
+    .content{
+        padding:22px 18px
+    }
+
+    .topbar{
+        padding:0 18px
+    }
+
+    .search{
+        width:42vw
+    }
+}
+
+@media(max-width:650px){
+
+    .stats{
+        grid-template-columns:1fr
+    }
+
+    .filters{
+        grid-template-columns:1fr
+    }
+
+    .profile-text{
+        display:none
+    }
+}
 </style>
 </head>
+
 <body>
-<div class="layout">
-<aside class="sidebar">
-<div class="logo">ACCESS<span>IQ</span></div>
-<div class="group">OVERVIEW</div><div class="nav">
-<a href="{{ url_for('main.dashboard') }}">▦ Dashboard</a><a href="{{ url_for('main.security_analytics') }}">◉ Security Analytics</a>
-</div>
-<div class="group">MANAGEMENT</div><div class="nav">
-<a href="{{ url_for('main.admin') }}">♙ User Management</a><a href="{{ url_for('main.manage_roles') }}">◈ Roles & Permissions</a>
-</div>
-<div class="group">SECURITY</div><div class="nav">
-<a href="{{ url_for('main.admin_permission_requests') }}">✓ Permission Approvals</a><a class="active" href="{{ url_for('main.audit_logs') }}">◷ Audit Logs</a><a href="{{ url_for('main.ai_analysis') }}">✦ AI Security Analysis</a>
-</div>
-<div class="group">ACCESS</div><div class="nav">
-<a href="{{ url_for('main.profile') }}">◎ My Profile</a><a href="{{ url_for('main.logout') }}">↪ Logout</a>
-</div>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+        <div class="brand-mark">
+            <i class="bi bi-shield-lock-fill"></i>
+        </div>
+
+        <div>
+            <b>ACCESSIQ</b>
+            <small>SECURITY PLATFORM</small>
+        </div>
+    </div>
+
+    <div class="nav-title">OVERVIEW</div>
+
+    <a class="nav-link"
+       href="{{ url_for('main.dashboard') }}">
+        <i class="bi bi-grid-1x2-fill"></i>
+        Command Center
+    </a>
+
+    <div class="nav-title">MANAGEMENT</div>
+
+    <a class="nav-link"
+       href="{{ url_for('main.admin') }}">
+        <i class="bi bi-people"></i>
+        User Management
+    </a>
+
+    <a class="nav-link"
+       href="{{ url_for('main.manage_roles') }}">
+        <i class="bi bi-diagram-3"></i>
+        Roles & Permissions
+    </a>
+
+    <div class="nav-title">SECURITY</div>
+
+    <a class="nav-link active"
+       href="{{ url_for('main.audit_logs') }}">
+        <i class="bi bi-activity"></i>
+        Audit Intelligence
+    </a>
+
+    <a class="nav-link"
+       href="{{ url_for('main.security_analytics') }}">
+        <i class="bi bi-bar-chart"></i>
+        Security Analytics
+    </a>
+
+    <a class="nav-link"
+       href="{{ url_for('main.ai_analysis') }}">
+        <i class="bi bi-stars"></i>
+        AI Security
+    </a>
+
+    <div class="nav-title">ACCESS</div>
+
+    {% if session.get("role") == "Admin" %}
+
+    <a class="nav-link"
+       href="{{ url_for('main.admin_permission_requests') }}">
+        <i class="bi bi-key"></i>
+        Permission Queue
+    </a>
+
+    {% else %}
+
+    <a class="nav-link"
+       href="{{ url_for('main.permission_requests') }}">
+        <i class="bi bi-key"></i>
+        My Requests
+    </a>
+
+    {% endif %}
+
+    <div class="sidebar-bottom">
+
+        <div class="d-flex align-items-center gap-2 mb-2">
+            <span class="status-dot"></span>
+            <small style="color:#c0cad8">
+                System operational
+            </small>
+        </div>
+
+        <div style="font-size:9px;color:#9aa8bb">
+            AccessIQ Security Core · v1.0
+        </div>
+
+    </div>
+
 </aside>
 
+
+<!-- MAIN -->
 <main class="main">
-<div class="top"><div class="crumb">Security / Audit Logs</div><div class="user"><span>{{ session.get('username','Admin') }}</span><div class="avatar">{{ session.get('username','A')[:1]|upper }}</div></div></div>
-<h1>Audit Logs</h1>
-<p class="subtitle">Review recorded authentication, authorization and security activity across AccessIQ.</p>
 
-{% set login_count = logs|selectattr('action','equalto','LOGIN')|list|length %}
-{% set failed_count = logs|selectattr('action','equalto','FAILED_LOGIN')|list|length %}
-{% set denied_count = logs|selectattr('action','equalto','ACCESS_DENIED')|list|length %}
+<!-- TOPBAR -->
+<header class="topbar">
 
-<div class="stats">
-<div class="stat"><small>Total Events</small><strong>{{ logs|length }}</strong></div>
-<div class="stat"><small>Successful Logins</small><strong>{{ login_count }}</strong></div>
-<div class="stat"><small>Security Events</small><strong>{{ failed_count + denied_count }}</strong></div>
-</div>
+    <div class="d-flex align-items-center gap-2"
+         style="min-width:0;flex:1">
 
-<section class="panel filters">
-<form method="GET" action="{{ url_for('main.audit_logs') }}">
-<input class="input" type="text" name="user" placeholder="Search by username..." value="{{ user_search or '' }}">
-<select name="action"><option value="">All actions</option>{% for item in actions %}<option value="{{ item }}" {% if selected_action == item %}selected{% endif %}>{{ item }}</option>{% endfor %}</select>
-<input class="input" type="date" name="date_from" value="{{ date_from or '' }}" title="From date">
-<input class="input" type="date" name="date_to" value="{{ date_to or '' }}" title="To date">
-<button class="btn" type="submit">Filter Logs</button>
-</form>
-{% if user_search or selected_action or date_from or date_to %}
-<div style="margin-top:12px"><a class="btn reset" href="{{ url_for('main.audit_logs') }}">Clear Filters</a></div>
-{% endif %}
+        <button
+            class="icon-btn mobile-toggle"
+            id="menuBtn"
+            type="button"
+            aria-label="Open menu">
+
+            <i class="bi bi-list"></i>
+
+        </button>
+
+        <div class="search">
+
+            <i class="bi bi-search"></i>
+
+            <input
+                id="auditSearch"
+                type="search"
+                placeholder="Search security events..."
+                aria-label="Search security events">
+
+            <span
+                style="
+                font-size:9px;
+                border:1px solid var(--line);
+                padding:3px 6px;
+                border-radius:5px;
+                color:#9aa8bb">
+
+                /
+
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="top-actions">
+
+        <a
+            class="icon-btn"
+            href="{{ url_for('main.security_analytics') }}"
+            aria-label="Security Analytics">
+
+            <i class="bi bi-bar-chart"></i>
+
+        </a>
+
+
+        <a
+            class="icon-btn"
+            href="{{ url_for('main.profile') }}"
+            aria-label="Profile">
+
+            <i class="bi bi-person"></i>
+
+        </a>
+
+
+        <div class="profile">
+
+            <div class="avatar">
+                {{ session.get('username','A')[:1]|upper }}
+            </div>
+
+            <div class="profile-text">
+
+                <strong>
+                    {{ session.get('username') }}
+                </strong>
+
+                <span>
+                    {{ session.get('role') }}
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- CONTENT -->
+<section class="content">
+
+
+    <!-- HERO -->
+    <section class="hero">
+
+        <div class="eyebrow">
+            SECURITY INTELLIGENCE
+        </div>
+
+        <h1>
+            Audit Intelligence
+        </h1>
+
+        <p>
+            Review recorded authentication, authorization and security activity across AccessIQ.
+        </p>
+
+    </section>
+
+
+    <!-- STATS -->
+    {% set login_count = logs|selectattr('action','equalto','LOGIN')|list|length %}
+    {% set failed_count = logs|selectattr('action','equalto','FAILED_LOGIN')|list|length %}
+    {% set denied_count = logs|selectattr('action','equalto','ACCESS_DENIED')|list|length %}
+
+
+    <section class="stats">
+
+        <div
+            class="stat"
+            style="--accent:#39d9ff">
+
+            <div class="stat-icon">
+                <i class="bi bi-journal-text"></i>
+            </div>
+
+            <div class="stat-label">
+                TOTAL EVENTS
+            </div>
+
+            <div class="stat-value">
+                {{ logs|length }}
+            </div>
+
+        </div>
+
+
+        <div
+            class="stat"
+            style="--accent:#32e6a1">
+
+            <div class="stat-icon">
+                <i class="bi bi-box-arrow-in-right"></i>
+            </div>
+
+            <div class="stat-label">
+                SUCCESSFUL LOGINS
+            </div>
+
+            <div class="stat-value">
+                {{ login_count }}
+            </div>
+
+        </div>
+
+
+        <div
+            class="stat"
+            style="--accent:#ff6b81">
+
+            <div class="stat-icon">
+                <i class="bi bi-shield-exclamation"></i>
+            </div>
+
+            <div class="stat-label">
+                SECURITY EVENTS
+            </div>
+
+            <div class="stat-value">
+                {{ failed_count + denied_count }}
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FILTER CARD -->
+    <section class="card filter-card">
+
+        <div class="card-head">
+
+            <div>
+
+                <div class="card-title">
+                    Filter Audit Trail
+                </div>
+
+                <div class="card-sub">
+                    Narrow results by user, action, or date range.
+                </div>
+
+            </div>
+
+            <i
+                class="bi bi-funnel"
+                style="color:var(--cyan)">
+            </i>
+
+        </div>
+
+
+        <form
+            method="GET"
+            action="{{ url_for('main.audit_logs') }}"
+            class="filters">
+
+
+            <div>
+
+                <label class="field-label">
+                    Username
+                </label>
+
+                <input
+                    class="input"
+                    type="text"
+                    name="user"
+                    placeholder="Search by username..."
+                    value="{{ user_search or '' }}">
+
+            </div>
+
+
+            <div>
+
+                <label class="field-label">
+                    Action
+                </label>
+
+                <select
+                    class="select"
+                    name="action">
+
+                    <option value="">
+                        All actions
+                    </option>
+
+                    {% for item in actions %}
+
+                    <option
+                        value="{{ item }}"
+                        {% if selected_action == item %}
+                        selected
+                        {% endif %}>
+
+                        {{ item }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <label class="field-label">
+                    From date
+                </label>
+
+                <input
+                    class="input"
+                    type="date"
+                    name="date_from"
+                    value="{{ date_from or '' }}">
+
+            </div>
+
+
+            <div>
+
+                <label class="field-label">
+                    To date
+                </label>
+
+                <input
+                    class="input"
+                    type="date"
+                    name="date_to"
+                    value="{{ date_to or '' }}">
+
+            </div>
+
+
+            <button
+                class="btn-main"
+                type="submit">
+
+                <i class="bi bi-filter me-1"></i>
+                Filter Logs
+
+            </button>
+
+        </form>
+
+
+        {% if user_search or selected_action or date_from or date_to %}
+
+        <div style="margin-top:12px">
+
+            <a
+                class="btn-ghost"
+                href="{{ url_for('main.audit_logs') }}">
+
+                <i class="bi bi-x-circle me-1"></i>
+                Clear Filters
+
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- SECURITY ACTIVITY -->
+    <section class="card">
+
+        <div class="card-head">
+
+            <div>
+
+                <div class="card-title">
+                    Security Activity
+                </div>
+
+                <div class="card-sub">
+                    Recorded events in descending timestamp order.
+                </div>
+
+            </div>
+
+            <span style="font-size:10px;color:#aab7c9">
+
+                {{ logs|length }}
+
+                record{% if logs|length != 1 %}s{% endif %}
+
+            </span>
+
+        </div>
+
+
+        <div class="table-wrap">
+
+        {% if logs %}
+
+        <table id="auditTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>User</th>
+                    <th>Action</th>
+                    <th>Details</th>
+                    <th>Timestamp</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for log in logs %}
+
+            <tr
+                data-search="
+                {{
+                    (
+                        (log.user.username if log.user else 'System Unknown')
+                        ~ ' '
+                        ~ log.action
+                        ~ ' '
+                        ~ (log.details or '')
+                    )|lower
+                }}">
+
+
+                <!-- USER -->
+                <td>
+
+                    <div class="usercell">
+
+                        <div class="mini">
+
+                            {% if log.user %}
+
+                                {{ log.user.username[:1]|upper }}
+
+                            {% else %}
+
+                                ?
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div>
+
+                            {% if log.user %}
+
+                            <div class="uname">
+                                {{ log.user.username }}
+                            </div>
+
+                            <div class="muted">
+                                User ID: {{ log.user_id }}
+                            </div>
+
+                            {% else %}
+
+                            <div class="uname">
+                                System / Unknown
+                            </div>
+
+                            <div class="muted">
+                                No user linked
+                            </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+
+                <!-- ACTION -->
+                <td>
+
+                    <span
+                        class="badge
+                        {% if log.action == 'LOGIN' %}
+                            login
+                        {% elif log.action == 'FAILED_LOGIN' %}
+                            failed_login
+                        {% elif log.action == 'ACCESS_DENIED' %}
+                            access_denied
+                        {% elif log.action == 'LOGOUT' %}
+                            logout
+                        {% else %}
+                            other
+                        {% endif %}">
+
+                        {{ log.action }}
+
+                    </span>
+
+                </td>
+
+
+                <!-- DETAILS -->
+                <td>
+
+                    <div class="details">
+
+                        {{ log.details or 'No details recorded.' }}
+
+                    </div>
+
+                </td>
+
+
+                <!-- TIMESTAMP -->
+                <td>
+
+                    {% if log.timestamp %}
+
+                        {{ to_ist(log.timestamp).strftime('%d %b %Y') }}
+
+                        <div class="muted">
+
+                            {{ to_ist(log.timestamp).strftime('%I:%M:%S %p') }}
+
+                        </div>
+
+                    {% else %}
+
+                        —
+
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+
+        {% else %}
+
+        <div class="empty">
+
+            <i
+                class="bi bi-shield-check"
+                style="
+                display:block;
+                font-size:28px;
+                color:var(--green);
+                margin-bottom:8px">
+            </i>
+
+            No audit events match the selected filters.
+
+        </div>
+
+        {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <div class="footer-line">
+
+        <span>
+            ACCESSIQ SECURITY PLATFORM
+        </span>
+
+        <span>
+            Protected administrator session ·
+            {{ session.get('role') }}
+        </span>
+
+    </div>
+
 </section>
 
-<section class="panel table-panel">
-<div class="table-head"><h2>Security Activity</h2><span class="count">{{ logs|length }} record{% if logs|length != 1 %}s{% endif %}</span></div>
-<div class="table-wrap">
-{% if logs %}
-<table>
-<thead><tr><th>User</th><th>Action</th><th>Details</th><th>Timestamp</th></tr></thead>
-<tbody>
-{% for log in logs %}
-<tr>
-<td><div class="usercell"><div class="mini">{% if log.user %}{{ log.user.username[:1]|upper }}{% else %}?{% endif %}</div><div>{% if log.user %}<div class="uname">{{ log.user.username }}</div><div class="muted">User ID: {{ log.user_id }}</div>{% else %}<div class="uname">System / Unknown</div><div class="muted">No user linked</div>{% endif %}</div></div></td>
-<td>{% set cls=log.action|lower|replace('_','-') %}<span class="badge {% if log.action == 'LOGIN' %}login{% elif log.action == 'FAILED_LOGIN' %}failed_login{% elif log.action == 'ACCESS_DENIED' %}access_denied{% elif log.action == 'LOGOUT' %}logout{% else %}other{% endif %}">{{ log.action }}</span></td>
-<td><div class="details">{{ log.details or 'No details recorded.' }}</div></td>
-<td>{{ log.timestamp.strftime('%d %b %Y') if log.timestamp else '—' }}<div class="muted">{{ log.timestamp.strftime('%I:%M:%S %p') if log.timestamp else '' }}</div></td>
-</tr>
-{% endfor %}
-</tbody>
-</table>
-{% else %}
-<div class="empty">No audit events match the selected filters.</div>
-{% endif %}
-</div>
-</section>
 </main>
+
 </div>
+
+
+<script>
+
+const search = document.getElementById("auditSearch");
+const table = document.getElementById("auditTable");
+
+
+if(search && table){
+
+    search.addEventListener("input", () => {
+
+        const q = search.value.toLowerCase().trim();
+
+        table.querySelectorAll("tbody tr").forEach(row => {
+
+            row.style.display =
+                (
+                    !q ||
+                    (row.dataset.search || "").includes(q)
+                )
+                ? ""
+                : "none";
+
+        });
+
+    });
+
+
+    document.addEventListener("keydown", e => {
+
+        if(
+            e.key === "/" &&
+            document.activeElement !== search &&
+            !["INPUT","TEXTAREA","SELECT"]
+                .includes(document.activeElement.tagName)
+        ){
+
+            e.preventDefault();
+
+            search.focus();
+
+        }
+
+    });
+
+}
+
+
+const menu = document.getElementById("menuBtn");
+const side = document.getElementById("sidebar");
+
+
+if(menu){
+
+    menu.addEventListener("click", () => {
+
+        side.classList.toggle("open");
+
+    });
+
+}
+
+
+document
+    .querySelectorAll(".sidebar .nav-link")
+    .forEach(a => {
+
+        a.addEventListener("click", () => {
+
+            if(window.innerWidth <= 900){
+
+                side.classList.remove("open");
+
+            }
+
+        });
+
+    });
+
+</script>
+
 </body>
 </html>

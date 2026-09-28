@@ -1,208 +1,961 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{% block title %}AccessIQ{% endblock %}</title>
+    <meta
+        name="viewport"
+        content="width=device-width,initial-scale=1"
+    >
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <title>
+        {% block title %}AccessIQ{% endblock %}
+    </title>
 
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- =========================================================
+         BOOTSTRAP
+    ========================================================== -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- =========================================================
+         BOOTSTRAP ICONS
+    ========================================================== -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        rel="stylesheet"
+    >
+
+
+    <style>
+
+        /* =========================================================
+           ROOT VARIABLES
+        ========================================================== */
+
+        :root {
+
+            --bg: #070b14;
+
+            --panel: #0d1422;
+
+            --line: rgba(148,163,184,.13);
+
+            --text: #eef5ff;
+
+            --muted: #b7c4d6;
+
+            --cyan: #39d9ff;
+
+            --blue: #5b7cff;
+
+            --green: #32e6a1;
+
+        }
+
+
+        /* =========================================================
+           GLOBAL RESET
+        ========================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+
+            min-height: 100%;
+
+            background:
+                radial-gradient(
+                    circle at 76% -10%,
+                    rgba(91,124,255,.15),
+                    transparent 31%
+                ),
+                var(--bg);
+
+            color: var(--text);
+
+            font-family:
+                Inter,
+                system-ui,
+                -apple-system,
+                "Segoe UI",
+                sans-serif;
+        }
+
+
+        body {
+            overflow-x: hidden;
+        }
+
+
+        /* =========================================================
+           MAIN APPLICATION
+        ========================================================== */
+
+        .app {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            width: 100%;
+        }
+
+
+        /* =========================================================
+           SIDEBAR
+        ========================================================== */
+
+        .sidebar {
+
+            width: 250px;
+
+            min-width: 250px;
+
+            height: 100vh;
+
+            background: rgba(7,11,20,.9);
+
+            border-right: 1px solid var(--line);
+
+            padding: 24px 16px;
+
+            position: sticky;
+
+            top: 0;
+
+            /* IMPORTANT:
+               Three separate rows:
+               1. Brand
+               2. Navigation
+               3. System status
+            */
+
+            display: grid;
+
+            grid-template-rows:
+                auto
+                minmax(0, 1fr)
+                auto;
+
+            overflow: hidden;
+
+            z-index: 1000;
+        }
+
+
+        /* =========================================================
+           BRAND
+        ========================================================== */
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding:
+                4px
+                10px
+                30px;
+
+            flex-shrink: 0;
+        }
+
+
+        .brand-mark {
+
+            width: 38px;
+
+            height: 38px;
+
+            border-radius: 12px;
+
+            display: grid;
+
+            place-items: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #35dfff,
+                    #526fff
+                );
+
+            color: #06101b;
+
+            flex-shrink: 0;
+        }
+
+
+        .brand b {
+
+            font-size: 18px;
+
+            letter-spacing: .12em;
+
+            white-space: nowrap;
+        }
+
+
+        .brand small {
+
+            display: block;
+
+            color: #9aa8bb;
+
+            font-size: 9px;
+
+            letter-spacing: .16em;
+
+            white-space: nowrap;
+        }
+
+
+        /* =========================================================
+           SIDEBAR NAVIGATION CONTAINER
+        ========================================================== */
+
+        .sidebar-nav {
+
+            min-height: 0;
+
+            overflow-y: auto;
+
+            overflow-x: hidden;
+
+            padding-right: 3px;
+
+            /*
+               Makes sure the menu itself can scroll
+               instead of going underneath the bottom box.
+            */
+        }
+
+
+        /* =========================================================
+           SIDEBAR SCROLLBAR
+        ========================================================== */
+
+        .sidebar-nav::-webkit-scrollbar {
+
+            width: 4px;
+        }
+
+
+        .sidebar-nav::-webkit-scrollbar-track {
+
+            background: transparent;
+        }
+
+
+        .sidebar-nav::-webkit-scrollbar-thumb {
+
+            background:
+                rgba(148,163,184,.22);
+
+            border-radius: 10px;
+        }
+
+
+        .sidebar-nav::-webkit-scrollbar-thumb:hover {
+
+            background:
+                rgba(148,163,184,.38);
+        }
+
+
+        /* Firefox scrollbar */
+
+        .sidebar-nav {
+
+            scrollbar-width: thin;
+
+            scrollbar-color:
+                rgba(148,163,184,.22)
+                transparent;
+        }
+
+
+        /* =========================================================
+           NAVIGATION SECTION TITLE
+        ========================================================== */
+
+        .nav-title {
+
+            font-size: 10px;
+
+            letter-spacing: .18em;
+
+            color: #8b9bb0;
+
+            padding:
+                18px
+                12px
+                8px;
+        }
+
+
+        /* =========================================================
+           NAVIGATION LINK
+        ========================================================== */
+
+        .nav-link {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            color: #b7c4d6;
+
+            padding:
+                11px
+                12px;
+
+            border-radius: 12px;
+
+            margin:
+                3px
+                0;
+
+            font-size: 13px;
+
+            text-decoration: none;
+
+            transition:
+                background .2s ease,
+                color .2s ease;
+        }
+
+
+        .nav-link i {
+
+            width: 20px;
+
+            min-width: 20px;
+
+            text-align: center;
+
+            flex-shrink: 0;
+        }
+
+
+        .nav-link:hover {
+
+            background:
+                rgba(91,124,255,.08);
+
+            color: #fff;
+        }
+
+
+        .nav-link.active {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(57,217,255,.12),
+                    rgba(91,124,255,.08)
+                );
+
+            color: #fff;
+        }
+
+
+        /* =========================================================
+           SIDEBAR BOTTOM STATUS
+        ========================================================== */
+
+        .sidebar-bottom {
+
+            width: 100%;
+
+            min-height: 72px;
+
+            margin-top: 14px;
+
+            padding: 14px;
+
+            border:
+                1px solid var(--line);
+
+            border-radius: 16px;
+
+            background:
+                rgba(16,26,43,.65);
+
+            /*
+               IMPORTANT:
+               NO position:absolute
+               NO bottom:20px
+
+               This box now belongs to its own grid row.
+            */
+
+            flex-shrink: 0;
+
+            overflow: hidden;
+        }
+
+
+        .dot {
+
+            width: 8px;
+
+            height: 8px;
+
+            background:
+                var(--green);
+
+            border-radius: 50%;
+
+            flex-shrink: 0;
+
+            box-shadow:
+                0 0 8px
+                rgba(50,230,161,.45);
+        }
+
+
+        /* =========================================================
+           MAIN CONTENT AREA
+        ========================================================== */
+
+        .main {
+
+            flex: 1;
+
+            min-width: 0;
+
+            min-height: 100vh;
+        }
+
+
+        /* =========================================================
+           TOP BAR
+        ========================================================== */
+
+        .topbar {
+
+            height: 76px;
+
+            padding:
+                0
+                34px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            border-bottom:
+                1px solid var(--line);
+        }
+
+
+        /* =========================================================
+           PAGE CONTENT
+        ========================================================== */
+
+        .content {
+
+            padding:
+                30px
+                34px
+                42px;
+
+            max-width: 1700px;
+
+            margin: auto;
+        }
+
+
+        /* =========================================================
+           MOBILE MENU BUTTON
+        ========================================================== */
+
+        .mobile-toggle {
+
+            display: none;
+        }
+
+
+        /* =========================================================
+           MOBILE / TABLET
+        ========================================================== */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+
+                position: fixed;
+
+                left: -270px;
+
+                top: 0;
+
+                width: 250px;
+
+                min-width: 250px;
+
+                height: 100vh;
+
+                transition:
+                    left .25s ease;
+
+                z-index: 1050;
+            }
+
+
+            .sidebar.open {
+
+                left: 0;
+            }
+
+
+            .mobile-toggle {
+
+                display: grid;
+
+                place-items: center;
+            }
+
+
+            .content {
+
+                padding:
+                    22px
+                    18px;
+            }
+
+
+            .topbar {
+
+                padding:
+                    0
+                    18px;
+            }
+
+        }
+
+
+        /* =========================================================
+           SMALL MOBILE SCREENS
+        ========================================================== */
+
+        @media (max-width: 500px) {
+
+            .sidebar {
+
+                width: 250px;
+
+                min-width: 250px;
+            }
+
+
+            .content {
+
+                padding:
+                    18px
+                    14px
+                    30px;
+            }
+
+
+            .topbar {
+
+                height: 68px;
+            }
+
+        }
+
+    </style>
+
 
     {% block head %}{% endblock %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    
+
 </head>
+
 
 <body>
 
-<div class="app-wrapper">
 
-    <!-- ================= SIDEBAR ================= -->
+    <!-- =========================================================
+         APPLICATION WRAPPER
+    ========================================================== -->
 
-    <aside class="sidebar" id="sidebar">
-
-        <div class="sidebar-brand">
-            <div class="brand-icon">
-                <i class="bi bi-shield-lock-fill"></i>
-            </div>
-
-            <div>
-                <h4>AccessIQ</h4>
-                <span>Security Console</span>
-            </div>
-        </div>
-
-        <div class="sidebar-label">MAIN</div>
-
-        <nav class="sidebar-nav">
-
-            <a href="{{ url_for('main.dashboard') }}"
-               class="sidebar-link">
-                <i class="bi bi-grid-1x2-fill"></i>
-                <span>Dashboard</span>
-            </a>
-
-            {% if session.get('role') == 'Admin' %}
-
-            <a href="#"
-               class="sidebar-link">
-                <i class="bi bi-people-fill"></i>
-                <span>Users</span>
-            </a>
-
-            <a href="{{ url_for('main.manage_roles') }}"
-               class="sidebar-link">
-                <i class="bi bi-person-badge-fill"></i>
-                <span>Roles</span>
-            </a>
-
-            <a href="#"
-               class="sidebar-link">
-                <i class="bi bi-key-fill"></i>
-                <span>Permissions</span>
-            </a>
-
-            <div class="sidebar-label mt-4">SECURITY</div>
-
-            <a href="{{ url_for('main.audit_logs') }}"
-               class="sidebar-link">
-                <i class="bi bi-clock-history"></i>
-                <span>Audit Logs</span>
-            </a>
-
-            <a href="{{ url_for('main.ai_analysis') }}"
-               class="sidebar-link">
-                <i class="bi bi-stars"></i>
-                <span>AI Security</span>
-
-                <span class="ai-badge">
-                    AI
-                </span>
-            </a>
-
-            {% endif %}
-
-        </nav>
-
-        <!-- Logged-in user -->
-
-        <div class="sidebar-user">
-
-            <div class="user-avatar">
-                {{ session.get('username', 'U')[0]|upper }}
-            </div>
-
-            <div class="user-details">
-                <strong>
-                    {{ session.get('username', 'User') }}
-                </strong>
-
-                <span>
-                    {{ session.get('role', 'User') }}
-                </span>
-            </div>
-
-            <a href="{{ url_for('main.logout') }}"
-               class="logout-icon"
-               title="Logout">
-                <i class="bi bi-box-arrow-right"></i>
-            </a>
-
-        </div>
-
-    </aside>
+    <div class="app">
 
 
-    <!-- ================= MAIN AREA ================= -->
+        <!-- =====================================================
+             SIDEBAR
+        ====================================================== -->
 
-    <main class="main-area">
+        <aside
+            class="sidebar"
+            id="sidebar"
+        >
 
-        <!-- Top Navigation -->
 
-        <header class="topbar">
+            <!-- =================================================
+                 ACCESSIQ BRAND
+            ================================================== -->
 
-            <div class="d-flex align-items-center">
+            <div class="brand">
 
-                <button class="mobile-menu-btn"
-                        id="sidebarToggle">
-                    <i class="bi bi-list"></i>
-                </button>
+                <div class="brand-mark">
 
-                <div class="page-heading">
-                    <h5>{% block page_title %}Dashboard{% endblock %}</h5>
-                    <span>AccessIQ Security Management</span>
+                    <i class="bi bi-shield-lock-fill"></i>
+
+                </div>
+
+
+                <div>
+
+                    <b>
+                        ACCESSIQ
+                    </b>
+
+                    <small>
+                        SECURITY PLATFORM
+                    </small>
+
                 </div>
 
             </div>
 
 
-            <div class="topbar-actions">
+            <!-- =================================================
+                 SCROLLABLE NAVIGATION
+            ================================================== -->
 
-                <button class="topbar-icon"
-                        title="Security notifications">
-                    <i class="bi bi-bell"></i>
-                    <span class="notification-dot"></span>
-                </button>
+            <div class="sidebar-nav">
 
-                <div class="topbar-profile">
 
-                    <div class="user-avatar small-avatar">
-                        {{ session.get('username', 'U')[0]|upper }}
-                    </div>
+                <!-- =============================================
+                     OVERVIEW
+                ============================================== -->
 
-                    <div class="profile-text">
-                        <strong>
-                            {{ session.get('username', 'User') }}
-                        </strong>
+                <div class="nav-title">
+                    OVERVIEW
+                </div>
+
+
+                <a
+                    class="nav-link"
+                    href="{{ url_for('main.dashboard') }}"
+                >
+
+                    <i class="bi bi-grid-1x2-fill"></i>
+
+                    <span>
+                        Command Center
+                    </span>
+
+                </a>
+
+
+                <!-- =============================================
+                     MANAGEMENT
+                ============================================== -->
+
+                <div class="nav-title">
+                    MANAGEMENT
+                </div>
+
+
+                <a
+                    class="nav-link"
+                    href="{{ url_for('main.admin') }}"
+                >
+
+                    <i class="bi bi-people"></i>
+
+                    <span>
+                        User Management
+                    </span>
+
+                </a>
+
+
+                <a
+                    class="nav-link"
+                    href="{{ url_for('main.manage_roles') }}"
+                >
+
+                    <i class="bi bi-diagram-3"></i>
+
+                    <span>
+                        Roles & Permissions
+                    </span>
+
+                </a>
+
+
+                <!-- =============================================
+                     SECURITY
+                ============================================== -->
+
+                <div class="nav-title">
+                    SECURITY
+                </div>
+
+
+                <a
+                    class="nav-link"
+                    href="{{ url_for('main.audit_logs') }}"
+                >
+
+                    <i class="bi bi-activity"></i>
+
+                    <span>
+                        Audit Intelligence
+                    </span>
+
+                </a>
+
+
+                <a
+                    class="nav-link"
+                    href="{{ url_for('main.security_analytics') }}"
+                >
+
+                    <i class="bi bi-bar-chart"></i>
+
+                    <span>
+                        Security Analytics
+                    </span>
+
+                </a>
+
+
+                <a
+                    class="nav-link"
+                    href="{{ url_for('main.ai_analysis') }}"
+                >
+
+                    <i class="bi bi-stars"></i>
+
+                    <span>
+                        AI Security
+                    </span>
+
+                </a>
+
+
+                <!-- =============================================
+                     ACCESS
+                ============================================== -->
+
+                <div class="nav-title">
+                    ACCESS
+                </div>
+
+
+                {% if session.get('role') == 'Admin' %}
+
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('main.admin_permission_requests') }}"
+                    >
+
+                        <i class="bi bi-key"></i>
 
                         <span>
-                            {{ session.get('role', 'User') }}
+                            Permission Queue
                         </span>
-                    </div>
 
-                </div>
+                    </a>
+
+
+                {% else %}
+
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('main.permission_requests') }}"
+                    >
+
+                        <i class="bi bi-key"></i>
+
+                        <span>
+                            My Requests
+                        </span>
+
+                    </a>
+
+
+                {% endif %}
+
 
             </div>
 
-        </header>
+
+            <!-- =================================================
+                 SYSTEM STATUS
+            ================================================== -->
+
+            <div class="sidebar-bottom">
 
 
-        <!-- ================= PAGE CONTENT ================= -->
+                <div
+                    class="d-flex align-items-center gap-2 mb-2"
+                >
 
-        <section class="page-content">
-
-            {% block content %}
-
-            {% endblock %}
-
-        </section>
-
-    </main>
-
-</div>
+                    <span class="dot"></span>
 
 
-<!-- Bootstrap JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+                    <small
+                        style="color:#c0cad8"
+                    >
+                        System operational
+                    </small>
 
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                </div>
 
-<!-- Custom JavaScript -->
-<script src="{{ url_for('static', filename='js/app.js') }}"></script>
 
-{% block scripts %}{% endblock %}
-<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+                <div
+                    style="
+                        font-size:9px;
+                        color:#9aa8bb;
+                    "
+                >
+                    AccessIQ Security Core · v1.0
+                </div>
+
+
+            </div>
+
+
+        </aside>
+
+
+        <!-- =====================================================
+             MAIN CONTENT
+        ====================================================== -->
+
+        <main class="main">
+
+
+            <!-- =================================================
+                 TOP BAR
+            ================================================== -->
+
+            <header class="topbar">
+
+
+                <div>
+
+                    <button
+                        class="btn btn-sm text-light mobile-toggle"
+                        id="menuBtn"
+                        type="button"
+                    >
+
+                        <i class="bi bi-list"></i>
+
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="d-flex align-items-center gap-2"
+                >
+
+                    <a
+                        class="btn btn-sm"
+                        style="color:#b6c2d2"
+                        href="{{ url_for('main.profile') }}"
+                    >
+
+                        <i class="bi bi-person"></i>
+
+                    </a>
+
+                </div>
+
+
+            </header>
+
+
+            <!-- =================================================
+                 PAGE CONTENT
+            ================================================== -->
+
+            <section class="content">
+
+
+                {% block page_title %}
+                {% endblock %}
+
+
+                {% block content %}
+                {% endblock %}
+
+
+            </section>
+
+
+        </main>
+
+
+    </div>
+
+
+    <!-- =========================================================
+         MOBILE SIDEBAR SCRIPT
+    ========================================================== -->
+
+    <script>
+
+        const menuButton =
+            document.getElementById("menuBtn");
+
+        const sidebar =
+            document.getElementById("sidebar");
+
+
+        if (menuButton && sidebar) {
+
+            menuButton.addEventListener(
+                "click",
+                function () {
+
+                    sidebar.classList.toggle("open");
+
+                }
+            );
+
+        }
+
+    </script>
+
+
+    {% block scripts %}
+    {% endblock %}
+
 
 </body>
+
 </html>

@@ -1,250 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>AccessIQ | Add Role</title>
-
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='css/style.css') }}"
-    >
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AccessIQ — Create Role</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+:root{--bg:#070b14;--panel:#0d1422;--panel2:#101a2b;--line:rgba(148,163,184,.16);--text:#f4f7ff;--muted:#aebbd0;--cyan:#39d9ff;--blue:#5b7cff;--green:#32e6a1;--red:#ff6b81;--purple:#a878ff}
+*{box-sizing:border-box}body{margin:0;color:var(--text);background:radial-gradient(circle at 76% -10%,rgba(91,124,255,.15),transparent 31%),radial-gradient(circle at 8% 18%,rgba(57,217,255,.05),transparent 25%),var(--bg);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}a{text-decoration:none}.app{min-height:100vh;display:flex}
+.sidebar{width:250px;flex:0 0 250px;min-height:100vh;background:rgba(7,11,20,.92);border-right:1px solid var(--line);padding:24px 16px;position:sticky;top:0;height:100vh;backdrop-filter:blur(20px);z-index:20}.brand{display:flex;align-items:center;gap:12px;padding:4px 10px 30px}.brand-mark{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#35dfff,#526fff);color:#06101b;font-weight:900;box-shadow:0 8px 30px rgba(57,217,255,.2)}.brand b{font-size:18px;letter-spacing:.12em}.brand small{display:block;color:#8fa0b7;font-size:9px;letter-spacing:.16em;margin-top:2px}.nav-title{font-size:10px;letter-spacing:.18em;color:#8190a8;padding:18px 12px 8px}.nav-link{display:flex;align-items:center;gap:12px;color:#c1ccdc;padding:11px 12px;border-radius:12px;margin:3px 0;font-size:13px;transition:.2s}.nav-link i{font-size:17px;width:20px;text-align:center}.nav-link:hover{background:rgba(91,124,255,.09);color:#fff}.nav-link.active{background:linear-gradient(90deg,rgba(57,217,255,.12),rgba(91,124,255,.08));color:#fff;border:1px solid rgba(57,217,255,.1)}.sidebar-bottom{position:absolute;left:16px;right:16px;bottom:20px;padding:14px;border:1px solid var(--line);border-radius:16px;background:rgba(16,26,43,.65)}.status-dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 12px var(--green)}
+.main{flex:1;min-width:0}.topbar{height:76px;padding:0 34px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:rgba(7,11,20,.48);backdrop-filter:blur(18px);position:sticky;top:0;z-index:15}.search{width:min(430px,42vw);height:40px;border:1px solid var(--line);background:rgba(255,255,255,.035);border-radius:12px;display:flex;align-items:center;gap:10px;padding:0 13px;color:#9eabc0}.search input{border:0;outline:0;background:transparent;color:#fff;width:100%;font-size:13px}.search input::placeholder{color:#91a0b7}.top-actions{display:flex;align-items:center;gap:12px}.icon-btn{width:40px;height:40px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:#c1ccdc;border-radius:12px;display:grid;place-items:center}.icon-btn:hover{color:#fff;border-color:rgba(57,217,255,.3)}.profile{display:flex;align-items:center;gap:10px;padding-left:12px;border-left:1px solid var(--line)}.avatar{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#1c2e55,#253e78);color:#dff1ff;font-weight:800}.profile strong{font-size:12px}.profile span{display:block;font-size:10px;color:#aebbd0;margin-top:2px}.content{padding:30px 34px 42px;max-width:1700px;margin:auto}
+.hero{position:relative;overflow:hidden;border:1px solid rgba(91,124,255,.18);border-radius:22px;padding:25px 28px;margin-bottom:18px;background:radial-gradient(circle at 85% 20%,rgba(168,120,255,.11),transparent 28%),linear-gradient(135deg,rgba(16,26,43,.96),rgba(9,16,28,.96))}.hero:after{content:"";position:absolute;width:230px;height:230px;border:1px solid rgba(168,120,255,.08);border-radius:50%;right:-60px;top:-100px}.eyebrow{font-size:10px;letter-spacing:.18em;color:#d0b5ff;font-weight:700}.hero h1{font-size:29px;margin:7px 0 6px;font-weight:760}.hero p{color:#b2bfd2;margin:0;font-size:13px;max-width:720px}.hero-actions{position:absolute;right:28px;top:28px;display:flex;gap:8px;z-index:2}.btn-main{border:0;border-radius:11px;padding:10px 15px;color:#04111a;background:linear-gradient(135deg,#45e0ff,#6680ff);font-size:12px;font-weight:750}.btn-ghost{border:1px solid var(--line);border-radius:11px;padding:9px 14px;color:#d1dbea;background:rgba(255,255,255,.025);font-size:12px}.btn-ghost:hover{color:#fff;border-color:rgba(57,217,255,.25)}
+.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);gap:18px}.card{background:linear-gradient(145deg,rgba(14,23,38,.96),rgba(9,16,28,.95));border:1px solid var(--line);border-radius:20px;padding:22px}.card-head{display:flex;align-items:center;gap:14px;margin-bottom:23px;padding-bottom:18px;border-bottom:1px solid var(--line)}.icon-box{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:rgba(91,124,255,.11);color:#aebaff;font-size:20px}.card-title{font-size:15px;font-weight:750}.card-sub{font-size:11px;color:#aebbd0;margin-top:4px}.field{margin-bottom:19px}.field label{display:block;font-size:11px;font-weight:750;color:#d4ddec;margin-bottom:8px;text-transform:uppercase;letter-spacing:.07em}.form-control{width:100%;background:#0a1220;border:1px solid rgba(148,163,184,.2);color:#f2f6ff;border-radius:11px;padding:12px 13px;font-size:13px;outline:none}.form-control::placeholder{color:#90a0b7}.form-control:focus{border-color:#39d9ff;box-shadow:0 0 0 3px rgba(57,217,255,.09);background:#0a1220;color:#fff}.hint{font-size:10px;color:#a2b1c6;margin-top:7px;line-height:1.5}.error{padding:11px 13px;border-radius:11px;background:rgba(255,107,129,.09);border:1px solid rgba(255,107,129,.2);color:#ffb3c0;font-size:12px;margin-bottom:18px}.actions{display:flex;justify-content:flex-end;gap:9px;margin-top:8px;padding-top:19px;border-top:1px solid var(--line)}.btn-cancel{border:1px solid var(--line);border-radius:11px;padding:10px 15px;color:#d0d9e7;background:rgba(255,255,255,.025);font-size:12px}.btn-save{border:0;border-radius:11px;padding:10px 15px;color:#04111a;background:linear-gradient(135deg,#45e0ff,#6680ff);font-size:12px;font-weight:750}.side-card{height:100%;background:linear-gradient(145deg,rgba(14,23,38,.96),rgba(9,16,28,.95));border:1px solid var(--line);border-radius:20px;padding:20px}.side-title{font-size:14px;font-weight:750;margin-bottom:5px}.side-sub{font-size:10px;color:#aebbd0;margin-bottom:12px}.step{display:flex;gap:11px;padding:13px 0;border-bottom:1px solid var(--line)}.step:last-of-type{border-bottom:0}.num{width:29px;height:29px;flex:0 0 29px;border-radius:9px;display:grid;place-items:center;background:rgba(91,124,255,.12);color:#aebaff;font-size:10px;font-weight:800}.step strong{display:block;font-size:11px;color:#eef5ff}.step span{display:block;font-size:10px;color:#aebbd0;line-height:1.45;margin-top:3px}.note{margin-top:16px;padding:12px;border-radius:12px;background:rgba(50,230,161,.035);border:1px solid rgba(50,230,161,.12);color:#b7c9bf;font-size:10px;line-height:1.55}.preview{margin-top:14px;padding:13px;border-radius:12px;background:rgba(57,217,255,.04);border:1px solid rgba(57,217,255,.09)}.preview-label{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#9eb0c6}.preview-name{font-size:16px;font-weight:750;color:#fff;margin-top:4px;word-break:break-word}.footer{display:flex;justify-content:space-between;color:#8090a8;font-size:9px;margin-top:18px;padding:0 4px}
+.mobile-toggle{display:none}@media(max-width:1050px){.hero-actions{position:static;margin-top:18px}.grid{grid-template-columns:1fr}}@media(max-width:900px){.sidebar{position:fixed;left:-270px;transition:.25s}.sidebar.open{left:0}.mobile-toggle{display:grid}.content{padding:22px 18px}.topbar{padding:0 18px}.search{width:42vw}}@media(max-width:650px){.profile-text{display:none}.hero h1{font-size:24px}.hero-actions{flex-direction:column;align-items:stretch}.grid{grid-template-columns:1fr}}
+</style>
 </head>
-
 <body>
-
-<div class="app-wrapper">
-
-    <!-- SIDEBAR -->
-
-    <aside class="sidebar">
-
-        <div class="sidebar-brand">
-
-            <div class="brand-icon">
-                <i class="bi bi-shield-lock-fill"></i>
-            </div>
-
-            <div>
-                <h4>AccessIQ</h4>
-                <span>SECURITY CONSOLE</span>
-            </div>
-
-        </div>
-
-        <div class="sidebar-label">
-            MAIN MENU
-        </div>
-
-        <nav class="sidebar-nav">
-
-            <a href="{{ url_for('main.dashboard') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-grid-1x2-fill"></i>
-                <span>Dashboard</span>
-
-            </a>
-
-            <a href="{{ url_for('main.admin') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-people-fill"></i>
-                <span>User Management</span>
-
-            </a>
-
-            <a href="{{ url_for('main.manage_roles') }}"
-               class="sidebar-link active">
-
-                <i class="bi bi-person-badge-fill"></i>
-                <span>Role Management</span>
-
-            </a>
-
-            <a href="{{ url_for('main.audit_logs') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-journal-text"></i>
-                <span>Audit Logs</span>
-
-            </a>
-
-            <a href="{{ url_for('main.ai_analysis') }}"
-               class="sidebar-link">
-
-                <i class="bi bi-robot"></i>
-                <span>AI Security</span>
-
-            </a>
-
-        </nav>
-
-
-        <div class="sidebar-user">
-
-            <div class="user-avatar">
-                {{ session["username"][0]|upper }}
-            </div>
-
-            <div class="user-details">
-
-                <strong>
-                    {{ session["username"] }}
-                </strong>
-
-                <span>
-                    {{ session["role"] }}
-                </span>
-
-            </div>
-
-            <a
-                href="{{ url_for('main.logout') }}"
-                class="logout-icon"
-            >
-
-                <i class="bi bi-box-arrow-right"></i>
-
-            </a>
-
-        </div>
-
+<div class="app">
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><div class="brand-mark"><i class="bi bi-shield-lock-fill"></i></div><div><b>ACCESSIQ</b><small>SECURITY PLATFORM</small></div></div>
+  <div class="nav-title">OVERVIEW</div>
+  <a class="nav-link" href="{{ url_for('main.dashboard') }}"><i class="bi bi-grid-1x2-fill"></i> Command Center</a>
+  <div class="nav-title">MANAGEMENT</div>
+  <a class="nav-link" href="{{ url_for('main.admin') }}"><i class="bi bi-people"></i> User Management</a>
+  <a class="nav-link active" href="{{ url_for('main.manage_roles') }}"><i class="bi bi-diagram-3"></i> Roles &amp; Permissions</a>
+  <div class="nav-title">SECURITY</div>
+  <a class="nav-link" href="{{ url_for('main.audit_logs') }}"><i class="bi bi-activity"></i> Audit Intelligence</a>
+  <a class="nav-link" href="{{ url_for('main.security_analytics') }}"><i class="bi bi-bar-chart"></i> Security Analytics</a>
+  <a class="nav-link" href="{{ url_for('main.ai_analysis') }}"><i class="bi bi-stars"></i> AI Security</a>
+  <div class="nav-title">ACCESS</div>
+  {% if session.get('role') == 'Admin' %}
+  <a class="nav-link" href="{{ url_for('main.admin_permission_requests') }}"><i class="bi bi-key"></i> Permission Queue</a>
+  {% else %}
+  <a class="nav-link" href="{{ url_for('main.permission_requests') }}"><i class="bi bi-key"></i> My Requests</a>
+  {% endif %}
+  <div class="sidebar-bottom"><div class="d-flex align-items-center gap-2 mb-2"><span class="status-dot"></span><small style="color:#b8c4d5">System operational</small></div><div style="font-size:9px;color:#8493a9">AccessIQ Security Core · v1.0</div></div>
+</aside>
+<main class="main">
+<header class="topbar">
+  <div class="d-flex align-items-center gap-2" style="min-width:0;flex:1">
+    <button class="icon-btn mobile-toggle" id="menuBtn" type="button" aria-label="Open navigation"><i class="bi bi-list"></i></button>
+    <div class="search"><i class="bi bi-search"></i><input type="search" placeholder="Search security controls..." aria-label="Search security controls"><span style="font-size:9px;border:1px solid var(--line);padding:3px 6px;border-radius:5px;color:#8ea0b7">/</span></div>
+  </div>
+  <div class="top-actions"><a class="icon-btn" href="{{ url_for('main.profile') }}" aria-label="Profile"><i class="bi bi-person"></i></a><div class="profile"><div class="avatar">{{ session.get('username','A')[:1]|upper }}</div><div class="profile-text"><strong>{{ session.get('username','User') }}</strong><span>{{ session.get('role','User') }}</span></div></div></div>
+</header>
+<section class="content">
+  <section class="hero">
+    <div class="eyebrow">ROLE BASED ACCESS CONTROL</div>
+    <h1>Create New Role</h1>
+    <p>Define a role for your organization and configure its permissions after creation.</p>
+    <div class="hero-actions"><a class="btn-ghost" href="{{ url_for('main.manage_roles') }}"><i class="bi bi-arrow-left me-1"></i> Back to Roles</a></div>
+  </section>
+  <div class="grid">
+    <section class="card">
+      <div class="card-head"><div class="icon-box"><i class="bi bi-shield-plus"></i></div><div><div class="card-title">Role Details</div><div class="card-sub">Enter the basic information for this access role.</div></div></div>
+      {% if error %}<div class="error">{{ error }}</div>{% endif %}
+      <form method="POST" action="{{ url_for('main.add_role') }}">
+        <div class="field"><label for="name">Role Name</label><input class="form-control" id="name" name="name" type="text" placeholder="e.g. Security Analyst" required autofocus><div class="hint">Choose a clear name that describes the user's responsibilities.</div></div>
+        <div class="field"><label for="description">Description</label><textarea class="form-control" id="description" name="description" placeholder="Describe what this role is responsible for..." rows="6"></textarea><div class="hint">A short description helps administrators understand when this role should be assigned.</div></div>
+        <div class="actions"><a class="btn-cancel" href="{{ url_for('main.manage_roles') }}">Cancel</a><button class="btn-save" type="submit"><i class="bi bi-check2-circle me-1"></i> Create Role</button></div>
+      </form>
+    </section>
+    <aside class="side-card">
+      <div class="side-title">Role Setup</div><div class="side-sub">Complete the access-control workflow in three steps.</div>
+      <div class="step"><div class="num">01</div><div><strong>Create the role</strong><span>Add a unique role name and an optional description.</span></div></div>
+      <div class="step"><div class="num">02</div><div><strong>Configure permissions</strong><span>After creation, open Edit Role to select the permissions this role should have.</span></div></div>
+      <div class="step"><div class="num">03</div><div><strong>Assign to users</strong><span>Use User Management to assign the role to the appropriate accounts.</span></div></div>
+      <div class="note"><strong style="color:#dff7ea">RBAC workflow:</strong> Roles group permissions together so access can be managed consistently across users.</div>
+      <div class="preview"><div class="preview-label">New role preview</div><div class="preview-name" id="previewName">Your Role</div></div>
     </aside>
-
-
-    <!-- MAIN AREA -->
-
-    <main class="main-area">
-
-        <header class="topbar">
-
-            <div class="page-heading">
-
-                <h5>
-                    Add Role
-                </h5>
-
-                <span>
-                    Create a new system role
-                </span>
-
-            </div>
-
-        </header>
-
-
-        <section class="page-content">
-
-            <div class="mb-4">
-
-                <h1 class="page-title">
-                    Add Role
-                </h1>
-
-                <p class="page-subtitle">
-                    Create a new role for AccessIQ.
-                </p>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="card-body p-4">
-
-                    {% if error %}
-
-                    <div class="alert alert-danger">
-                        {{ error }}
-                    </div>
-
-                    {% endif %}
-
-
-                    <form method="POST">
-
-                        <div class="mb-4">
-
-                            <label class="form-label">
-                                Role Name
-                            </label>
-
-                            <input
-                                type="text"
-                                name="name"
-                                class="form-control"
-                                placeholder="e.g. Security Manager"
-                                required
-                            >
-
-                        </div>
-
-
-                        <div class="mb-4">
-
-                            <label class="form-label">
-                                Description
-                            </label>
-
-                            <textarea
-                                name="description"
-                                class="form-control"
-                                rows="4"
-                                placeholder="Describe what this role can do"
-                            ></textarea>
-
-                        </div>
-
-
-                        <div class="d-flex gap-3">
-
-                            <button
-                                type="submit"
-                                class="btn btn-primary"
-                            >
-
-                                <i class="bi bi-plus-circle me-2"></i>
-
-                                Create Role
-
-                            </button>
-
-
-                            <a
-                                href="{{ url_for('main.manage_roles') }}"
-                                class="btn btn-outline-light"
-                            >
-
-                                Cancel
-
-                            </a>
-
-                        </div>
-
-                    </form>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
+  </div>
+  <div class="footer"><span>ACCESSIQ ROLE &amp; ACCESS CONTROL</span><span>Protected session · {{ session.get('role','User') }}</span></div>
+</section>
+</main>
 </div>
-
+<script>
+const nameInput=document.getElementById('name');
+const preview=document.getElementById('previewName');
+if(nameInput&&preview){nameInput.addEventListener('input',()=>{preview.textContent=nameInput.value.trim()||'Your Role';});}
+const menu=document.getElementById('menuBtn'),side=document.getElementById('sidebar');
+if(menu&&side) menu.addEventListener('click',()=>side.classList.toggle('open'));
+</script>
 </body>
-
 </html>

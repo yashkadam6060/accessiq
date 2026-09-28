@@ -1,89 +1,291 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>My Profile | AccessIQ</title>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AccessIQ — My Profile</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"><link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <style>
-:root{--bg:#08111f;--side:#0b1627;--panel:#0f1c2f;--panel2:#122238;--border:#1b2c45;--text:#edf4ff;--muted:#8fa4bd;--blue:#62a9ff;--purple:#9679ff;--green:#42d6a0}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}a{text-decoration:none;color:inherit}.layout{min-height:100vh;display:flex}.sidebar{position:fixed;inset:0 auto 0 0;width:245px;background:var(--side);border-right:1px solid var(--border);padding:24px 15px}.brand{display:flex;align-items:center;gap:11px;padding:4px 12px 28px;font-size:21px;font-weight:800}.logo{width:35px;height:35px;border-radius:10px;background:linear-gradient(135deg,#62a9ff,#8f72ff);display:grid;place-items:center}.nav-title{font-size:10px;letter-spacing:1.5px;color:#60758e;font-weight:800;padding:14px 12px 8px}.nav a{display:flex;gap:12px;align-items:center;padding:11px 12px;margin:3px 0;border-radius:10px;color:#91a4bb;font-size:13px;font-weight:600}.nav a:hover{background:#122238;color:#fff}.nav a.active{background:#162b47;color:#fff;box-shadow:inset 3px 0 var(--blue)}.icon{width:20px;text-align:center}.main{margin-left:245px;width:calc(100% - 245px);padding:28px 32px 45px}.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}.crumb{font-size:11px;color:var(--muted);letter-spacing:.8px;margin-bottom:6px}h1{font-size:28px;margin:0 0 6px}.sub{color:var(--muted);font-size:13px}.userbox{display:flex;gap:10px;align-items:center}.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#7560e8,#4d8de8);font-weight:800}.uinfo{text-align:right}.uinfo strong{display:block;font-size:13px}.uinfo span{font-size:11px;color:var(--muted)}.hero{background:linear-gradient(120deg,#10233d,#111d32);border:1px solid var(--border);border-radius:18px;padding:25px;display:flex;align-items:center;gap:22px;margin-bottom:18px}.bigavatar{width:82px;height:82px;border-radius:22px;background:linear-gradient(135deg,#5e9ff5,#9477ff);display:grid;place-items:center;font-size:30px;font-weight:800;box-shadow:0 12px 30px rgba(60,100,190,.2)}.hero h2{margin:0 0 6px;font-size:22px}.hero p{margin:0;color:var(--muted);font-size:13px}.badge{display:inline-flex;margin-top:12px;padding:6px 10px;border-radius:20px;background:rgba(66,214,160,.1);border:1px solid rgba(66,214,160,.25);color:#6de0b1;font-size:10px;font-weight:800}.grid{display:grid;grid-template-columns:1.35fr .75fr;gap:18px}.card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px}.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.head h3{font-size:15px;margin:0}.head span{font-size:11px;color:var(--muted)}.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{background:#0b1728;border:1px solid #182b43;border-radius:12px;padding:13px}.field label{display:block;color:#71879f;font-size:10px;text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px}.field div{font-size:13px;font-weight:650;word-break:break-word}.sidecard{display:flex;flex-direction:column;gap:12px}.info{padding:14px;border-radius:12px;background:#0b1728;border:1px solid #182b43}.info label{font-size:10px;color:#71879f;text-transform:uppercase;letter-spacing:.7px}.info strong{display:block;margin-top:6px;font-size:13px}.action{display:flex;align-items:center;gap:12px;padding:15px;border-radius:12px;background:#111f34;border:1px solid #1d3450}.action .ico{width:35px;height:35px;border-radius:10px;background:#182f4b;display:grid;place-items:center;color:#8fc1ff}.action strong{font-size:12px}.action small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.action:hover{border-color:#31577f;background:#13253d}.security{margin-top:18px}.securityrow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.metric{padding:15px;background:#0b1728;border:1px solid #182b43;border-radius:12px}.metric .n{font-size:23px;font-weight:800}.metric .l{font-size:10px;color:var(--muted);margin-top:4px}.note{margin-top:14px;color:#7890aa;font-size:10px;line-height:1.5}@media(max-width:900px){.grid{grid-template-columns:1fr}}@media(max-width:700px){.sidebar{position:relative;width:100%;height:auto;border-right:0;border-bottom:1px solid var(--border)}.layout{display:block}.main{margin:0;width:100%;padding:20px}.nav{display:flex;overflow:auto;gap:4px}.nav-title{display:none}.nav a{white-space:nowrap}.brand{padding-bottom:15px}.topbar{align-items:flex-start}.uinfo{display:none}.fields{grid-template-columns:1fr}.hero{align-items:flex-start;flex-direction:column}.securityrow{grid-template-columns:1fr}}
-</style>
-</head>
-<body>
-<div class="layout">
-<aside class="sidebar">
-<div class="brand"><div class="logo">A</div>AccessIQ</div>
-<div class="nav-title">OVERVIEW</div><nav class="nav">
-<a href="{{ url_for('main.dashboard') }}"><span class="icon">⌂</span>Dashboard</a>
-<a href="{{ url_for('main.security_analytics') }}"><span class="icon">◈</span>Security Analytics</a>
-</nav>
-<div class="nav-title">MANAGEMENT</div><nav class="nav">
-<a href="{{ url_for('main.admin') }}"><span class="icon">♙</span>User Management</a>
-<a href="{{ url_for('main.manage_roles') }}"><span class="icon">◆</span>Roles & Permissions</a>
-</nav>
-<div class="nav-title">SECURITY</div><nav class="nav">
-<a href="{{ url_for('main.admin_permission_requests') }}"><span class="icon">✓</span>Permission Approvals</a>
-<a href="{{ url_for('main.audit_logs') }}"><span class="icon">≡</span>Audit Logs</a>
-<a href="{{ url_for('main.ai_analysis') }}"><span class="icon">✦</span>AI Security Analysis</a>
-</nav>
-<div class="nav-title">ACCESS</div><nav class="nav">
-<a class="active" href="{{ url_for('main.profile') }}"><span class="icon">◎</span>My Profile</a>
-<a href="{{ url_for('main.logout') }}"><span class="icon">↪</span>Logout</a>
-</nav>
-</aside>
+:root{--bg:#070b14;--panel:#0d1422;--line:rgba(148,163,184,.13);--text:#eef5ff;--muted:#b7c4d6;--cyan:#39d9ff;--blue:#5b7cff;--green:#32e6a1;--red:#ff6b81}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 76% -10%,rgba(91,124,255,.15),transparent 31%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}a{text-decoration:none;color:inherit}.app{min-height:100vh;display:flex}.sidebar{width:250px;flex:0 0 250px;min-height:100vh;background:rgba(7,11,20,.9);border-right:1px solid var(--line);padding:24px 16px;position:sticky;top:0;height:100vh}.brand{display:flex;align-items:center;gap:12px;padding:4px 10px 30px}.brand-mark{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#35dfff,#526fff);color:#06101b}.brand b{font-size:18px;letter-spacing:.12em}.brand small{display:block;color:#9aa8bb;font-size:9px;letter-spacing:.16em}.nav-title{font-size:10px;letter-spacing:.18em;color:#8b9bb0;padding:18px 12px 8px}.nav-link{display:flex;align-items:center;gap:12px;color:#b7c4d6;padding:11px 12px;border-radius:12px;margin:3px 0;font-size:13px}.nav-link i{width:20px;text-align:center}.nav-link:hover{background:rgba(91,124,255,.08);color:#fff}.nav-link.active{background:linear-gradient(90deg,rgba(57,217,255,.12),rgba(91,124,255,.08));color:#fff;border:1px solid rgba(57,217,255,.1)}.sidebar-bottom{position:absolute;left:16px;right:16px;bottom:20px;padding:14px;border:1px solid var(--line);border-radius:16px;background:rgba(16,26,43,.65)}.dot{width:8px;height:8px;background:var(--green);border-radius:50%}.main{flex:1;min-width:0}.topbar{height:76px;padding:0 34px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.top-actions{display:flex;gap:12px;align-items:center}.icon-btn{width:40px;height:40px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:#b6c2d2;border-radius:12px;display:grid;place-items:center}.profile{display:flex;gap:10px;align-items:center;padding-left:12px;border-left:1px solid var(--line)}.avatar{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#1c2e55,#253e78);color:#d9ebff;font-weight:800}.profile span{display:block;color:#aebbd0;font-size:10px}.profile strong{font-size:12px}.content{padding:30px 34px 42px;max-width:1500px;margin:auto}.hero{display:flex;align-items:center;gap:20px;border:1px solid rgba(91,124,255,.18);border-radius:22px;padding:24px 28px;margin-bottom:18px;background:linear-gradient(135deg,rgba(16,26,43,.96),rgba(9,16,28,.96))}.bigavatar{width:78px;height:78px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(135deg,#5b7cff,#a878ff);font-size:28px;font-weight:800}.hero h1{font-size:28px;margin:0 0 6px}.hero p{margin:0;color:#b7c4d6;font-size:12px}.badge-status{display:inline-flex;margin-top:10px;padding:6px 10px;border-radius:999px;background:rgba(50,230,161,.1);color:#7cf0c0;font-size:10px;font-weight:800}.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(360px,.75fr);gap:18px;align-items:start}.card{background:linear-gradient(145deg,rgba(14,23,38,.94),rgba(9,16,28,.94));border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:18px}.head{display:flex;justify-content:space-between;margin-bottom:18px}.head h2,.head h3{font-size:15px;color:#f3f7ff;margin:0}.head span{color:#b0bdcf;font-size:10px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{padding:12px;border-radius:12px;background:rgba(255,255,255,.022);border:1px solid var(--line)}.field label,.info label{display:block;color:#aebbd0;font-size:9px;text-transform:uppercase;letter-spacing:.1em}.field div,.info strong{margin-top:5px;display:block;color:#eef4fb;font-size:12px}.securityrow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.metric{padding:14px;border-radius:12px;background:rgba(255,255,255,.022);border:1px solid var(--line)}.metric .n{font-size:22px;font-weight:800;color:#f3f7ff}.metric .l{font-size:9px;color:#aebbd0;margin-top:4px}.info{padding:13px;border-radius:12px;background:rgba(255,255,255,.022);border:1px solid var(--line);margin-bottom:10px}.action{display:flex;gap:12px;padding:13px;border-radius:12px;background:rgba(255,255,255,.022);border:1px solid var(--line);margin-bottom:10px}.action i{font-size:18px;color:var(--cyan)}.action strong{font-size:11px;color:#f3f7ff}.action small{display:block;color:#aebbd0;font-size:9px;margin-top:3px}.note{font-size:10px;line-height:1.5;color:#b5c1d1;margin-top:12px}
+.profile-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.meta-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:999px;
+    border:1px solid var(--line);background:rgba(255,255,255,.025);color:#cbd7e7;font-size:9px}
+.meta-chip i{color:var(--cyan)}
+.hero-copy{flex:1;min-width:0}
+.hero-actions{display:flex;gap:8px;margin-left:auto;align-self:flex-start}
+.hero-action{display:inline-flex;align-items:center;gap:7px;padding:9px 11px;border-radius:10px;
+    border:1px solid var(--line);background:rgba(255,255,255,.025);color:#dbe7f5;font-size:10px}
+.hero-action:hover{background:rgba(91,124,255,.10);color:#fff}
+.hero-action.danger:hover{border-color:rgba(255,107,129,.3);background:rgba(255,107,129,.07);color:#ffb5c1}
+.security-head{display:flex;align-items:center;gap:8px}
+.security-state{display:inline-flex;align-items:center;gap:6px;margin-left:auto;padding:5px 8px;border-radius:999px;
+    background:rgba(50,230,161,.08);border:1px solid rgba(50,230,161,.12);color:#79edbe;font-size:9px;font-weight:700}
+.security-state .state-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px rgba(50,230,161,.5)}
+.metric{position:relative;overflow:hidden}
+.metric i{position:absolute;right:12px;top:12px;font-size:17px;color:rgba(57,217,255,.55)}
+.metric:nth-child(2) i{color:rgba(91,124,255,.65)}
+.metric:nth-child(3) i{color:rgba(255,107,129,.65)}
+.activity-card .head{margin-bottom:12px}
+.activity-list{display:flex;flex-direction:column}
+.activity{display:flex;gap:11px;padding:12px 0;border-top:1px solid var(--line)}
+.activity:first-child{border-top:0;padding-top:2px}
+.activity-icon{width:30px;height:30px;flex:0 0 30px;border-radius:9px;display:grid;place-items:center;
+    background:rgba(57,217,255,.07);border:1px solid rgba(57,217,255,.12);color:var(--cyan)}
+.activity-main{min-width:0;flex:1}
+.activity-main strong{display:block;color:#eef5ff;font-size:10px}
+.activity-main span{display:block;color:#aebbd0;font-size:9px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.activity-time{color:#8f9fb4;font-size:9px;white-space:nowrap;padding-top:1px}
+.empty-activity{padding:12px 0;color:#9eacbf;font-size:10px}
+.access-card .info{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.info .value-badge{padding:5px 8px;border-radius:8px;background:rgba(91,124,255,.08);border:1px solid rgba(91,124,255,.12);color:#cbd8ff;font-size:9px}
+.action{transition:.2s}
+.action:hover{transform:translateY(-1px);background:rgba(91,124,255,.06);border-color:rgba(91,124,255,.18)}
+.logout-action i{color:#ff7f93}
+@media(max-width:950px){
+    .hero-actions{margin-left:0;align-self:auto}
+}
+@media(max-width:650px){
+    .hero-actions{width:100%;flex-wrap:wrap}
+    .hero-action{flex:1;justify-content:center}
+    .security-state{margin-left:0}
+}
+.mobile-toggle{display:none}@media(max-width:950px){.sidebar{position:fixed;left:-270px;transition:.25s}.sidebar.open{left:0}.mobile-toggle{display:grid}.content{padding:22px 18px}.topbar{padding:0 18px}.grid{grid-template-columns:1fr}}@media(max-width:650px){.fields,.securityrow{grid-template-columns:1fr}.profile-text{display:none}.hero{align-items:flex-start;flex-direction:column}}
+</style></head><body><div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="brand-mark"><i class="bi bi-shield-lock-fill"></i></div><div><b>ACCESSIQ</b><small>SECURITY PLATFORM</small></div></div>
+<div class="nav-title">OVERVIEW</div><a class="nav-link" href="{{ url_for('main.dashboard') }}"><i class="bi bi-grid-1x2-fill"></i>Command Center</a><div class="nav-title">MANAGEMENT</div><a class="nav-link" href="{{ url_for('main.admin') }}"><i class="bi bi-people"></i>User Management</a><a class="nav-link" href="{{ url_for('main.manage_roles') }}"><i class="bi bi-diagram-3"></i>Roles & Permissions</a><div class="nav-title">SECURITY</div><a class="nav-link" href="{{ url_for('main.audit_logs') }}"><i class="bi bi-activity"></i>Audit Intelligence</a><a class="nav-link" href="{{ url_for('main.security_analytics') }}"><i class="bi bi-bar-chart"></i>Security Analytics</a><a class="nav-link" href="{{ url_for('main.ai_analysis') }}"><i class="bi bi-stars"></i>AI Security</a><div class="nav-title">ACCESS</div>{% if session.get('role')=='Admin' %}<a class="nav-link" href="{{ url_for('main.admin_permission_requests') }}"><i class="bi bi-key"></i>Permission Queue</a>{% else %}<a class="nav-link" href="{{ url_for('main.permission_requests') }}"><i class="bi bi-key"></i>My Requests</a>{% endif %}</aside>
+<main class="main"><header class="topbar"><button class="icon-btn mobile-toggle" id="menuBtn"><i class="bi bi-list"></i></button><div class="top-actions"><a class="icon-btn" href="{{ url_for('main.security_analytics') }}"><i class="bi bi-bar-chart"></i></a><a class="icon-btn" href="{{ url_for('main.profile') }}"><i class="bi bi-person"></i></a><div class="profile"><div class="avatar">{{ user.username[:1]|upper }}</div><div class="profile-text"><strong>{{ user.username }}</strong><span>{{ user.role.name if user.role else 'No Role' }}</span></div></div></div></header>
 
-<main class="main">
-<div class="topbar">
-<div><div class="crumb">ACCESS / MY PROFILE</div><h1>My Profile</h1><div class="sub">View your account information and security status.</div></div>
-<div class="userbox"><div class="uinfo"><strong>{{ user.username }}</strong><span>{{ user.role.name if user.role else 'No Role' }}</span></div><div class="avatar">{{ user.username[:1]|upper }}</div></div>
-</div>
+<section class="content">
 
 <section class="hero">
-<div class="bigavatar">{{ user.username[:1]|upper }}</div>
-<div><h2>{{ user.username }}</h2><p>{{ user.designation or 'AccessIQ User' }}{% if user.department %} · {{ user.department }}{% endif %}</p>
-<div class="badge">● {{ user.status or 'Active' }}</div></div>
+    <div class="bigavatar">{{ user.username[:1]|upper }}</div>
+
+    <div class="hero-copy">
+        <h1>My Profile</h1>
+        <p>
+            {{ user.designation or 'AccessIQ User' }}
+            {% if user.department %} · {{ user.department }}{% endif %}
+        </p>
+
+        <div class="profile-meta">
+            <span class="meta-chip"><i class="bi bi-person-badge"></i>{{ user.role.name if user.role else 'No Role Assigned' }}</span>
+            <span class="meta-chip"><i class="bi bi-shield-check"></i>{{ user.status or 'Active' }}</span>
+            <span class="meta-chip"><i class="bi bi-lock"></i>Authenticated Account</span>
+        </div>
+    </div>
+
+    <div class="hero-actions">
+        <a class="hero-action" href="{{ url_for('main.change_password') }}">
+            <i class="bi bi-key"></i> Change Password
+        </a>
+        <a class="hero-action danger" href="{{ url_for('main.logout') }}">
+            <i class="bi bi-box-arrow-right"></i> Logout
+        </a>
+    </div>
 </section>
 
 <div class="grid">
-<div>
-<div class="card">
-<div class="head"><h3>Account Information</h3><span>Read-only profile details</span></div>
-<div class="fields">
-<div class="field"><label>Username</label><div>{{ user.username }}</div></div>
-<div class="field"><label>Email Address</label><div>{{ user.email }}</div></div>
-<div class="field"><label>Department</label><div>{{ user.department or 'Not specified' }}</div></div>
-<div class="field"><label>Designation</label><div>{{ user.designation or 'Not specified' }}</div></div>
-<div class="field"><label>Role</label><div>{{ user.role.name if user.role else 'Not Assigned' }}</div></div>
-<div class="field"><label>Account Status</label><div>{{ user.status or 'Active' }}</div></div>
-</div>
-</div>
 
-<div class="card security">
-<div class="head"><h3>Security Overview</h3><span>Account activity</span></div>
-<div class="securityrow">
-<div class="metric"><div class="n">{{ user_logs|length }}</div><div class="l">Recorded Activities</div></div>
-<div class="metric"><div class="n">{{ user_logs|selectattr('action','equalto','LOGIN')|list|length }}</div><div class="l">Successful Logins</div></div>
-<div class="metric"><div class="n">{{ user_logs|selectattr('action','equalto','FAILED_LOGIN')|list|length }}</div><div class="l">Failed Logins</div></div>
-</div>
-<div class="note">Your profile information is managed through AccessIQ's role-based access control system. Password changes are handled separately for security.</div>
-</div>
-</div>
+    <div>
 
-<div class="sidecard">
-<div class="card">
-<div class="head"><h3>Account Summary</h3></div>
-<div class="info"><label>Assigned Role</label><strong>{{ user.role.name if user.role else 'Not Assigned' }}</strong></div>
-<div class="info"><label>Department</label><strong>{{ user.department or 'Not specified' }}</strong></div>
-<div class="info"><label>Designation</label><strong>{{ user.designation or 'Not specified' }}</strong></div>
+        <section class="card">
+            <div class="head">
+                <h2>Account Information</h2>
+                <span>Read-only profile details</span>
+            </div>
+
+            <div class="fields">
+                <div class="field">
+                    <label>Username</label>
+                    <div>{{ user.username }}</div>
+                </div>
+
+                <div class="field">
+                    <label>Email Address</label>
+                    <div>{{ user.email or 'Not provided' }}</div>
+                </div>
+
+                <div class="field">
+                    <label>Department</label>
+                    <div>{{ user.department or 'Not Assigned' }}</div>
+                </div>
+
+                <div class="field">
+                    <label>Designation</label>
+                    <div>{{ user.designation or 'Not Assigned' }}</div>
+                </div>
+
+                <div class="field">
+                    <label>Role</label>
+                    <div>{{ user.role.name if user.role else 'Not Assigned' }}</div>
+                </div>
+
+                <div class="field">
+                    <label>Account Status</label>
+                    <div>{{ user.status or 'Active' }}</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="head">
+                <div class="security-head">
+                    <h3>Security Overview</h3>
+                </div>
+                <span>Account activity</span>
+            </div>
+
+            <div class="securityrow">
+
+                <div class="metric">
+                    <i class="bi bi-activity"></i>
+                    <div class="n">{{ user_logs|length }}</div>
+                    <div class="l">Recorded Activities</div>
+                </div>
+
+                <div class="metric">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    <div class="n">{{ user_logs|selectattr('action','equalto','LOGIN')|list|length }}</div>
+                    <div class="l">Successful Logins</div>
+                </div>
+
+                <div class="metric">
+                    <i class="bi bi-shield-exclamation"></i>
+                    <div class="n">{{ user_logs|selectattr('action','equalto','FAILED_LOGIN')|list|length }}</div>
+                    <div class="l">Failed Logins</div>
+                </div>
+
+            </div>
+
+            <div class="security-state" style="margin-top:12px;margin-left:0;width:max-content;">
+                <span class="state-dot"></span>
+                Account Protected
+            </div>
+
+            <div class="note">
+                Your profile information is managed through AccessIQ's role-based access control system.
+                Password changes are handled separately for security.
+            </div>
+        </section>
+
+        <section class="card activity-card">
+            <div class="head">
+                <h3>Recent Security Activity</h3>
+                <span>Latest account events</span>
+            </div>
+
+            <div class="activity-list">
+                {% if user_logs %}
+                    {% for log in user_logs[:5] %}
+                    <div class="activity">
+                        <div class="activity-icon">
+                            {% if log.action == 'LOGIN' %}
+                                <i class="bi bi-box-arrow-in-right"></i>
+                            {% elif log.action == 'LOGOUT' %}
+                                <i class="bi bi-box-arrow-right"></i>
+                            {% elif log.action == 'FAILED_LOGIN' %}
+                                <i class="bi bi-shield-exclamation"></i>
+                            {% elif log.action == 'ACCESS_DENIED' %}
+                                <i class="bi bi-shield-x"></i>
+                            {% else %}
+                                <i class="bi bi-activity"></i>
+                            {% endif %}
+                        </div>
+
+                        <div class="activity-main">
+                            <strong>{{ log.action|replace('_',' ')|title }}</strong>
+                            <span>{{ log.details or 'Security activity recorded for this account.' }}</span>
+                        </div>
+
+                        <div class="activity-time">
+                            {{ log.timestamp.strftime('%d %b, %I:%M %p') if log.timestamp else '-' }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-activity">
+                        <i class="bi bi-inbox me-1"></i>No security activity has been recorded yet.
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+
+    </div>
+
+    <div>
+
+        <section class="card access-card">
+            <div class="head">
+                <h3>Account Summary</h3>
+            </div>
+
+            <div class="info">
+                <label>Assigned Role</label>
+                <span class="value-badge">{{ user.role.name if user.role else 'Not Assigned' }}</span>
+            </div>
+
+            <div class="info">
+                <label>Account Status</label>
+                <span class="value-badge">{{ user.status or 'Active' }}</span>
+            </div>
+
+            <div class="info">
+                <label>Department</label>
+                <strong>{{ user.department or 'Not Assigned' }}</strong>
+            </div>
+
+            <div class="info">
+                <label>Designation</label>
+                <strong>{{ user.designation or 'Not Assigned' }}</strong>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="head">
+                <h3>Security Actions</h3>
+                <span>Account controls</span>
+            </div>
+
+            <a class="action" href="{{ url_for('main.change_password') }}">
+                <i class="bi bi-key-fill"></i>
+                <div>
+                    <strong>Change Password</strong>
+                    <small>Update your account password securely</small>
+                </div>
+            </a>
+
+            <a class="action" href="{{ url_for('main.audit_logs') }}">
+                <i class="bi bi-journal-text"></i>
+                <div>
+                    <strong>View Audit Activity</strong>
+                    <small>Review recorded security events</small>
+                </div>
+            </a>
+
+            <a class="action" href="{{ url_for('main.dashboard') }}">
+                <i class="bi bi-grid-1x2-fill"></i>
+                <div>
+                    <strong>Back to Dashboard</strong>
+                    <small>Return to your AccessIQ workspace</small>
+                </div>
+            </a>
+
+            <a class="action logout-action" href="{{ url_for('main.logout') }}">
+                <i class="bi bi-box-arrow-right"></i>
+                <div>
+                    <strong>Logout</strong>
+                    <small>End your current AccessIQ session</small>
+                </div>
+            </a>
+        </section>
+
+        <section class="card">
+            <div class="head">
+                <h3>AccessIQ Security</h3>
+            </div>
+            <div class="note" style="margin-top:0;">
+                Access to system features is controlled by your assigned role and permissions.
+                Important account and security actions are recorded in the audit trail.
+            </div>
+        </section>
+
+    </div>
+
 </div>
-<div class="card">
-<div class="head"><h3>Security Actions</h3></div>
-<a class="action" href="{{ url_for('main.change_password') }}"><div class="ico">⌘</div><div><strong>Change Password</strong><small>Update your account password securely</small></div></a>
-<a class="action" href="{{ url_for('main.dashboard') }}"><div class="ico">⌂</div><div><strong>Back to Dashboard</strong><small>Return to your AccessIQ workspace</small></div></a>
-</div>
-</div>
-</div>
-</main>
-</div>
-</body>
-</html>
+</section>
+</main></div><script>const m=document.getElementById("menuBtn"),s=document.getElementById("sidebar");if(m)m.onclick=()=>s.classList.toggle("open");</script></body></html>

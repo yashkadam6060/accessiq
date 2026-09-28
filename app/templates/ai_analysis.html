@@ -2,54 +2,154 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>AccessIQ | AI Security Analysis</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AccessIQ — AI Security Analysis</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <style>
-*{box-sizing:border-box}body{margin:0;background:#08111f;color:#e8eef8;font-family:Inter,Segoe UI,Arial,sans-serif}.layout{display:flex;min-height:100vh}
-.sidebar{width:250px;background:#0b1627;border-right:1px solid #1d2c43;padding:24px 16px;position:fixed;inset:0 auto 0 0}.logo{font-size:24px;font-weight:800;padding:8px 12px 28px}.logo span{color:#62a9ff}.group{font-size:11px;color:#71809a;font-weight:700;letter-spacing:1px;margin:22px 12px 8px}.nav a{display:flex;gap:11px;align-items:center;padding:12px;border-radius:10px;color:#aebbd0;text-decoration:none;margin:4px 0;font-size:14px}.nav a:hover,.nav a.active{background:#152944;color:#fff}
-.main{margin-left:250px;width:calc(100% - 250px);padding:28px 34px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}.crumb{color:#7787a0;font-size:13px}.user{display:flex;align-items:center;gap:10px}.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#4c8dff,#8c5cff);display:grid;place-items:center;font-weight:700}
-h1{font-size:30px;margin:5px 0 8px}.subtitle{color:#8f9eb5;margin:0 0 25px}.panel{background:#0d192b;border:1px solid #1b2c45;border-radius:17px;box-shadow:0 12px 30px #0002}.hero{padding:25px;display:grid;grid-template-columns:1fr 260px;gap:25px;align-items:center;margin-bottom:20px}.eyebrow{color:#73adff;text-transform:uppercase;font-size:11px;font-weight:800;letter-spacing:1.2px}.hero h2{font-size:23px;margin:9px 0}.hero p{color:#91a0b5;line-height:1.6;margin:0}.riskbox{background:#101f34;border:1px solid #263c59;border-radius:15px;padding:20px;text-align:center}.risklabel{font-size:11px;color:#8190a8;text-transform:uppercase;letter-spacing:1px}.risk{font-size:31px;font-weight:800;margin:8px 0}.high{color:#ff7789}.medium{color:#ffc65a}.low{color:#61dda5}.score{font-size:13px;color:#8292aa}.bar{height:8px;background:#1b2b42;border-radius:10px;overflow:hidden;margin-top:12px}.fill{height:100%;background:#5b9dff}
-.grid{display:grid;grid-template-columns:1.25fr .75fr;gap:20px}.card{padding:22px}.card h3{font-size:18px;margin:0 0 7px}.card>p{font-size:13px;color:#8291a8;line-height:1.6}
-.textbox{background:#101e32;border:1px solid #213651;border-radius:12px;padding:17px;color:#b9c5d5;line-height:1.65;font-size:14px;white-space:pre-line}.recommend{border-left:3px solid #5798f5;background:#101e32;padding:16px;border-radius:0 11px 11px 0;color:#b9c5d5;line-height:1.6;font-size:14px}
-.metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px}.metric{padding:16px;background:#101e32;border:1px solid #20344f;border-radius:12px}.metric small{color:#7d8da5}.metric strong{display:block;font-size:23px;margin-top:6px}.event{padding:13px 0;border-bottom:1px solid #1d3048}.event:last-child{border-bottom:0}.event strong{font-size:13px}.event span{display:block;color:#8493a9;font-size:12px;margin-top:4px}.tag{display:inline-block;padding:4px 8px;border-radius:15px;font-size:10px;font-weight:700;background:#162b47;color:#8fc1ff}
-.notice{margin-top:20px;padding:14px 16px;border-radius:11px;background:#101e32;border:1px solid #233852;color:#8797ad;font-size:12px;line-height:1.6}
-/* Final readability and report controls */
-h1,h2,h3,.card h3,.riskbox,.metric strong,.event strong{color:#eef5ff}
-.card h3{font-weight:750;letter-spacing:-.01em}
-.card>p,.subtitle{color:#9aabc0}
-.notice{color:#a8b7ca}
-.report-card{margin-top:20px;padding:22px;display:flex;align-items:center;justify-content:space-between;gap:20px;background:linear-gradient(135deg,rgba(16,34,55,.98),rgba(10,23,39,.98));border:1px solid rgba(57,217,255,.16)}
-.report-copy{display:flex;align-items:flex-start;gap:14px}
-.report-icon{width:44px;height:44px;flex:0 0 44px;border-radius:12px;display:grid;place-items:center;background:rgba(57,217,255,.09);border:1px solid rgba(57,217,255,.16);color:#39d9ff;font-size:20px}
-.report-copy h3{margin:0 0 5px;font-size:17px}
-.report-copy p{margin:0;color:#91a2b8;font-size:12px;line-height:1.55}
-.report-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;padding:11px 16px;border-radius:10px;background:linear-gradient(135deg,#39d9ff,#5b7cff);color:#04111a;text-decoration:none;font-size:12px;font-weight:800;border:0;box-shadow:0 8px 24px rgba(57,217,255,.13)}
-.report-btn:hover{color:#04111a;transform:translateY(-1px)}
-@media(max-width:650px){.report-card{align-items:stretch;flex-direction:column}.report-btn{width:100%}}
-@media(max-width:900px){.sidebar{width:210px}.main{margin-left:210px;width:calc(100% - 210px)}.hero,.grid{grid-template-columns:1fr}}
-@media(max-width:650px){.sidebar{position:static;width:100%;height:auto}.layout{display:block}.main{margin:0;width:100%;padding:20px}.metrics{grid-template-columns:1fr}.top{align-items:flex-start}}
+:root{
+ --bg:#070b14;--panel:#0d1422;--panel2:#101a2b;--line:rgba(148,163,184,.13);
+ --text:#eef5ff;--muted:#b7c4d6;--cyan:#39d9ff;--blue:#5b7cff;
+ --purple:#a878ff;--green:#32e6a1;--amber:#ffbf5b;--red:#ff6b81
+}
+*{box-sizing:border-box}
+body{margin:0;color:var(--text);background:
+ radial-gradient(circle at 76% -10%,rgba(91,124,255,.15),transparent 31%),
+ radial-gradient(circle at 8% 18%,rgba(57,217,255,.05),transparent 25%),var(--bg);
+ font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+a{text-decoration:none;color:inherit}
+.app{min-height:100vh;display:flex}
+.sidebar{width:250px;flex:0 0 250px;min-height:100vh;background:rgba(7,11,20,.9);
+ border-right:1px solid var(--line);padding:24px 16px;position:sticky;top:0;height:100vh;
+ backdrop-filter:blur(20px);z-index:20}
+.brand{display:flex;align-items:center;gap:12px;padding:4px 10px 30px}
+.brand-mark{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;
+ background:linear-gradient(135deg,#35dfff,#526fff);color:#06101b;font-weight:900;
+ box-shadow:0 8px 30px rgba(57,217,255,.2)}
+.brand b{font-size:18px;letter-spacing:.12em}
+.brand small{display:block;color:#9aa8bb;font-size:9px;letter-spacing:.16em;margin-top:2px}
+.nav-title{font-size:10px;letter-spacing:.18em;color:#8b9bb0;padding:18px 12px 8px}
+.nav-link{display:flex;align-items:center;gap:12px;color:#b7c4d6;padding:11px 12px;border-radius:12px;
+ margin:3px 0;font-size:13px;transition:.2s}
+.nav-link i{font-size:17px;width:20px;text-align:center}
+.nav-link:hover{background:rgba(91,124,255,.08);color:#fff}
+.nav-link.active{background:linear-gradient(90deg,rgba(57,217,255,.12),rgba(91,124,255,.08));
+ color:#fff;border:1px solid rgba(57,217,255,.1)}
+.sidebar-bottom{position:absolute;left:16px;right:16px;bottom:20px;padding:14px;border:1px solid var(--line);
+ border-radius:16px;background:rgba(16,26,43,.65)}
+.status-dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 12px var(--green)}
+.main{flex:1;min-width:0}
+.topbar{height:76px;padding:0 34px;display:flex;align-items:center;justify-content:space-between;
+ border-bottom:1px solid var(--line);background:rgba(7,11,20,.48);backdrop-filter:blur(18px);
+ position:sticky;top:0;z-index:15}
+.search{width:min(430px,42vw);height:40px;border:1px solid var(--line);background:rgba(255,255,255,.035);
+ border-radius:12px;display:flex;align-items:center;gap:10px;padding:0 13px;color:#b0bccd}
+.search input{border:0;outline:0;background:transparent;color:#fff;width:100%;font-size:13px}
+.search input::placeholder{color:#a3b0c3}
+.top-actions{display:flex;align-items:center;gap:12px}
+.icon-btn{width:40px;height:40px;border:1px solid var(--line);background:rgba(255,255,255,.03);
+ color:#b6c2d2;border-radius:12px;display:grid;place-items:center}
+.icon-btn:hover{color:#fff;border-color:rgba(57,217,255,.3)}
+.profile{display:flex;align-items:center;gap:10px;padding-left:12px;border-left:1px solid var(--line)}
+.avatar{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;
+ background:linear-gradient(135deg,#1c2e55,#253e78);color:#d9ebff;font-weight:800}
+.profile strong{font-size:12px}.profile span{display:block;font-size:10px;color:#aebbd0;margin-top:2px}
+.content{padding:30px 34px 42px;max-width:1500px;margin:auto}
+.hero{position:relative;display:grid;grid-template-columns:1fr 300px;gap:22px;align-items:center;overflow:hidden;
+ border:1px solid rgba(91,124,255,.18);border-radius:22px;padding:25px 28px;margin-bottom:18px;
+ background:radial-gradient(circle at 85% 20%,rgba(168,120,255,.11),transparent 28%),
+ linear-gradient(135deg,rgba(16,26,43,.96),rgba(9,16,28,.96))}
+.eyebrow{font-size:10px;letter-spacing:.18em;color:var(--cyan);font-weight:700}
+h1{font-size:29px;margin:7px 0 6px;font-weight:760}
+.hero h2{font-size:20px;margin:0 0 8px;color:#f3f7ff}
+.hero p{color:#b7c4d6;margin:0;font-size:13px;line-height:1.6}
+.riskbox{padding:18px;border-radius:16px;background:rgba(255,255,255,.025);border:1px solid var(--line);text-align:center}
+.risklabel{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#b0bdcf}
+.risk{font-size:22px;font-weight:900;margin-top:5px}
+.risk.low{color:var(--green)}.risk.medium{color:var(--amber)}.risk.high{color:var(--red)}
+.score{font-size:11px;color:#d1dbe8;margin-top:5px}
+.bar{height:7px;background:#1a2435;border-radius:20px;overflow:hidden;margin-top:10px}
+.fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--green),var(--amber),var(--red))}
+.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.75fr);gap:18px}
+.panel{background:linear-gradient(145deg,rgba(14,23,38,.94),rgba(9,16,28,.94));
+ border:1px solid var(--line);border-radius:20px;padding:20px}
+.card h3{font-size:15px;font-weight:760;color:#f3f7ff;margin:0 0 5px}
+.card>p,.card p{font-size:11px;color:#b0bdcf;line-height:1.6;margin:0 0 14px}
+.textbox{padding:15px;border-radius:13px;background:rgba(255,255,255,.025);border:1px solid rgba(148,163,184,.10);
+ color:#e1e8f2;font-size:12px;line-height:1.65;white-space:pre-line}
+.recommend{padding:15px;border-radius:13px;background:rgba(50,230,161,.05);border:1px solid rgba(50,230,161,.12);
+ color:#d7f2e7;font-size:12px;line-height:1.65;white-space:pre-line}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}
+.metric{padding:14px;border-radius:12px;background:rgba(255,255,255,.025);border:1px solid var(--line)}
+.metric small{display:block;color:#aebbd0;font-size:9px;text-transform:uppercase;letter-spacing:.1em}
+.metric strong{display:block;color:#f3f7ff;font-size:18px;margin-top:5px}
+.notice{padding:13px;border-radius:12px;background:rgba(57,217,255,.04);border:1px solid rgba(57,217,255,.10);
+ color:#c0ccda;font-size:10px;line-height:1.55}
+.event{padding:12px 0;border-bottom:1px solid rgba(148,163,184,.08)}
+.event:last-child{border-bottom:0}
+.tag{display:inline-block;padding:4px 7px;border-radius:7px;background:rgba(57,217,255,.08);color:#8fe5ff;
+ border:1px solid rgba(57,217,255,.11);font-size:8px;font-weight:800;letter-spacing:.07em}
+.event strong{font-size:11px;color:#f0f5fb}.event span:last-child{display:block;color:#b2bfd1;font-size:10px;line-height:1.45;margin-top:6px}
+.report-card{margin-top:18px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.report-copy{display:flex;align-items:center;gap:14px}
+.report-icon{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:#ff9aaa;background:rgba(255,107,129,.08);font-size:19px}
+.report-copy h3{margin:0 0 4px}.report-copy p{margin:0}
+.report-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 14px;border-radius:10px;
+ background:linear-gradient(135deg,var(--cyan),var(--blue));color:#07111b;font-size:11px;font-weight:800;white-space:nowrap}
+.report-btn:hover{color:#07111b;transform:translateY(-1px)}
+.mobile-toggle{display:none}
+@media(max-width:1000px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
+@media(max-width:900px){.sidebar{position:fixed;left:-270px;transition:.25s}.sidebar.open{left:0}
+ .mobile-toggle{display:grid}.content{padding:22px 18px}.topbar{padding:0 18px}.search{width:42vw}}
+@media(max-width:650px){.profile-text{display:none}.metrics{grid-template-columns:1fr}
+ .report-card{align-items:stretch;flex-direction:column}.report-btn{width:100%;justify-content:center}}
+@media(max-width:430px){.top-actions{display:none}.search{width:100%}}
 </style>
 </head>
 <body>
-<div class="layout">
-<aside class="sidebar">
-<div class="logo">ACCESS<span>IQ</span></div>
-<div class="group">OVERVIEW</div><div class="nav"><a href="{{ url_for('main.dashboard') }}">▦ Dashboard</a><a href="{{ url_for('main.security_analytics') }}">◉ Security Analytics</a></div>
-<div class="group">MANAGEMENT</div><div class="nav"><a href="{{ url_for('main.admin') }}">♙ User Management</a><a href="{{ url_for('main.manage_roles') }}">◈ Roles & Permissions</a></div>
-<div class="group">SECURITY</div><div class="nav"><a href="{{ url_for('main.admin_permission_requests') }}">✓ Permission Approvals</a><a href="{{ url_for('main.audit_logs') }}">◷ Audit Logs</a><a class="active" href="{{ url_for('main.ai_analysis') }}">✦ AI Security Analysis</a></div>
-<div class="group">ACCESS</div><div class="nav"><a href="{{ url_for('main.profile') }}">◎ My Profile</a><a href="{{ url_for('main.logout') }}">↪ Logout</a></div>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+<div class="brand"><div class="brand-mark"><i class="bi bi-shield-lock-fill"></i></div><div><b>ACCESSIQ</b><small>SECURITY PLATFORM</small></div></div>
+<div class="nav-title">OVERVIEW</div>
+<a class="nav-link" href="{{ url_for('main.dashboard') }}"><i class="bi bi-grid-1x2-fill"></i>Command Center</a>
+<div class="nav-title">MANAGEMENT</div>
+<a class="nav-link" href="{{ url_for('main.admin') }}"><i class="bi bi-people"></i>User Management</a>
+<a class="nav-link" href="{{ url_for('main.manage_roles') }}"><i class="bi bi-diagram-3"></i>Roles & Permissions</a>
+<div class="nav-title">SECURITY</div>
+<a class="nav-link" href="{{ url_for('main.audit_logs') }}"><i class="bi bi-activity"></i>Audit Intelligence</a>
+<a class="nav-link" href="{{ url_for('main.security_analytics') }}"><i class="bi bi-bar-chart"></i>Security Analytics</a>
+<a class="nav-link active" href="{{ url_for('main.ai_analysis') }}"><i class="bi bi-stars"></i>AI Security</a>
+<div class="nav-title">ACCESS</div>
+{% if session.get('role') == 'Admin' %}
+<a class="nav-link" href="{{ url_for('main.admin_permission_requests') }}"><i class="bi bi-key"></i>Permission Queue</a>
+{% else %}
+<a class="nav-link" href="{{ url_for('main.permission_requests') }}"><i class="bi bi-key"></i>My Requests</a>
+{% endif %}
+<div class="sidebar-bottom"><div class="d-flex align-items-center gap-2 mb-2"><span class="status-dot"></span><small style="color:#c0cad8">System operational</small></div>
+<div style="font-size:9px;color:#9aa8bb">AccessIQ Security Core · v1.0</div></div>
 </aside>
 
 <main class="main">
-<div class="top"><div class="crumb">Security / AI Security Analysis</div><div class="user"><span>{{ session.get('username','Admin') }}</span><div class="avatar">{{ session.get('username','A')[:1]|upper }}</div></div></div>
+<header class="topbar">
+<div class="d-flex align-items-center gap-2" style="min-width:0;flex:1">
+<button class="icon-btn mobile-toggle" id="menuBtn" type="button" aria-label="Open menu"><i class="bi bi-list"></i></button>
+<div class="search"><i class="bi bi-search"></i><input type="search" placeholder="Search security analysis..." aria-label="Search security analysis"><span style="font-size:9px;border:1px solid var(--line);padding:3px 6px;border-radius:5px;color:#9aa8bb">/</span></div>
+</div>
+<div class="top-actions">
+<a class="icon-btn" href="{{ url_for('main.security_analytics') }}" aria-label="Security Analytics"><i class="bi bi-bar-chart"></i></a>
+<a class="icon-btn" href="{{ url_for('main.profile') }}" aria-label="Profile"><i class="bi bi-person"></i></a>
+<div class="profile"><div class="avatar">{{ session.get('username','A')[:1]|upper }}</div><div class="profile-text"><strong>{{ session.get('username') }}</strong><span>{{ session.get('role') }}</span></div></div>
+</div>
+</header>
+
+<section class="content">
 <h1>AI Security Analysis</h1>
-<p class="subtitle">AI-assisted analysis of suspicious login activity and unauthorized access attempts.</p>
+<p style="color:#b7c4d6;font-size:13px;margin:0 0 18px">AI-assisted analysis of suspicious login activity and unauthorized access attempts.</p>
 
 {% set level = analysis.risk_level|default('LOW') %}
-<section class="panel hero">
+<section class="hero">
 <div>
-<div class="eyebrow">✦ Intelligent Security Monitoring</div>
+<div class="eyebrow">INTELLIGENT SECURITY MONITORING</div>
 <h2>AI-Powered Security Assessment</h2>
 <p>AccessIQ analyzes recent audit activity to identify security signals, determine the current risk level, and provide a security-focused explanation and recommendation.</p>
 </div>
@@ -57,7 +157,7 @@ h1,h2,h3,.card h3,.riskbox,.metric strong,.event strong{color:#eef5ff}
 <div class="risklabel">Current Risk</div>
 <div class="risk {% if level == 'HIGH' %}high{% elif level == 'MEDIUM' %}medium{% else %}low{% endif %}">{{ level }}</div>
 <div class="score">Risk Score: {{ analysis.risk_score|default(0) }}%</div>
-<div class="bar"><div class="fill" style="width:{{ analysis.risk_score|default(0) }}%;"></div></div>
+<div class="bar"><div class="fill" style="width:{{ analysis.risk_score|default(0) }}%"></div></div>
 </div>
 </section>
 
@@ -66,7 +166,6 @@ h1,h2,h3,.card h3,.riskbox,.metric strong,.event strong{color:#eef5ff}
 <h3>AI Explanation</h3>
 <p>Interpretation generated from the security activity available to the analysis module.</p>
 <div class="textbox">{{ analysis.ai_explanation|default('AI analysis is temporarily unavailable. The local security analysis is still available.') }}</div>
-
 <div style="height:20px"></div>
 <h3>Security Recommendation</h3>
 <p>Suggested action based on the current analysis.</p>
@@ -84,7 +183,7 @@ h1,h2,h3,.card h3,.riskbox,.metric strong,.event strong{color:#eef5ff}
 <div class="notice">The AI result is an assistance layer over the application's security analysis. Review the underlying audit events before taking administrative action.</div>
 </div>
 
-<div class="panel card" style="margin-top:20px">
+<div class="panel card" style="margin-top:18px">
 <h3>Security Signals</h3>
 <p>Recent activity considered by the security analysis.</p>
 <div class="event"><span class="tag">AUTHENTICATION</span><strong> Login activity</strong><span>Successful and failed login events are part of the security signal.</span></div>
@@ -97,18 +196,20 @@ h1,h2,h3,.card h3,.riskbox,.metric strong,.event strong{color:#eef5ff}
 <section class="panel report-card">
 <div class="report-copy">
 <div class="report-icon"><i class="bi bi-file-earmark-pdf-fill"></i></div>
-<div>
-<h3>Download Security Report</h3>
-<p>Generate a PDF containing current security statistics and recent security events for administrative review.</p>
+<div><h3>Download Security Report</h3><p>Generate a PDF containing current security statistics and recent security events for administrative review.</p></div>
 </div>
-</div>
-<a class="report-btn" href="{{ url_for('main.export_security_report') }}">
-<i class="bi bi-download"></i> Download PDF Report
-</a>
+<a class="report-btn" href="{{ url_for('main.export_security_report') }}"><i class="bi bi-download"></i>Download PDF Report</a>
 </section>
 
-<div class="notice">If the AI service is temporarily unavailable, AccessIQ continues to display its local security analysis and recommendations rather than leaving the security page empty.</div>
+<div class="notice" style="margin-top:18px">If the AI service is temporarily unavailable, AccessIQ continues to display its local security analysis and recommendations rather than leaving the security page empty.</div>
+</section>
 </main>
 </div>
+
+<script>
+const menu=document.getElementById("menuBtn"),side=document.getElementById("sidebar");
+if(menu)menu.addEventListener("click",()=>side.classList.toggle("open"));
+document.querySelectorAll(".sidebar .nav-link").forEach(a=>a.addEventListener("click",()=>{if(window.innerWidth<=900)side.classList.remove("open")}));
+</script>
 </body>
 </html>

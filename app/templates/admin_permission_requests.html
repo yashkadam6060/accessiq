@@ -1,88 +1,1798 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Permission Approvals | AccessIQ</title>
+{% extends "base.html" %}
+
+{% block title %}
+Permission Queue | AccessIQ
+{% endblock %}
+
+
+{% block head %}
+
 <style>
-:root{--bg:#08111f;--side:#0b1627;--panel:#0f1c2f;--border:#1b2c45;--text:#edf4ff;--muted:#8fa4bd;--blue:#62a9ff;--purple:#9679ff;--green:#42d6a0;--red:#ff6b7a;--orange:#ffb45c}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}a{text-decoration:none;color:inherit}.layout{min-height:100vh;display:flex}.sidebar{position:fixed;inset:0 auto 0 0;width:245px;background:var(--side);border-right:1px solid var(--border);padding:24px 15px}.brand{display:flex;align-items:center;gap:11px;padding:4px 12px 28px;font-size:21px;font-weight:800}.logo{width:35px;height:35px;border-radius:10px;background:linear-gradient(135deg,#62a9ff,#8f72ff);display:grid;place-items:center}.nav-title{font-size:10px;letter-spacing:1.5px;color:#60758e;font-weight:800;padding:14px 12px 8px}.nav a{display:flex;gap:12px;align-items:center;padding:11px 12px;margin:3px 0;border-radius:10px;color:#91a4bb;font-size:13px;font-weight:600}.nav a:hover{background:#122238;color:#fff}.nav a.active{background:#162b47;color:#fff;box-shadow:inset 3px 0 var(--blue)}.icon{width:20px;text-align:center}.main{margin-left:245px;width:calc(100% - 245px);padding:28px 32px 45px}.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}.crumb{font-size:11px;color:var(--muted);letter-spacing:.8px;margin-bottom:6px}h1{font-size:28px;margin:0 0 6px}.sub{font-size:13px;color:var(--muted)}.userbox{display:flex;gap:10px;align-items:center}.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#7560e8,#4d8de8);font-weight:800}.uinfo{text-align:right}.uinfo strong{display:block;font-size:13px}.uinfo span{font-size:11px;color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:18px}.stat{background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:17px}.stat label{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)}.stat strong{display:block;font-size:27px;margin-top:7px}.pending{color:var(--orange)}.approved{color:var(--green)}.rejected{color:var(--red)}.card{background:var(--panel);border:1px solid var(--border);border-radius:17px;overflow:hidden}.cardhead{padding:19px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.cardhead h2{font-size:15px;margin:0}.cardhead span{font-size:11px;color:var(--muted)}.tablewrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:800px}th{padding:12px 17px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:#6f849d;background:#0b1728}td{padding:15px 17px;border-top:1px solid #17283e;font-size:12px;color:#c8d4e2;vertical-align:top}.requestuser{display:flex;align-items:center;gap:10px}.mini{width:34px;height:34px;border-radius:10px;background:#182d48;display:grid;place-items:center;color:#8fc1ff;font-weight:800;font-size:11px}.name{font-weight:700;color:#edf4ff}.muted{font-size:10px;color:var(--muted);margin-top:3px}.permission{display:inline-flex;padding:6px 9px;border-radius:8px;background:#172b45;color:#8fc1ff;font-size:10px;font-weight:700}.reason{max-width:230px;color:#9db0c4;line-height:1.45}.badge{display:inline-flex;padding:6px 9px;border-radius:20px;font-size:10px;font-weight:800}.badge.pending{background:rgba(255,180,92,.1);color:#ffc47d}.badge.approved{background:rgba(66,214,160,.1);color:#70e0b1}.badge.rejected{background:rgba(255,107,122,.1);color:#ff929e}.actions{display:flex;gap:7px}.actions form{margin:0}.btn{border:0;border-radius:8px;padding:8px 10px;font-size:10px;font-weight:800;cursor:pointer}.approve{background:rgba(66,214,160,.12);color:#6ee0b1;border:1px solid rgba(66,214,160,.2)}.reject{background:rgba(255,107,122,.1);color:#ff929e;border:1px solid rgba(255,107,122,.18)}.empty{text-align:center;padding:45px;color:var(--muted);font-size:12px}.info{margin-top:15px;padding:14px 16px;border:1px solid rgba(98,169,255,.15);background:rgba(98,169,255,.05);border-radius:12px;color:#8fa8c2;font-size:11px;line-height:1.55}@media(max-width:700px){.sidebar{position:relative;width:100%;height:auto;border-right:0;border-bottom:1px solid var(--border)}.layout{display:block}.main{margin:0;width:100%;padding:20px}.nav{display:flex;overflow:auto;gap:4px}.nav-title{display:none}.nav a{white-space:nowrap}.brand{padding-bottom:15px}.topbar{align-items:flex-start}.uinfo{display:none}.stats{grid-template-columns:1fr}}
+
+    /* =========================================================
+       PAGE HEADER
+    ========================================================== */
+
+    .permission-header {
+        background:
+            radial-gradient(
+                circle at 90% 20%,
+                rgba(57,217,255,.08),
+                transparent 35%
+            ),
+            linear-gradient(
+                135deg,
+                rgba(13,20,34,.98),
+                rgba(8,14,25,.98)
+            );
+
+        border: 1px solid var(--line);
+
+        border-radius: 24px;
+
+        padding: 28px 34px;
+
+        margin-bottom: 20px;
+
+        position: relative;
+
+        overflow: hidden;
+    }
+
+
+    .permission-header::after {
+        content: "";
+
+        position: absolute;
+
+        width: 180px;
+        height: 180px;
+
+        right: -80px;
+        top: -90px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(57,217,255,.06);
+
+        pointer-events: none;
+    }
+
+
+    .eyebrow {
+        color: var(--cyan);
+
+        font-size: 11px;
+
+        font-weight: 600;
+
+        letter-spacing: .16em;
+
+        margin-bottom: 8px;
+    }
+
+
+    .permission-header h1 {
+        margin: 0 0 8px;
+
+        font-size: 28px;
+
+        font-weight: 700;
+
+        letter-spacing: -.02em;
+    }
+
+
+    .permission-header p {
+        margin: 0;
+
+        color: var(--muted);
+
+        font-size: 13px;
+    }
+
+
+    /* =========================================================
+       SUMMARY CARDS
+    ========================================================== */
+
+    .summary-grid {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 16px;
+
+        margin-bottom: 20px;
+    }
+
+
+    .summary-card {
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(13,20,34,.98),
+                rgba(9,16,28,.98)
+            );
+
+        border: 1px solid var(--line);
+
+        border-radius: 20px;
+
+        padding: 22px;
+
+        position: relative;
+
+        overflow: hidden;
+
+        transition:
+            transform .2s ease,
+            border-color .2s ease;
+    }
+
+
+    .summary-card:hover {
+
+        transform: translateY(-2px);
+
+        border-color:
+            rgba(91,124,255,.28);
+    }
+
+
+    .summary-card::before {
+
+        content: "";
+
+        position: absolute;
+
+        left: 0;
+        top: 0;
+
+        width: 100%;
+        height: 2px;
+
+        background:
+            rgba(91,124,255,.55);
+    }
+
+
+    .summary-card.pending::before {
+        background: var(--cyan);
+    }
+
+
+    .summary-card.approved::before {
+        background: var(--green);
+    }
+
+
+    .summary-card.rejected::before {
+        background: #ff5b8a;
+    }
+
+
+    .summary-label {
+
+        color: #9fb0c7;
+
+        font-size: 10px;
+
+        letter-spacing: .12em;
+
+        font-weight: 600;
+
+        margin-bottom: 10px;
+    }
+
+
+    .summary-number {
+
+        font-size: 30px;
+
+        font-weight: 750;
+
+        line-height: 1;
+
+        margin-bottom: 8px;
+    }
+
+
+    .summary-description {
+
+        color: #8091aa;
+
+        font-size: 11px;
+    }
+
+
+    .summary-icon {
+
+        position: absolute;
+
+        right: 20px;
+        top: 20px;
+
+        width: 38px;
+        height: 38px;
+
+        border-radius: 12px;
+
+        display: grid;
+
+        place-items: center;
+
+        background:
+            rgba(91,124,255,.08);
+
+        color: #9db5ff;
+    }
+
+
+    .summary-card.pending .summary-icon {
+        color: var(--cyan);
+        background: rgba(57,217,255,.08);
+    }
+
+
+    .summary-card.approved .summary-icon {
+        color: var(--green);
+        background: rgba(50,230,161,.08);
+    }
+
+
+    .summary-card.rejected .summary-icon {
+        color: #ff6f9b;
+        background: rgba(255,91,138,.08);
+    }
+
+
+    /* =========================================================
+       MAIN REQUEST PANEL
+    ========================================================== */
+
+    .request-panel {
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(13,20,34,.98),
+                rgba(8,14,25,.98)
+            );
+
+        border: 1px solid var(--line);
+
+        border-radius: 22px;
+
+        overflow: hidden;
+    }
+
+
+    .panel-header {
+
+        padding: 22px 24px 18px;
+
+        border-bottom:
+            1px solid var(--line);
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 20px;
+    }
+
+
+    .panel-title {
+
+        font-size: 16px;
+
+        font-weight: 650;
+
+        margin: 0 0 5px;
+    }
+
+
+    .panel-subtitle {
+
+        color: #8495ad;
+
+        font-size: 11px;
+
+        margin: 0;
+    }
+
+
+    .request-count {
+
+        padding: 7px 11px;
+
+        border-radius: 10px;
+
+        background:
+            rgba(57,217,255,.07);
+
+        border:
+            1px solid rgba(57,217,255,.16);
+
+        color: var(--cyan);
+
+        font-size: 10px;
+
+        white-space: nowrap;
+    }
+
+
+    /* =========================================================
+       FILTER AREA
+    ========================================================== */
+
+    .filter-area {
+
+        padding: 18px 24px;
+
+        border-bottom:
+            1px solid var(--line);
+
+        display: grid;
+
+        grid-template-columns:
+            minmax(220px, 1fr)
+            180px
+            180px
+            auto;
+
+        gap: 10px;
+    }
+
+
+    .filter-control {
+
+        height: 42px;
+
+        border:
+            1px solid rgba(148,163,184,.14);
+
+        border-radius: 11px;
+
+        background:
+            rgba(16,26,43,.72);
+
+        color: #dce7f7;
+
+        padding:
+            0 13px;
+
+        outline: none;
+
+        font-size: 12px;
+
+        width: 100%;
+    }
+
+
+    .filter-control::placeholder {
+        color: #718199;
+    }
+
+
+    .filter-control:focus {
+
+        border-color:
+            rgba(57,217,255,.35);
+
+        box-shadow:
+            0 0 0 3px
+            rgba(57,217,255,.05);
+    }
+
+
+    select.filter-control {
+
+        cursor: pointer;
+    }
+
+
+    .reset-btn {
+
+        height: 42px;
+
+        padding:
+            0 15px;
+
+        border:
+            1px solid rgba(148,163,184,.14);
+
+        border-radius: 11px;
+
+        background:
+            rgba(16,26,43,.72);
+
+        color: #aebdd0;
+
+        font-size: 12px;
+
+        cursor: pointer;
+
+        transition: .2s ease;
+    }
+
+
+    .reset-btn:hover {
+
+        color: white;
+
+        border-color:
+            rgba(91,124,255,.30);
+
+        background:
+            rgba(91,124,255,.08);
+    }
+
+
+    /* =========================================================
+       REQUEST TABLE
+    ========================================================== */
+
+    .table-wrapper {
+
+        width: 100%;
+
+        overflow-x: auto;
+    }
+
+
+    .request-table {
+
+        width: 100%;
+
+        border-collapse: collapse;
+
+        min-width: 900px;
+    }
+
+
+    .request-table thead th {
+
+        padding:
+            15px
+            18px;
+
+        text-align: left;
+
+        color: #8294ad;
+
+        font-size: 9px;
+
+        font-weight: 650;
+
+        letter-spacing: .10em;
+
+        text-transform: uppercase;
+
+        border-bottom:
+            1px solid var(--line);
+
+        white-space: nowrap;
+    }
+
+
+    .request-table tbody td {
+
+        padding:
+            15px
+            18px;
+
+        border-bottom:
+            1px solid rgba(148,163,184,.08);
+
+        color: #dce6f5;
+
+        font-size: 12px;
+
+        vertical-align: middle;
+    }
+
+
+    .request-table tbody tr {
+
+        transition:
+            background .15s ease;
+    }
+
+
+    .request-table tbody tr:hover {
+
+        background:
+            rgba(91,124,255,.035);
+    }
+
+
+    .request-table tbody tr:last-child td {
+
+        border-bottom: none;
+    }
+
+
+    /* =========================================================
+       USER
+    ========================================================== */
+
+    .user-cell {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+    }
+
+
+    .user-avatar {
+
+        width: 34px;
+        height: 34px;
+
+        border-radius: 10px;
+
+        display: grid;
+
+        place-items: center;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(57,217,255,.18),
+                rgba(91,124,255,.22)
+            );
+
+        border:
+            1px solid rgba(91,124,255,.15);
+
+        color: #dff7ff;
+
+        font-size: 12px;
+
+        font-weight: 700;
+
+        flex-shrink: 0;
+    }
+
+
+    .user-name {
+
+        font-weight: 600;
+
+        color: #edf4ff;
+
+        margin-bottom: 2px;
+    }
+
+
+    .user-email {
+
+        font-size: 10px;
+
+        color: #71829a;
+    }
+
+
+    /* =========================================================
+       PERMISSION
+    ========================================================== */
+
+    .permission-cell {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        color: #dce8fa;
+
+        font-weight: 500;
+    }
+
+
+    .permission-icon {
+
+        width: 27px;
+        height: 27px;
+
+        border-radius: 8px;
+
+        display: grid;
+
+        place-items: center;
+
+        color: var(--cyan);
+
+        background:
+            rgba(57,217,255,.07);
+
+        border:
+            1px solid rgba(57,217,255,.10);
+    }
+
+
+    /* =========================================================
+       REASON
+    ========================================================== */
+
+    .reason {
+
+        max-width: 260px;
+
+        color: #aab9cc;
+
+        line-height: 1.5;
+    }
+
+
+    /* =========================================================
+       STATUS BADGES
+    ========================================================== */
+
+    .status-badge {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 5px;
+
+        padding:
+            5px
+            9px;
+
+        border-radius: 999px;
+
+        font-size: 9px;
+
+        font-weight: 650;
+    }
+
+
+    .status-dot {
+
+        width: 5px;
+        height: 5px;
+
+        border-radius: 50%;
+    }
+
+
+    .status-pending {
+
+        color: #ffd76a;
+
+        background:
+            rgba(255,196,64,.08);
+
+        border:
+            1px solid rgba(255,196,64,.14);
+    }
+
+
+    .status-pending .status-dot {
+        background: #ffc440;
+    }
+
+
+    .status-approved {
+
+        color: var(--green);
+
+        background:
+            rgba(50,230,161,.08);
+
+        border:
+            1px solid rgba(50,230,161,.14);
+    }
+
+
+    .status-approved .status-dot {
+        background: var(--green);
+    }
+
+
+    .status-rejected {
+
+        color: #ff709c;
+
+        background:
+            rgba(255,91,138,.08);
+
+        border:
+            1px solid rgba(255,91,138,.14);
+    }
+
+
+    .status-rejected .status-dot {
+        background: #ff5b8a;
+    }
+
+
+    /* =========================================================
+       DATE
+    ========================================================== */
+
+    .date-cell {
+
+        color: #9eafc4;
+
+        white-space: nowrap;
+
+        font-size: 11px;
+    }
+
+
+    /* =========================================================
+       ACTION BUTTONS
+    ========================================================== */
+
+    .action-group {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 6px;
+    }
+
+
+    .action-btn {
+
+        height: 30px;
+
+        padding:
+            0
+            10px;
+
+        border-radius: 8px;
+
+        font-size: 10px;
+
+        font-weight: 600;
+
+        cursor: pointer;
+
+        transition: .18s ease;
+    }
+
+
+    .approve-btn {
+
+        color: var(--green);
+
+        background:
+            rgba(50,230,161,.07);
+
+        border:
+            1px solid rgba(50,230,161,.15);
+    }
+
+
+    .approve-btn:hover {
+
+        background:
+            rgba(50,230,161,.14);
+
+        border-color:
+            rgba(50,230,161,.30);
+    }
+
+
+    .reject-btn {
+
+        color: #ff709c;
+
+        background:
+            rgba(255,91,138,.07);
+
+        border:
+            1px solid rgba(255,91,138,.15);
+    }
+
+
+    .reject-btn:hover {
+
+        background:
+            rgba(255,91,138,.14);
+
+        border-color:
+            rgba(255,91,138,.30);
+    }
+
+
+    .reviewed-text {
+
+        color: #65758b;
+
+        font-size: 10px;
+    }
+
+
+    /* =========================================================
+       EMPTY STATE
+    ========================================================== */
+
+    .empty-state {
+
+        text-align: center;
+
+        padding:
+            55px
+            20px;
+    }
+
+
+    .empty-icon {
+
+        width: 54px;
+        height: 54px;
+
+        margin:
+            0
+            auto
+            15px;
+
+        border-radius: 16px;
+
+        display: grid;
+
+        place-items: center;
+
+        background:
+            rgba(50,230,161,.07);
+
+        border:
+            1px solid rgba(50,230,161,.12);
+
+        color: var(--green);
+
+        font-size: 22px;
+    }
+
+
+    .empty-state h4 {
+
+        font-size: 15px;
+
+        margin-bottom: 6px;
+    }
+
+
+    .empty-state p {
+
+        color: #71829a;
+
+        font-size: 11px;
+
+        margin: 0;
+    }
+
+
+    /* =========================================================
+       NO FILTER RESULTS
+    ========================================================== */
+
+    .no-results {
+
+        display: none;
+
+        text-align: center;
+
+        padding: 45px 20px;
+
+        color: #7889a0;
+
+        font-size: 12px;
+    }
+
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================== */
+
+    @media (max-width: 1000px) {
+
+        .filter-area {
+
+            grid-template-columns:
+                1fr
+                1fr;
+
+        }
+
+        .reset-btn {
+
+            width: 100%;
+        }
+
+    }
+
+
+    @media (max-width: 700px) {
+
+        .summary-grid {
+
+            grid-template-columns: 1fr;
+        }
+
+
+        .permission-header {
+
+            padding: 24px;
+        }
+
+
+        .permission-header h1 {
+
+            font-size: 24px;
+        }
+
+
+        .panel-header {
+
+            align-items: flex-start;
+
+            flex-direction: column;
+        }
+
+
+        .filter-area {
+
+            grid-template-columns: 1fr;
+        }
+
+    }
+
 </style>
-</head>
-<body>
-<div class="layout">
-<aside class="sidebar">
-<div class="brand"><div class="logo">A</div>AccessIQ</div>
-<div class="nav-title">OVERVIEW</div><nav class="nav">
-<a href="{{ url_for('main.dashboard') }}"><span class="icon">⌂</span>Dashboard</a>
-<a href="{{ url_for('main.security_analytics') }}"><span class="icon">◈</span>Security Analytics</a>
-</nav>
-<div class="nav-title">MANAGEMENT</div><nav class="nav">
-<a href="{{ url_for('main.admin') }}"><span class="icon">♙</span>User Management</a>
-<a href="{{ url_for('main.manage_roles') }}"><span class="icon">◆</span>Roles & Permissions</a>
-</nav>
-<div class="nav-title">SECURITY</div><nav class="nav">
-<a class="active" href="{{ url_for('main.admin_permission_requests') }}"><span class="icon">✓</span>Permission Approvals</a>
-<a href="{{ url_for('main.audit_logs') }}"><span class="icon">≡</span>Audit Logs</a>
-<a href="{{ url_for('main.ai_analysis') }}"><span class="icon">✦</span>AI Security Analysis</a>
-</nav>
-<div class="nav-title">ACCESS</div><nav class="nav">
-<a href="{{ url_for('main.profile') }}"><span class="icon">◎</span>My Profile</a>
-<a href="{{ url_for('main.change_password') }}"><span class="icon">⌘</span>Change Password</a>
-<a href="{{ url_for('main.logout') }}"><span class="icon">↪</span>Logout</a>
-</nav>
-</aside>
 
-<main class="main">
-<div class="topbar">
-<div><div class="crumb">SECURITY / ACCESS CONTROL</div><h1>Permission Approvals</h1><div class="sub">Review and manage permission requests submitted by users.</div></div>
-<div class="userbox"><div class="uinfo"><strong>{{ session.get('username','Admin') }}</strong><span>{{ session.get('role','Admin') }}</span></div><div class="avatar">{{ session.get('username','A')[:1]|upper }}</div></div>
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="container-fluid px-0">
+
+
+    <!-- =========================================================
+         PAGE HEADER
+    ========================================================== -->
+
+    <section class="permission-header">
+
+        <div class="eyebrow">
+            ACCESS GOVERNANCE
+        </div>
+
+        <h1>
+            Permission Queue
+        </h1>
+
+        <p>
+            Review and manage permission requests submitted by users.
+        </p>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         SUMMARY
+    ========================================================== -->
+
+    {% set pending_count =
+        requests
+        |selectattr("status", "equalto", "Pending")
+        |list
+        |length
+    %}
+
+    {% set approved_count =
+        requests
+        |selectattr("status", "equalto", "Approved")
+        |list
+        |length
+    %}
+
+    {% set rejected_count =
+        requests
+        |selectattr("status", "equalto", "Rejected")
+        |list
+        |length
+    %}
+
+
+    <div class="summary-grid">
+
+
+        <!-- PENDING -->
+
+        <div class="summary-card pending">
+
+            <div class="summary-icon">
+                <i class="bi bi-hourglass-split"></i>
+            </div>
+
+            <div class="summary-label">
+                PENDING REVIEW
+            </div>
+
+            <div class="summary-number">
+                {{ pending_count }}
+            </div>
+
+            <div class="summary-description">
+                Requests awaiting administrator action
+            </div>
+
+        </div>
+
+
+
+        <!-- APPROVED -->
+
+        <div class="summary-card approved">
+
+            <div class="summary-icon">
+                <i class="bi bi-check2-circle"></i>
+            </div>
+
+            <div class="summary-label">
+                APPROVED
+            </div>
+
+            <div class="summary-number">
+                {{ approved_count }}
+            </div>
+
+            <div class="summary-description">
+                Permission requests successfully granted
+            </div>
+
+        </div>
+
+
+
+        <!-- REJECTED -->
+
+        <div class="summary-card rejected">
+
+            <div class="summary-icon">
+                <i class="bi bi-x-circle"></i>
+            </div>
+
+            <div class="summary-label">
+                REJECTED
+            </div>
+
+            <div class="summary-number">
+                {{ rejected_count }}
+            </div>
+
+            <div class="summary-description">
+                Permission requests that were declined
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================================================
+         REQUEST PANEL
+    ========================================================== -->
+
+    <section class="request-panel">
+
+
+        <!-- PANEL HEADER -->
+
+        <div class="panel-header">
+
+            <div>
+
+                <h2 class="panel-title">
+                    Permission Requests
+                </h2>
+
+                <p class="panel-subtitle">
+                    Review the reason and current status before taking action.
+                </p>
+
+            </div>
+
+
+            <div class="request-count">
+
+                <i class="bi bi-shield-check me-1"></i>
+
+                {{ requests|length }} total requests
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             FILTERS
+        ====================================================== -->
+
+        <div class="filter-area">
+
+
+            <!-- SEARCH -->
+
+            <input
+                type="text"
+                id="requestSearch"
+                class="filter-control"
+                placeholder="Search user, permission or reason..."
+            >
+
+
+            <!-- STATUS -->
+
+            <select
+                id="statusFilter"
+                class="filter-control"
+            >
+
+                <option value="all">
+                    All statuses
+                </option>
+
+                <option value="Pending">
+                    Pending
+                </option>
+
+                <option value="Approved">
+                    Approved
+                </option>
+
+                <option value="Rejected">
+                    Rejected
+                </option>
+
+            </select>
+
+
+            <!-- PERMISSION -->
+
+            <select
+                id="permissionFilter"
+                class="filter-control"
+            >
+
+                <option value="all">
+                    All permissions
+                </option>
+
+                {% set permission_names = [] %}
+
+                {% for req in requests %}
+
+                    {% if req.permission and req.permission.name not in permission_names %}
+
+                        {% set _ = permission_names.append(req.permission.name) %}
+
+                        <option value="{{ req.permission.name }}">
+                            {{ req.permission.name }}
+                        </option>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </select>
+
+
+            <!-- RESET -->
+
+            <button
+                type="button"
+                class="reset-btn"
+                id="resetFilters"
+            >
+
+                <i class="bi bi-arrow-counterclockwise me-1"></i>
+
+                Reset
+
+            </button>
+
+
+        </div>
+
+
+
+        <!-- =====================================================
+             TABLE
+        ====================================================== -->
+
+        {% if requests %}
+
+        <div class="table-wrapper">
+
+            <table class="request-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            User
+                        </th>
+
+                        <th>
+                            Permission
+                        </th>
+
+                        <th>
+                            Reason
+                        </th>
+
+                        <th>
+                            Requested
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="requestTableBody">
+
+
+                    {% for req in requests %}
+
+                    <tr
+                        class="request-row"
+
+                        data-user="{{ req.user.username|lower if req.user else '' }}"
+
+                        data-permission="{{ req.permission.name|lower if req.permission else '' }}"
+
+                        data-reason="{{ req.reason|default('', true)|lower }}"
+
+                        data-status="{{ req.status|default('', true) }}"
+
+                    >
+
+
+                        <!-- USER -->
+
+                        <td>
+
+                            <div class="user-cell">
+
+                                <div class="user-avatar">
+
+                                    {% if req.user %}
+
+                                        {{ req.user.username[:1]|upper }}
+
+                                    {% else %}
+
+                                        ?
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <div>
+
+                                    <div class="user-name">
+
+                                        {% if req.user %}
+
+                                            {{ req.user.username }}
+
+                                        {% else %}
+
+                                            Unknown User
+
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    {% if req.user %}
+
+                                    <div class="user-email">
+
+                                        {{ req.user.email }}
+
+                                    </div>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+
+                        <!-- PERMISSION -->
+
+                        <td>
+
+                            <div class="permission-cell">
+
+                                <span class="permission-icon">
+
+                                    <i class="bi bi-key"></i>
+
+                                </span>
+
+
+                                {% if req.permission %}
+
+                                    {{ req.permission.name }}
+
+                                {% else %}
+
+                                    Unknown Permission
+
+                                {% endif %}
+
+                            </div>
+
+                        </td>
+
+
+
+                        <!-- REASON -->
+
+                        <td>
+
+                            <div class="reason">
+
+                                {{ req.reason or "No reason provided." }}
+
+                            </div>
+
+                        </td>
+
+
+
+                        <!-- REQUESTED -->
+
+                        <td>
+
+                            <div class="date-cell">
+
+                                {% if req.requested_at %}
+
+                                    {{ req.requested_at.strftime("%d %b %Y, %I:%M %p") }}
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </div>
+
+                        </td>
+
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            {% if req.status == "Pending" %}
+
+                                <span class="status-badge status-pending">
+
+                                    <span class="status-dot"></span>
+
+                                    Pending
+
+                                </span>
+
+
+                            {% elif req.status == "Approved" %}
+
+                                <span class="status-badge status-approved">
+
+                                    <span class="status-dot"></span>
+
+                                    Approved
+
+                                </span>
+
+
+                            {% elif req.status == "Rejected" %}
+
+                                <span class="status-badge status-rejected">
+
+                                    <span class="status-dot"></span>
+
+                                    Rejected
+
+                                </span>
+
+
+                            {% else %}
+
+                                <span class="status-badge">
+
+                                    {{ req.status }}
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+
+                        <!-- ACTION -->
+
+                        <td>
+
+                            {% if req.status == "Pending" %}
+
+                                <div class="action-group">
+
+
+                                    <!-- APPROVE -->
+
+                                    <form
+                                        method="POST"
+                                        action="{{ url_for(
+                                            'main.review_permission_request',
+                                            request_id=req.id,
+                                            action='approve'
+                                        ) }}"
+                                        style="margin:0"
+                                    >
+
+                                        <button
+                                            type="submit"
+                                            class="action-btn approve-btn"
+                                            onclick="return confirm('Approve this permission request?');"
+                                        >
+
+                                            <i class="bi bi-check2 me-1"></i>
+
+                                            Approve
+
+                                        </button>
+
+                                    </form>
+
+
+                                    <!-- REJECT -->
+
+                                    <form
+                                        method="POST"
+                                        action="{{ url_for(
+                                            'main.review_permission_request',
+                                            request_id=req.id,
+                                            action='reject'
+                                        ) }}"
+                                        style="margin:0"
+                                    >
+
+                                        <button
+                                            type="submit"
+                                            class="action-btn reject-btn"
+                                            onclick="return confirm('Reject this permission request?');"
+                                        >
+
+                                            <i class="bi bi-x-lg me-1"></i>
+
+                                            Reject
+
+                                        </button>
+
+                                    </form>
+
+
+                                </div>
+
+
+                            {% else %}
+
+                                <span class="reviewed-text">
+
+                                    <i class="bi bi-check2-all me-1"></i>
+
+                                    Reviewed
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                    </tr>
+
+                    {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+
+            <!-- NO FILTER RESULTS -->
+
+            <div
+                class="no-results"
+                id="noResults"
+            >
+
+                <i class="bi bi-search d-block mb-2" style="font-size:20px;"></i>
+
+                No requests match your filters.
+
+            </div>
+
+
+        </div>
+
+
+        {% else %}
+
+
+        <!-- =====================================================
+             EMPTY STATE
+        ====================================================== -->
+
+        <div class="empty-state">
+
+            <div class="empty-icon">
+
+                <i class="bi bi-shield-check"></i>
+
+            </div>
+
+            <h4>
+                No permission requests
+            </h4>
+
+            <p>
+                There are currently no permission requests to review.
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+
 </div>
 
-{% set pending_count = requests|selectattr('status','equalto','Pending')|list|length %}
-{% set approved_count = requests|selectattr('status','equalto','Approved')|list|length %}
-{% set rejected_count = requests|selectattr('status','equalto','Rejected')|list|length %}
+{% endblock %}
 
-<div class="stats">
-<div class="stat"><label>Pending Requests</label><strong class="pending">{{ pending_count }}</strong></div>
-<div class="stat"><label>Approved Requests</label><strong class="approved">{{ approved_count }}</strong></div>
-<div class="stat"><label>Rejected Requests</label><strong class="rejected">{{ rejected_count }}</strong></div>
-</div>
 
-<div class="card">
-<div class="cardhead"><h2>Access Requests</h2><span>{{ requests|length }} total requests</span></div>
-<div class="tablewrap">
-<table>
-<thead><tr><th>User</th><th>Permission</th><th>Reason</th><th>Requested</th><th>Status</th><th>Action</th></tr></thead>
-<tbody>
-{% for req in requests %}
-<tr>
-<td><div class="requestuser"><div class="mini">{{ req.user.username[:1]|upper }}</div><div><div class="name">{{ req.user.username }}</div><div class="muted">{{ req.user.email }}</div></div></div></td>
-<td><span class="permission">{{ req.permission.name }}</span></td>
-<td><div class="reason">{{ req.reason or 'No reason provided.' }}</div></td>
-<td>{{ req.requested_at.strftime('%d %b %Y') if req.requested_at else '—' }}<div class="muted">{{ req.requested_at.strftime('%H:%M') if req.requested_at else '' }}</div></td>
-<td><span class="badge {{ req.status|lower }}">{{ req.status }}</span></td>
-<td>
-{% if req.status == 'Pending' %}
-<div class="actions">
-<form method="POST" action="{{ url_for('main.review_permission_request', request_id=req.id, action='approve') }}"><button class="btn approve" type="submit">Approve</button></form>
-<form method="POST" action="{{ url_for('main.review_permission_request', request_id=req.id, action='reject') }}"><button class="btn reject" type="submit">Reject</button></form>
-</div>
-{% else %}
-<span class="muted">{% if req.reviewed_at %}Reviewed {{ req.reviewed_at.strftime('%d %b %Y') }}{% else %}Already reviewed{% endif %}</span>
-{% endif %}
-</td>
-</tr>
-{% else %}
-<tr><td colspan="6"><div class="empty">No permission requests have been submitted yet.</div></td></tr>
-{% endfor %}
-</tbody>
-</table>
-</div>
-</div>
 
-<div class="info">🔐 <strong>Access control:</strong> approving a request adds the requested permission to the user's current role. Rejecting a request records the decision without granting the permission.</div>
-</main>
-</div>
-</body>
-</html>
+{% block scripts %}
+
+<script>
+
+    /* =========================================================
+       FILTER ELEMENTS
+    ========================================================== */
+
+    const searchInput =
+        document.getElementById("requestSearch");
+
+    const statusFilter =
+        document.getElementById("statusFilter");
+
+    const permissionFilter =
+        document.getElementById("permissionFilter");
+
+    const resetButton =
+        document.getElementById("resetFilters");
+
+    const rows =
+        document.querySelectorAll(".request-row");
+
+    const noResults =
+        document.getElementById("noResults");
+
+
+    /* =========================================================
+       FILTER FUNCTION
+    ========================================================== */
+
+    function filterRequests() {
+
+        const search =
+            searchInput
+                ? searchInput.value
+                    .toLowerCase()
+                    .trim()
+                : "";
+
+
+        const status =
+            statusFilter
+                ? statusFilter.value
+                : "all";
+
+
+        const permission =
+            permissionFilter
+                ? permissionFilter.value.toLowerCase()
+                : "all";
+
+
+        let visibleRows = 0;
+
+
+        rows.forEach(function(row) {
+
+
+            const user =
+                row.dataset.user || "";
+
+
+            const rowPermission =
+                row.dataset.permission || "";
+
+
+            const reason =
+                row.dataset.reason || "";
+
+
+            const rowStatus =
+                row.dataset.status || "";
+
+
+            const matchesSearch =
+                !search ||
+                user.includes(search) ||
+                rowPermission.includes(search) ||
+                reason.includes(search);
+
+
+            const matchesStatus =
+                status === "all" ||
+                rowStatus === status;
+
+
+            const matchesPermission =
+                permission === "all" ||
+                rowPermission === permission;
+
+
+            if (
+                matchesSearch &&
+                matchesStatus &&
+                matchesPermission
+            ) {
+
+                row.style.display = "";
+
+                visibleRows++;
+
+            } else {
+
+                row.style.display = "none";
+
+            }
+
+        });
+
+
+        if (noResults) {
+
+            noResults.style.display =
+                visibleRows === 0
+                    ? "block"
+                    : "none";
+
+        }
+
+    }
+
+
+    /* =========================================================
+       SEARCH
+    ========================================================== */
+
+    if (searchInput) {
+
+        searchInput.addEventListener(
+            "input",
+            filterRequests
+        );
+
+    }
+
+
+    /* =========================================================
+       STATUS FILTER
+    ========================================================== */
+
+    if (statusFilter) {
+
+        statusFilter.addEventListener(
+            "change",
+            filterRequests
+        );
+
+    }
+
+
+    /* =========================================================
+       PERMISSION FILTER
+    ========================================================== */
+
+    if (permissionFilter) {
+
+        permissionFilter.addEventListener(
+            "change",
+            filterRequests
+        );
+
+    }
+
+
+    /* =========================================================
+       RESET
+    ========================================================== */
+
+    if (resetButton) {
+
+        resetButton.addEventListener(
+            "click",
+            function() {
+
+                if (searchInput) {
+                    searchInput.value = "";
+                }
+
+                if (statusFilter) {
+                    statusFilter.value = "all";
+                }
+
+                if (permissionFilter) {
+                    permissionFilter.value = "all";
+                }
+
+                filterRequests();
+
+            }
+        );
+
+    }
+
+</script>
+
+{% endblock %}

@@ -16,7 +16,7 @@
     --panel2:#101a2b;
     --line:rgba(148,163,184,.13);
     --text:#eef5ff;
-    --muted:#8290a8;
+    --muted:#d6deea;
     --cyan:#39d9ff;
     --blue:#5b7cff;
     --green:#32e6a1;
@@ -56,10 +56,10 @@ a{text-decoration:none}
 }
 .brand b{font-size:18px;letter-spacing:.12em}
 .brand small{display:block;color:var(--muted);font-size:9px;letter-spacing:.16em;margin-top:2px}
-.nav-title{font-size:10px;letter-spacing:.18em;color:#526077;padding:18px 12px 8px}
+.nav-title{font-size:10px;letter-spacing:.18em;color:#d5deea;padding:18px 12px 8px}
 .nav-link{
     display:flex;align-items:center;gap:12px;
-    color:#8290a8;padding:11px 12px;border-radius:12px;
+    color:#dbe4ef;padding:11px 12px;border-radius:12px;
     margin:3px 0;font-size:13px;transition:.2s;
 }
 .nav-link i{font-size:17px;width:20px;text-align:center}
@@ -68,12 +68,6 @@ a{text-decoration:none}
     background:linear-gradient(90deg,rgba(57,217,255,.12),rgba(91,124,255,.08));
     color:#fff;border:1px solid rgba(57,217,255,.1);
 }
-.sidebar-bottom{
-    position:absolute;left:16px;right:16px;bottom:20px;
-    padding:14px;border:1px solid var(--line);border-radius:16px;
-    background:rgba(16,26,43,.65);
-}
-.status-dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 12px var(--green)}
 .main{flex:1;min-width:0}
 .topbar{
     height:76px;padding:0 34px;
@@ -85,16 +79,36 @@ a{text-decoration:none}
 .search{
     width:min(430px,42vw);height:40px;border:1px solid var(--line);
     background:rgba(255,255,255,.035);border-radius:12px;
-    display:flex;align-items:center;gap:10px;padding:0 13px;color:#617089;
+    display:flex;align-items:center;gap:10px;padding:0 13px;color:#d6e0eb;
 }
 .search input{border:0;outline:0;background:transparent;color:white;width:100%;font-size:13px}
-.search input::placeholder{color:#5e6c83}
+.search input::placeholder{color:#cdd8e6}
 .top-actions{display:flex;align-items:center;gap:12px}
 .icon-btn{
     width:40px;height:40px;border:1px solid var(--line);background:rgba(255,255,255,.03);
-    color:#9aa8be;border-radius:12px;position:relative;display:grid;place-items:center;
+    color:#d8e2ed;border-radius:12px;position:relative;display:grid;place-items:center;
 }
 .icon-btn:hover{color:white;border-color:rgba(57,217,255,.3)}
+.logout-btn{
+    height:40px;
+    border:1px solid rgba(255,107,129,.20);
+    background:rgba(255,107,129,.045);
+    color:#ffb0bd;
+    border-radius:12px;
+    padding:0 13px;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:11px;
+    font-weight:650;
+    text-decoration:none;
+    transition:.2s;
+}
+.logout-btn:hover{
+    color:#fff;
+    border-color:rgba(255,107,129,.42);
+    background:rgba(255,107,129,.10);
+}
 .badge-dot{position:absolute;width:7px;height:7px;background:var(--red);border-radius:50%;right:8px;top:7px}
 .profile{
     display:flex;align-items:center;gap:10px;padding-left:12px;border-left:1px solid var(--line)
@@ -103,7 +117,7 @@ a{text-decoration:none}
     width:38px;height:38px;border-radius:12px;display:grid;place-items:center;
     background:linear-gradient(135deg,#1c2e55,#253e78);color:#cfe8ff;font-weight:800
 }
-.profile strong{font-size:12px}.profile span{display:block;font-size:10px;color:var(--muted);margin-top:2px}
+.profile strong{font-size:12px;color:#ffffff}.profile span{display:block;font-size:10px;color:#d6deea;margin-top:2px}
 
 .content{padding:30px 34px 40px;max-width:1700px;margin:auto}
 .hero{
@@ -121,11 +135,11 @@ a{text-decoration:none}
 }
 .eyebrow{font-size:10px;letter-spacing:.18em;color:var(--cyan);font-weight:700}
 .hero h1{font-size:31px;line-height:1.15;margin:8px 0 7px;font-weight:760}
-.hero p{color:var(--muted);margin:0;max-width:620px;font-size:13px}
+.hero p{color:#d3deea;margin:0;max-width:620px;font-size:13px}
 .hero-right{position:static;display:flex;gap:10px;align-items:center;justify-content:flex-start;margin-bottom:18px;z-index:2}
 .pill{
     border:1px solid var(--line);background:rgba(255,255,255,.035);
-    border-radius:999px;padding:8px 12px;font-size:10px;color:#9eabc0
+    border-radius:999px;padding:8px 12px;font-size:10px;color:#d5deea
 }
 .pill.live{color:#8ff0c9}.pill.live:before{content:"";display:inline-block;width:6px;height:6px;background:var(--green);border-radius:50%;margin-right:7px;box-shadow:0 0 8px var(--green)}
 .hero-actions{margin-top:20px;display:flex;gap:9px;flex-wrap:wrap}
@@ -150,9 +164,9 @@ a{text-decoration:none}
 .kpi:before{content:"";position:absolute;top:0;left:0;width:48px;height:2px;background:var(--accent)}
 .kpi-top{display:flex;justify-content:space-between;align-items:center}
 .kpi-icon{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.045);display:grid;place-items:center;color:var(--accent)}
-.kpi-label{font-size:10px;letter-spacing:.08em;color:#91a3bb;margin-top:14px;font-weight:700}
+.kpi-label{font-size:10px;letter-spacing:.08em;color:#d8e2ed;margin-top:14px;font-weight:700}
 .kpi-value{font-size:25px;font-weight:780;margin-top:2px}
-.kpi-meta{font-size:10px;color:#8293aa;margin-top:3px}
+.kpi-meta{font-size:10px;color:#cfd9e6;margin-top:3px}
 .kpi-meta i{color:var(--green)}
 
 .grid-main{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(310px,.75fr);gap:18px;margin-bottom:18px}
@@ -161,9 +175,9 @@ a{text-decoration:none}
     border:1px solid var(--line);border-radius:20px;padding:20px;
 }
 .card-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
-.card-title{font-size:14px;font-weight:750;color:#eef5ff}.card-sub{font-size:10px;color:#8fa0b8;margin-top:4px}
+.card-title{font-size:14px;font-weight:750;color:#ffffff}.card-sub{font-size:10px;color:#d5deea;margin-top:4px}
 .chart-wrap{height:285px}
-.legend{display:flex;gap:15px;font-size:10px;color:#74829a}
+.legend{display:flex;gap:15px;font-size:10px;color:#cdd8e5}
 .legend span:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px}
 .legend .one:before{background:#39d9ff}.legend .two:before{background:#a878ff}
 
@@ -181,7 +195,7 @@ a{text-decoration:none}
 .risk{font-size:11px;font-weight:800;letter-spacing:.1em}
 .riskbar{height:7px;background:#1a2435;border-radius:20px;overflow:hidden}
 .riskbar span{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,#32e6a1,#ffbf5b,#ff6b81);width:{{ analysis.risk_score|default(35) }}%}
-.ai-desc{font-size:11px;line-height:1.6;color:#7f8ca3;margin-top:14px}
+.ai-desc{font-size:11px;line-height:1.6;color:#d0dae7;margin-top:14px}
 .ai-actions{display:flex;gap:8px;margin-top:18px}.ai-actions a{flex:1;text-align:center}
 
 .bottom-grid{display:grid;grid-template-columns:1.05fr 1fr 1fr;gap:18px}
@@ -196,17 +210,17 @@ a{text-decoration:none}
 .event-icon.danger{color:#ff8b9d;background:rgba(255,107,129,.09)}
 .event-icon.warning{color:#ffd084;background:rgba(255,191,91,.09)}
 .event-icon.success{color:#73efbb;background:rgba(50,230,161,.08)}
-.event-title{font-size:11px;font-weight:700}.event-msg{font-size:10px;color:#6f7d94;margin-top:2px;line-height:1.4}.event-time{font-size:9px;color:#536077;margin-top:4px}
-.role-row{margin:15px 0}.role-top{display:flex;justify-content:space-between;font-size:10px;color:#c0ccdc;margin-bottom:6px}
+.event-title{font-size:11px;font-weight:700;color:#ffffff}.event-msg{font-size:10px;color:#d8e2ee;margin-top:2px;line-height:1.4}.event-time{font-size:9px;color:#c5d1df;margin-top:4px}
+.role-row{margin:15px 0}.role-top{display:flex;justify-content:space-between;font-size:10px;color:#dce5ef;margin-bottom:6px}
 .role-track{height:8px;background:#182235;border-radius:20px;overflow:hidden}.role-track span{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,#39d9ff,#5b7cff)}
 .quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .quick{
     min-height:84px;padding:13px;border:1px solid var(--line);border-radius:14px;
-    background:rgba(255,255,255,.022);color:#a7b4c8;transition:.2s
+    background:rgba(255,255,255,.022);color:#d2dce8;transition:.2s
 }
 .quick:hover{color:white;border-color:rgba(57,217,255,.24);transform:translateY(-2px)}
-.quick i{font-size:20px;color:#5fcbff}.quick b{display:block;font-size:11px;margin-top:9px;color:#eef5ff}.quick small{font-size:9px;color:#5f6d83}
-.footer-line{display:flex;justify-content:space-between;color:#4f5c71;font-size:9px;margin-top:20px;padding:0 4px}
+.quick i{font-size:20px;color:#5fcbff}.quick b{display:block;font-size:11px;margin-top:9px;color:#eef5ff}.quick small{font-size:9px;color:#d0dbe8}
+.footer-line{display:flex;justify-content:space-between;color:#c6d1df;font-size:9px;margin-top:20px;padding:0 4px}
 
 .toast-panel{
     position:fixed;right:22px;top:84px;width:330px;max-width:calc(100vw - 30px);
@@ -217,6 +231,10 @@ a{text-decoration:none}
 .toast-panel.show{transform:translateY(0);opacity:1;pointer-events:auto}
 .toast-head{display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:10px}
 .mobile-toggle{display:none}
+
+/* Readability: all secondary dashboard text stays bright on the dark surface. */
+.hero p,.card-sub,.legend,.kpi-label,.kpi-meta,.ai-desc,.event-msg,.event-time,.role-top,.quick,.quick small,.footer-line,.toast-panel,.toast-panel strong,.toast-panel div{color:#d6e0eb}
+.event-title,.card-title,.kpi-value,.profile strong,.toast-head{color:#ffffff}
 
 @media(max-width:1200px){
     .kpis{grid-template-columns:repeat(3,1fr)}
@@ -229,7 +247,7 @@ a{text-decoration:none}
     .hero-right{position:static;margin-top:0;margin-bottom:18px}.hero{padding:22px}
 }
 @media(max-width:650px){
-    .kpis{grid-template-columns:1fr 1fr}.profile-text{display:none}.search{width:48vw}
+    .kpis{grid-template-columns:1fr 1fr}.profile-text{display:none}.logout-btn span{display:none}.logout-btn{width:40px;padding:0;justify-content:center}.search{width:48vw}
     .hero h1{font-size:24px}.kpi-value{font-size:21px}
 }
 @media(max-width:430px){
@@ -256,6 +274,9 @@ a{text-decoration:none}
 
     <div class="nav-title">SECURITY</div>
     <a class="nav-link" href="{{ url_for('main.audit_logs') }}"><i class="bi bi-activity"></i> Audit Intelligence</a>
+    {% if role == "Admin" %}
+    <a class="nav-link" href="{{ url_for('main.security_analytics') }}"><i class="bi bi-bar-chart-fill"></i> Security Analytics</a>
+    {% endif %}
     <a class="nav-link" href="{{ url_for('main.ai_analysis') }}"><i class="bi bi-stars"></i> AI Security</a>
 
     <div class="nav-title">ACCESS</div>
@@ -267,10 +288,6 @@ a{text-decoration:none}
     <a class="nav-link" href="{{ url_for('main.permission_requests') }}"><i class="bi bi-key"></i> My Requests</a>
     {% endif %}
 
-    <div class="sidebar-bottom">
-        <div class="d-flex align-items-center gap-2 mb-2"><span class="status-dot"></span><small style="color:#9eabc0">System operational</small></div>
-        <div style="font-size:9px;color:#59677d">AccessIQ Security Core · v1.0</div>
-    </div>
 </aside>
 
 <main class="main">
@@ -280,7 +297,7 @@ a{text-decoration:none}
         <div class="search">
             <i class="bi bi-search"></i>
             <input id="globalSearch" type="search" placeholder="Search security events..." aria-label="Search security events">
-            <span style="font-size:9px;border:1px solid var(--line);padding:3px 6px;border-radius:5px;color:#59677d">/</span>
+            <span style="font-size:9px;border:1px solid var(--line);padding:3px 6px;border-radius:5px;color:#d0dbe7">/</span>
         </div>
     </div>
     <div class="top-actions">
@@ -288,11 +305,14 @@ a{text-decoration:none}
             <i class="bi bi-bell"></i>
             {% if notification_count|default(0) > 0 %}<span class="badge-dot"></span>{% endif %}
         </button>
-        <a class="icon-btn" href="{{ url_for('main.profile') }}" aria-label="Profile"><i class="bi bi-person"></i></a>
+        <a class="icon-btn" href="{{ url_for('main.profile') }}" aria-label="Profile" title="My Profile"><i class="bi bi-person"></i></a>
         <div class="profile">
             <div class="avatar">{{ username[:1]|upper }}</div>
             <div class="profile-text"><strong>{{ username }}</strong><span>{{ role }}</span></div>
         </div>
+        <a class="logout-btn" href="{{ url_for('main.logout') }}" title="Logout">
+            <i class="bi bi-box-arrow-right"></i><span>Logout</span>
+        </a>
     </div>
 </header>
 
@@ -314,23 +334,23 @@ a{text-decoration:none}
 
     <section class="kpis">
         <div class="kpi" style="--accent:#39d9ff">
-            <div class="kpi-top"><span class="kpi-icon"><i class="bi bi-people-fill"></i></span><i class="bi bi-arrow-up-right" style="color:#56657c"></i></div>
+            <div class="kpi-top"><span class="kpi-icon"><i class="bi bi-people-fill"></i></span><i class="bi bi-arrow-up-right" style="color:#c4d0df"></i></div>
             <div class="kpi-label">IDENTITIES</div><div class="kpi-value">{{ total_users }}</div><div class="kpi-meta">Registered users</div>
         </div>
         <div class="kpi" style="--accent:#a878ff">
-            <div class="kpi-top"><span class="kpi-icon"><i class="bi bi-diagram-3-fill"></i></span><i class="bi bi-shield-check" style="color:#56657c"></i></div>
+            <div class="kpi-top"><span class="kpi-icon"><i class="bi bi-diagram-3-fill"></i></span><i class="bi bi-shield-check" style="color:#c4d0df"></i></div>
             <div class="kpi-label">RBAC ROLES</div><div class="kpi-value">{{ total_roles }}</div><div class="kpi-meta">Permission groups</div>
         </div>
         <div class="kpi" style="--accent:#5b7cff">
-            <div class="kpi-top"><span class="kpi-icon"><i class="bi bi-activity"></i></span><i class="bi bi-activity" style="color:#56657c"></i></div>
+            <div class="kpi-top"><span class="kpi-icon"><i class="bi bi-activity"></i></span><i class="bi bi-activity" style="color:#c4d0df"></i></div>
             <div class="kpi-label">AUDIT EVENTS</div><div class="kpi-value">{{ total_events }}</div><div class="kpi-meta">Recorded system events</div>
         </div>
         <div class="kpi" style="--accent:#ff6b81">
-            <div class="kpi-top"><span class="kpi-icon"><i class="bi bi-shield-exclamation"></i></span><i class="bi bi-exclamation-triangle" style="color:#56657c"></i></div>
+            <div class="kpi-top"><span class="kpi-icon"><i class="bi bi-shield-exclamation"></i></span><i class="bi bi-exclamation-triangle" style="color:#c4d0df"></i></div>
             <div class="kpi-label">FAILED LOGINS</div><div class="kpi-value">{{ failed_logins }}</div><div class="kpi-meta">Authentication failures</div>
         </div>
         <div class="kpi" style="--accent:#ffbf5b">
-            <div class="kpi-top"><span class="kpi-icon"><i class="bi bi-lock-fill"></i></span><i class="bi bi-eye" style="color:#56657c"></i></div>
+            <div class="kpi-top"><span class="kpi-icon"><i class="bi bi-lock-fill"></i></span><i class="bi bi-eye" style="color:#c4d0df"></i></div>
             <div class="kpi-label">ACCESS DENIED</div><div class="kpi-value">{{ access_denied }}</div><div class="kpi-meta">Blocked attempts</div>
         </div>
     </section>
@@ -352,10 +372,10 @@ a{text-decoration:none}
             <div class="ai-orbit"><div class="ai-core"><i class="bi bi-robot"></i></div></div>
             <div class="text-center">
                 {% set risk = analysis.risk_level|default("LOW") %}
-                <div style="font-size:9px;letter-spacing:.16em;color:#66758d">CURRENT RISK</div>
+                <div style="font-size:9px;letter-spacing:.16em;color:#d7e1ed">CURRENT RISK</div>
                 <div class="risk mt-1 {% if risk == 'HIGH' %}text-danger{% elif risk == 'MEDIUM' %}text-warning{% else %}text-success{% endif %}">{{ risk }}</div>
             </div>
-            <div class="risk-row"><span style="font-size:10px;color:#68768d">Risk score</span><strong style="font-size:11px">{{ analysis.risk_score|default(0) }}%</strong></div>
+            <div class="risk-row"><span style="font-size:10px;color:#d7e1ed">Risk score</span><strong style="font-size:11px">{{ analysis.risk_score|default(0) }}%</strong></div>
             <div class="riskbar"><span></span></div>
             <div class="ai-desc">{{ analysis.risk_description|default("Local security analysis is monitoring authentication and access activity.") }}</div>
             <div class="ai-actions">
@@ -380,10 +400,10 @@ a{text-decoration:none}
                     </div>
                     {% endfor %}
                 {% else %}
-                    <div class="text-center py-5" style="color:#5e6c83;font-size:11px"><i class="bi bi-shield-check" style="font-size:28px;display:block;margin-bottom:8px;color:#32e6a1"></i>No recent security alerts.</div>
+                    <div class="text-center py-5" style="color:#cdd8e6;font-size:11px"><i class="bi bi-shield-check" style="font-size:28px;display:block;margin-bottom:8px;color:#32e6a1"></i>No recent security alerts.</div>
                 {% endif %}
             </div>
-            <a href="{{ url_for('main.audit_logs') }}" style="display:block;margin-top:12px;text-align:center;color:#5fcfff;font-size:10px">View complete audit trail →</a>
+            <a href="{{ url_for('main.audit_logs') }}" style="display:block;margin-top:12px;text-align:center;color:#6bd8ff;font-size:10px">View complete audit trail →</a>
         </div>
 
         <div class="card">
@@ -398,7 +418,7 @@ a{text-decoration:none}
                 <div class="role-track"><span style="width:{{ ((count / max_role * 100) if max_role else 0)|round(0) }}%"></span></div>
             </div>
             {% endfor %}
-            <div style="margin-top:24px;padding:12px;border-radius:12px;background:rgba(57,217,255,.04);border:1px solid rgba(57,217,255,.08);font-size:10px;color:#a9b7ca">
+            <div style="margin-top:24px;padding:12px;border-radius:12px;background:rgba(57,217,255,.04);border:1px solid rgba(57,217,255,.08);font-size:10px;color:#d7e1ec">
                 <i class="bi bi-shield-lock me-1" style="color:#39d9ff"></i>
                 Role-based access control is active across the platform.
             </div>
@@ -435,11 +455,11 @@ a{text-decoration:none}
     {% if notifications %}
         {% for n in notifications[:4] %}
         <div style="padding:9px 0;border-top:1px solid var(--line);font-size:10px">
-            <strong>{{ n.title }}</strong><div style="color:#6f7d94;margin-top:2px">{{ n.message }}</div>
+            <strong>{{ n.title }}</strong><div style="color:#d0dbe8;margin-top:2px">{{ n.message }}</div>
         </div>
         {% endfor %}
     {% else %}
-        <div style="color:#6f7d94;font-size:10px;padding:10px 0">No new notifications.</div>
+        <div style="color:#d0dbe8;font-size:10px;padding:10px 0">No new notifications.</div>
     {% endif %}
 </div>
 
@@ -497,8 +517,8 @@ if(ctx){
                 }
             },
             scales:{
-                x:{grid:{display:false},ticks:{color:"#617089",font:{size:9}}},
-                y:{beginAtZero:true,grid:{color:"rgba(148,163,184,.07)"},ticks:{color:"#617089",font:{size:9},precision:0}}
+                x:{grid:{display:false},ticks:{color:"#7c8da6",font:{size:9}}},
+                y:{beginAtZero:true,grid:{color:"rgba(148,163,184,.07)"},ticks:{color:"#7c8da6",font:{size:9},precision:0}}
             }
         }
     });
