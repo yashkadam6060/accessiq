@@ -1,633 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AccessIQ | Intelligent Access & Security</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AccessIQ | Intelligent Access & Security</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+:root{--bg:#030b14;--text:#f8fafc;--muted:#8fa4b8;--blue:#249cff;--green:#32e6a1;--purple:#8b6cff;--line:rgba(117,177,220,.16)}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;color:var(--text);background:var(--bg);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow:hidden}a{text-decoration:none}
+.page{min-height:100svh;height:100svh;display:flex;flex-direction:column;overflow:hidden;position:relative;background:radial-gradient(circle at 76% 40%,rgba(36,156,255,.12),transparent 30%),radial-gradient(circle at 18% 35%,rgba(139,108,255,.07),transparent 28%),linear-gradient(180deg,#030b14 0%,#04111d 100%)}
+.page:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(68,151,207,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(68,151,207,.04) 1px,transparent 1px);background-size:55px 55px;mask-image:linear-gradient(to bottom,#000,transparent);pointer-events:none}
+.navbar{position:relative;z-index:10;flex:0 0 auto;padding:8px 0;background:rgba(3,11,20,.72);backdrop-filter:blur(16px);border-bottom:1px solid rgba(117,177,220,.12)}
+.brand{display:flex;align-items:center;gap:8px;color:#fff;font-size:19px;font-weight:800}.brand:hover{color:#fff}.brand-icon{width:33px;height:33px;border:1px solid rgba(56,213,255,.55);border-radius:10px;display:grid;place-items:center;color:#38d5ff;background:rgba(36,156,255,.08);box-shadow:0 0 25px rgba(36,156,255,.12)}.brand span{color:#39b8ff}
+.nav-links a{color:#91a5b8;font-size:13px;margin:0 14px}.nav-links a:hover{color:#fff}.login-btn{color:#fff;border:1px solid #249cff;border-radius:8px;padding:8px 15px;font-size:13px;background:rgba(36,156,255,.05)}.login-btn:hover{color:#fff;background:rgba(36,156,255,.15)}
+.main{position:relative;z-index:2;flex:1 1 auto;min-height:0;display:flex;flex-direction:column}.hero{flex:1 1 auto;min-height:0;display:flex;align-items:center}.hero-copy{position:relative;z-index:3}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:8px;color:#43bfff;border:1px solid rgba(36,156,255,.25);background:rgba(36,156,255,.055);font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;margin-bottom:13px}.pulse{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 0 5px rgba(50,230,161,.08)}
+.hero h1{font-size:clamp(39px,4.25vw,60px);line-height:.98;letter-spacing:-3px;font-weight:850;max-width:650px;margin:0 0 14px}.blue{color:#249cff}.hero-description{color:#9aabba;font-size:13px;line-height:1.45;max-width:535px;border-left:3px solid #32e6a1;padding-left:14px;margin-bottom:18px}.hero-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn-main{color:#fff;background:linear-gradient(135deg,#138ef1,#2bb9ff);border:0;border-radius:8px;padding:11px 18px;font-size:13px;font-weight:750;box-shadow:0 10px 35px rgba(36,156,255,.17)}.btn-main:hover{color:#fff;transform:translateY(-2px)}.btn-secondary{color:#b9c8d5;border:1px solid rgba(92,154,200,.32);background:rgba(255,255,255,.015);border-radius:8px;padding:11px 18px;font-size:13px}.btn-secondary:hover{color:#fff;border-color:#249cff}
+.hero-visual{position:relative;min-height:0;height:100%;display:flex;align-items:center;justify-content:center;z-index:2}.hero-visual:before{content:"";position:absolute;width:360px;height:360px;border-radius:50%;background:rgba(36,156,255,.09);filter:blur(55px)}.hero-image{width:103%;max-width:640px;position:relative;margin-left:-45px;filter:drop-shadow(0 25px 55px rgba(0,0,0,.5));animation:heroFloat 6s ease-in-out infinite}@keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.quick-bar{flex:0 0 auto;padding:5px 0 6px}.quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.quick-card{display:flex;align-items:center;gap:9px;min-width:0;padding:7px 10px;border:1px solid var(--line);border-radius:10px;background:rgba(7,21,34,.82)}.quick-icon{width:30px;height:30px;flex:0 0 30px;border-radius:9px;display:grid;place-items:center;color:#5fc9ff;background:rgba(36,156,255,.09);border:1px solid rgba(36,156,255,.15)}.quick-card:nth-child(2) .quick-icon{color:#45e4a8;background:rgba(50,230,161,.08)}.quick-card:nth-child(3) .quick-icon{color:#ae9aff;background:rgba(139,108,255,.08)}.quick-card strong{display:block;font-size:10px;font-weight:750;margin-bottom:2px}.quick-card span{display:block;color:#71879a;font-size:8.5px;line-height:1.3}
+.status-strip{flex:0 0 auto;display:flex;justify-content:center;align-items:center;gap:17px;padding:3px 0 5px;color:#71879a;font-size:8.5px}.status-strip span{display:inline-flex;align-items:center;gap:5px}
+footer{flex:0 0 auto;padding:5px 0 7px;color:#60788c;font-size:10px;border-top:1px solid rgba(117,177,220,.08)}
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+/* HERO BACKGROUND IMAGE VERSION */
+.page{background:#030b14;}
+.hero{position:relative;overflow:hidden;}
+.hero:before{content:"";position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(2,10,18,.98) 0%,rgba(2,10,18,.91) 27%,rgba(2,10,18,.62) 52%,rgba(2,10,18,.28) 76%,rgba(2,10,18,.18) 100%),linear-gradient(180deg,rgba(2,10,18,.18) 0%,rgba(2,10,18,.10) 55%,rgba(2,10,18,.78) 100%),url("{{ url_for('static', filename='images/accessiq-hero.png') }}");background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.96;filter:saturate(1.08);z-index:0;}
+.hero:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 72% 46%,rgba(36,156,255,.13),transparent 28%),linear-gradient(180deg,transparent 65%,rgba(3,11,20,.82) 100%);z-index:0;pointer-events:none;}
+.hero>.container{position:relative;z-index:2;width:100%;}
+.hero-copy{max-width:720px;padding:0 0 0 2px;text-shadow:0 2px 18px rgba(0,0,0,.35);}
+.hero-visual{display:none!important;}
+.hero h1{max-width:680px;}
+.hero-description{max-width:570px;background:rgba(3,11,20,.16);}
+.hero-actions{position:relative;z-index:3;}
+.quick-bar{position:relative;z-index:3;margin-top:-2px;}
+.quick-card{backdrop-filter:blur(10px);background:rgba(5,18,30,.76);box-shadow:0 10px 30px rgba(0,0,0,.16);}
+.status-strip{position:relative;z-index:3;background:linear-gradient(180deg,rgba(3,11,20,.08),rgba(3,11,20,.35));}
+@media(max-width:991px){
+  .hero{min-height:620px;}
+  .hero:before{background-image:linear-gradient(180deg,rgba(2,10,18,.70) 0%,rgba(2,10,18,.86) 42%,rgba(2,10,18,.97) 100%),url("{{ url_for('static', filename='images/accessiq-hero.png') }}");background-position:center top;}
+  .hero-copy{padding:25px 0 0;}
+}
 
-    <style>
-        :root{
-            
-            --bg:#030b14;
-            --panel:#071522;
-            --panel2:#0a1b2b;
-            --text:#f8fafc;
-            --muted:#8fa4b8;
-            --blue:#249cff;
-            --cyan:#38d5ff;
-            --green:#32e6a1;
-            --purple:#8b6cff;
-            --line:rgba(117,177,220,.16);
-        }
-
-        *{box-sizing:border-box}
-        html{scroll-behavior:smooth}
-        body{
-            margin:0;
-            color:var(--text);
-            background:var(--bg);
-            font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-            overflow-x:hidden;
-        }
-        a{text-decoration:none}
-
-        .navbar{
-            position:fixed;
-            top:0;
-            width:100%;
-            z-index:100;
-            padding:15px 0;
-            background:rgba(3,11,20,.78);
-            backdrop-filter:blur(16px);
-            border-bottom:1px solid rgba(117,177,220,.12);
-        }
-
-        .brand{
-            display:flex;
-            align-items:center;
-            gap:10px;
-            color:#fff;
-            font-size:22px;
-            font-weight:800;
-        }
-        .brand:hover{color:#fff}
-        .brand-icon{
-            width:39px;height:39px;
-            border:1px solid rgba(56,213,255,.55);
-            border-radius:11px;
-            display:grid;
-            place-items:center;
-            color:#38d5ff;
-            background:rgba(36,156,255,.08);
-            box-shadow:0 0 25px rgba(36,156,255,.12);
-        }
-        .brand span{color:#39b8ff}
-
-        .nav-links a{
-            color:#91a5b8;
-            font-size:14px;
-            margin:0 17px;
-            transition:.2s;
-        }
-        .nav-links a:hover{color:#fff}
-
-        .login-btn{
-            color:#fff;
-            border:1px solid #249cff;
-            border-radius:9px;
-            padding:9px 17px;
-            font-size:14px;
-            background:rgba(36,156,255,.05);
-            transition:.25s;
-        }
-        .login-btn:hover{
-            color:#fff;
-            background:rgba(36,156,255,.15);
-            box-shadow:0 0 25px rgba(36,156,255,.15);
+@media(max-width:991px){body{overflow-y:auto}.page{height:auto;min-height:100svh;overflow:visible}.main{display:block}.hero{min-height:auto;padding:70px 0 30px}.hero-visual{min-height:340px;margin-top:8px}.hero-image{width:105%;margin-left:0}.quick-grid{grid-template-columns:1fr}.status-strip{flex-wrap:wrap;gap:9px 17px}}
+@media(max-width:575px){.navbar{padding:9px 0}.brand{font-size:19px}.brand-icon{width:34px;height:34px}.nav-links{display:none}.hero{padding-top:65px}.hero h1{font-size:42px;letter-spacing:-2.2px}.hero-description{font-size:14px}.hero-visual{min-height:260px}.hero-image{width:125%}footer .container{justify-content:center!important;text-align:center}}
+@media(min-width:992px) and (max-height:850px){
+            .hero h1{font-size:46px}
+            .hero-description{font-size:12px;line-height:1.4;margin-bottom:11px}
+            .hero-image{width:94%;max-width:570px}
+            .eyebrow{padding:6px 10px;margin-bottom:10px}
+            .btn-main,.btn-secondary{padding:9px 15px;font-size:12px}
+            .quick-card{padding:6px 9px}
+            .quick-card strong{font-size:9.5px}
+            .quick-card span{font-size:8px}
+            .status-strip{font-size:8px;gap:14px}
         }
 
-        .hero{
-            min-height:720px;
-            padding-top:100px;
-            position:relative;
-            display:flex;
-            align-items:center;
-            overflow:hidden;
-            background:
-                radial-gradient(circle at 72% 42%,rgba(36,156,255,.12),transparent 28%),
-                radial-gradient(circle at 20% 35%,rgba(139,108,255,.08),transparent 28%),
-                linear-gradient(180deg,#030b14 0%,#04111d 100%);
-        }
+        @media(min-width:992px) and (max-height:760px){.navbar{padding:8px 0}.brand-icon{width:32px;height:32px}.brand{font-size:18px}.hero h1{font-size:50px}.hero-description{font-size:13px;margin-bottom:12px}.hero-image{width:100%;max-width:610px}.quick-card{padding:7px 10px}.quick-icon{width:30px;height:30px;flex-basis:30px}.status-strip{padding-bottom:4px}footer{padding:4px 0 6px}}
+</style>
 
-        .hero::before{
-            content:"";
-            position:absolute;
-            inset:0;
-            background-image:
-                linear-gradient(rgba(68,151,207,.045) 1px,transparent 1px),
-                linear-gradient(90deg,rgba(68,151,207,.045) 1px,transparent 1px);
-            background-size:55px 55px;
-            mask-image:linear-gradient(to bottom,#000 0%,transparent 90%);
-        }
+<style>
+  html { scroll-behavior: smooth; }
+  #features { scroll-margin-top: 70px; }
+  #features:target .feature-card {
+    animation: accessiqFeatureFocus 0.8s ease;
+  }
+  @keyframes accessiqFeatureFocus {
+    0% { transform: translateY(-3px); }
+    100% { transform: translateY(0); }
+  }
+</style>
 
-        .hero-copy{position:relative;z-index:3}
-        .eyebrow{
-            display:inline-flex;
-            align-items:center;
-            gap:8px;
-            padding:8px 13px;
-            border-radius:8px;
-            color:#43bfff;
-            border:1px solid rgba(36,156,255,.25);
-            background:rgba(36,156,255,.055);
-            font-size:12px;
-            font-weight:700;
-            letter-spacing:.7px;
-            text-transform:uppercase;
-            margin-bottom:22px;
-        }
-        .pulse{
-            width:7px;height:7px;border-radius:50%;
-            background:var(--green);
-            box-shadow:0 0 0 5px rgba(50,230,161,.08);
-        }
-
-        .hero h1{
-            font-size:clamp(46px,5.3vw,74px);
-            line-height:1.02;
-            letter-spacing:-3px;
-            font-weight:850;
-            max-width:700px;
-            margin:0 0 20px;
-        }
-        .blue{color:#249cff}
-        .hero-description{
-            color:#9aabba;
-            font-size:17px;
-            line-height:1.75;
-            max-width:610px;
-            border-left:3px solid #32e6a1;
-            padding-left:17px;
-            margin-bottom:24px;
-        }
-
-        .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-        .btn-main{
-            color:#fff;
-            background:linear-gradient(135deg,#138ef1,#2bb9ff);
-            border:0;
-            border-radius:9px;
-            padding:13px 21px;
-            font-weight:750;
-            box-shadow:0 10px 35px rgba(36,156,255,.17);
-            transition:.25s;
-        }
-        .btn-main:hover{
-            color:#fff;
-            transform:translateY(-2px);
-            box-shadow:0 15px 40px rgba(36,156,255,.27);
-        }
-        .btn-secondary{
-            color:#b9c8d5;
-            border:1px solid rgba(92,154,200,.32);
-            background:rgba(255,255,255,.015);
-            border-radius:9px;
-            padding:13px 21px;
-            transition:.25s;
-        }
-        .btn-secondary:hover{color:#fff;border-color:#249cff}
-
-        .hero-visual{
-            position:relative;
-            min-height:510px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            z-index:2;
-        }
-        .hero-visual::before{
-            content:"";
-            position:absolute;
-            width:410px;height:410px;
-            border-radius:50%;
-            background:rgba(36,156,255,.09);
-            filter:blur(60px);
-        }
-        .hero-image{
-            width:125%;
-            max-width:760px;
-            position:relative;
-            margin-left:-70px;
-            filter:drop-shadow(0 25px 55px rgba(0,0,0,.5));
-            animation:heroFloat 6s ease-in-out infinite;
-        }
-        @keyframes heroFloat{
-            0%,100%{transform:translateY(0)}
-            50%{transform:translateY(-8px)}
-        }
-
-        .scroll-cue{
-            position:absolute;
-            bottom:25px;
-            left:50%;
-            transform:translateX(-50%);
-            color:#5d7589;
-            font-size:11px;
-            letter-spacing:1.5px;
-            text-transform:uppercase;
-            z-index:4;
-        }
-        .scroll-cue i{display:block;text-align:center;margin-top:5px;color:#249cff}
-
-        .section{
-            padding:72px 0;
-            border-top:1px solid rgba(117,177,220,.07);
-            background:#040e18;
-        }
-        .section-heading{text-align:center;max-width:700px;margin:0 auto 42px}
-        .section-heading .label{
-            color:#38b8ff;
-            font-size:11px;
-            font-weight:800;
-            letter-spacing:1.8px;
-            text-transform:uppercase;
-        }
-        .section-heading h2{
-            margin:10px 0 13px;
-            font-size:40px;
-            letter-spacing:-1.5px;
-            font-weight:800;
-        }
-        .section-heading p{color:#8095a8;line-height:1.7}
-
-        .feature-card{
-            height:100%;
-            padding:24px;
-            border:1px solid var(--line);
-            background:linear-gradient(145deg,rgba(9,27,43,.9),rgba(5,18,30,.9));
-            border-radius:15px;
-            transition:.28s;
-            position:relative;
-            overflow:hidden;
-        }
-        .feature-card::after{
-            content:"";
-            position:absolute;
-            width:100px;height:100px;
-            right:-55px;top:-55px;
-            border-radius:50%;
-            background:rgba(36,156,255,.08);
-        }
-        .feature-card:hover{
-            transform:translateY(-6px);
-            border-color:rgba(36,156,255,.35);
-            box-shadow:0 18px 45px rgba(0,0,0,.25);
-        }
-        .feature-icon{
-            width:50px;height:50px;
-            border-radius:12px;
-            display:grid;
-            place-items:center;
-            font-size:21px;
-            margin-bottom:20px;
-            color:#5fc9ff;
-            background:rgba(36,156,255,.09);
-            border:1px solid rgba(36,156,255,.15);
-        }
-        .feature-card:nth-child(2) .feature-icon{
-            color:#45e4a8;background:rgba(50,230,161,.08);
-            border-color:rgba(50,230,161,.14);
-        }
-        .feature-card:nth-child(3) .feature-icon{
-            color:#ae9aff;background:rgba(139,108,255,.08);
-            border-color:rgba(139,108,255,.14);
-        }
-        .feature-card h5{font-size:18px;font-weight:750}
-        .feature-card p{color:#8196a8;font-size:14px;line-height:1.7;margin:9px 0 0}
-
-        .workflow{
-            position:relative;
-            display:grid;
-            grid-template-columns:repeat(6,1fr);
-            gap:10px;
-        }
-        .workflow::before{
-            content:"";
-            position:absolute;
-            top:35px;
-            left:8%;
-            right:8%;
-            height:1px;
-            background:linear-gradient(90deg,transparent,#1f8ed7,transparent);
-        }
-        .step{
-            position:relative;
-            z-index:2;
-            text-align:center;
-        }
-        .step-icon{
-            width:70px;height:70px;
-            margin:0 auto 15px;
-            border-radius:50%;
-            display:grid;
-            place-items:center;
-            border:2px solid #1f8ed7;
-            background:#061522;
-            color:#42bcff;
-            font-size:24px;
-            box-shadow:0 0 25px rgba(36,156,255,.07);
-        }
-        .step:last-child .step-icon{
-            border-color:#32e6a1;color:#32e6a1;
-        }
-        .step-number{font-size:11px;color:#249cff;font-weight:800}
-        .step h6{font-size:15px;font-weight:750;margin:5px 0}
-        .step p{color:#70879a;font-size:12px;line-height:1.5;margin:0}
-
-        .security-panel{
-            border:1px solid rgba(36,156,255,.17);
-            border-radius:20px;
-            padding:32px;
-            background:
-                radial-gradient(circle at 80% 0%,rgba(36,156,255,.09),transparent 30%),
-                linear-gradient(145deg,#071a2b,#05111d);
-        }
-        .security-panel h3{font-size:31px;font-weight:800}
-        .security-panel p{color:#8297aa;line-height:1.75}
-        .check{
-            display:flex;gap:10px;align-items:center;
-            color:#b6c6d3;font-size:14px;margin:13px 0;
-        }
-        .check i{color:#32e6a1}
-
-        .cta{
-            text-align:center;
-            padding:52px 20px;
-            border:1px solid rgba(36,156,255,.16);
-            border-radius:20px;
-            background:radial-gradient(circle at 50% 0%,rgba(36,156,255,.12),transparent 48%),#061421;
-        }
-        .cta h2{font-size:36px;font-weight:800;letter-spacing:-1px}
-        .cta p{max-width:610px;color:#8196a8;line-height:1.7;margin:13px auto 26px}
-
-        footer{
-            padding:25px 0;
-            color:#60788c;
-            font-size:12px;
-            border-top:1px solid rgba(117,177,220,.08);
-            background:#030a12;
-        }
-
-        @media(max-width:991px){
-            .nav-links{display:none}
-            .hero{padding-top:120px;padding-bottom:70px}
-            .hero-visual{min-height:390px;margin-top:15px}
-            .hero-image{width:115%;margin-left:0}
-            .workflow{grid-template-columns:repeat(3,1fr);row-gap:35px}
-            .workflow::before{display:none}
-        }
-
-        @media(max-width:575px){
-            .hero h1{letter-spacing:-2px}
-            .hero-description{font-size:15px}
-            .hero-visual{min-height:290px}
-            .hero-image{width:130%}
-            .section{padding:60px 0}
-            .section-heading h2{font-size:31px}
-            .workflow{grid-template-columns:repeat(2,1fr)}
-            .security-panel{padding:27px}
-            .security-panel h3{font-size:26px}
-        }
+<style>
+      #features.explore-focus {
+        animation: exploreFocus 1.2s ease;
+      }
+      @keyframes exploreFocus {
+        0% { transform: scale(1.01); filter: brightness(1.35); }
+        100% { transform: scale(1); filter: brightness(1); }
+      }
+      #exploreAccessIQ { cursor: pointer; }
     </style>
-</head>
-
+    </head>
 <body>
-
+<div class="page">
 <nav class="navbar">
-    <div class="container d-flex align-items-center justify-content-between">
-        <a class="brand" href="{{ url_for('main.home') }}">
-            <span class="brand-icon"><i class="bi bi-shield-lock-fill"></i></span>
-            Access<span>IQ</span>
-        </a>
+<div class="container d-flex align-items-center justify-content-between">
+<a class="brand" href="{{ url_for('main.home') }}"><span class="brand-icon"><i class="bi bi-shield-lock-fill"></i></span>Access<span>IQ</span></a>
+<div class="d-flex align-items-center">
 
-        <div class="d-flex align-items-center">
-            <div class="nav-links">
-                <a href="#features">Features</a>
-                <a href="#how-it-works">How It Works</a>
-                <a href="#security">Security</a>
-            </div>
-            <a href="{{ url_for('main.login') }}" class="login-btn">
-                <i class="bi bi-person-fill me-1"></i> Sign In
-            </a>
-        </div>
-    </div>
-</nav>
-
+<a href="{{ url_for('main.login') }}" class="login-btn"><i class="bi bi-person-fill me-1"></i> Sign In</a>
+</div></div></nav>
+<main class="main">
 <section class="hero">
-    <div class="container position-relative">
-        <div class="row align-items-center">
-
-            <div class="col-lg-6 hero-copy">
-                <div class="eyebrow">
-                    <span class="pulse"></span>
-                    AI-Powered Access Control System
-                </div>
-
-                <h1>
-                    Control <span class="blue">Access.</span><br>
-                    Detect <span class="blue">Risk.</span><br>
-                    Protect <span class="blue">Everything.</span>
-                </h1>
-
-                <p class="hero-description">
-                    A smart and secure platform for managing users, roles,
-                    permissions and system activity with AI-assisted security insights.
-                </p>
-
-                <div class="hero-actions">
-                    <a href="{{ url_for('main.login') }}" class="btn-main">
-                        <i class="bi bi-arrow-right me-2"></i>
-                        Enter Security Console
-                    </a>
-                    <a href="#features" class="btn-secondary">
-                        Explore AccessIQ
-                    </a>
-                </div>
-            </div>
-
-            <div class="col-lg-6 hero-visual">
-                <img
-                    src="{{ url_for('static', filename='images/accessiq-hero.png') }}"
-                    alt="AccessIQ intelligent cybersecurity control center"
-                    class="hero-image"
-                >
-            </div>
-
-        </div>
-    </div>
-
-    <div class="scroll-cue">
-        Explore platform
-        <i class="bi bi-chevron-down"></i>
-    </div>
+<div class="container"><div class="row align-items-center g-0">
+<div class="col-lg-6 hero-copy">
+<div class="eyebrow"><span class="pulse"></span>AI-Powered Access Control System</div>
+<h1>Control <span class="blue">Access.</span><br>Detect <span class="blue">Risk.</span><br>Protect <span class="blue">Everything.</span></h1>
+<p class="hero-description">A smart and secure platform for managing users, roles, permissions and system activity with AI-assisted security insights.</p>
+<div class="hero-actions"><a href="{{ url_for('main.login') }}" class="btn-main"><i class="bi bi-arrow-right me-2"></i>Enter Security Console</a><button type="button" class="btn-secondary" id="exploreAccessIQ">Explore AccessIQ</button></div>
+</div>
+<div class="col-lg-6 hero-visual"><img src="{{ url_for('static', filename='images/accessiq-hero.png') }}" alt="AccessIQ intelligent cybersecurity control center" class="hero-image"></div>
+</div></div>
 </section>
+<section class="quick-bar" id="features"><div class="container"><div class="quick-grid">
+<div class="quick-card"><div class="quick-icon"><i class="bi bi-person-lock"></i></div><div><strong>Identity & Access Management</strong><span>Users, roles and permissions with role-based access control.</span></div></div>
+<div class="quick-card"><div class="quick-icon"><i class="bi bi-graph-up-arrow"></i></div><div><strong>AI-Powered Security Analytics</strong><span>Understand authentication activity and security risk.</span></div></div>
+<div class="quick-card"><div class="quick-icon"><i class="bi bi-journal-text"></i></div><div><strong>Complete Audit Trail</strong><span>Track important access attempts and administrative activity.</span></div></div>
+</div></div></section>
+<div class="status-strip" id="how-it-works">
+<span><i class="bi bi-person"></i> Identity</span><span><i class="bi bi-shield-check"></i> Authentication</span><span><i class="bi bi-people"></i> Role & Permission</span><span><i class="bi bi-lock"></i> Access Decision</span><span><i class="bi bi-file-earmark-text"></i> Audit Log</span><span id="security"><i class="bi bi-cpu"></i> AI Analysis</span>
+</div>
+</main>
+<footer><div class="container d-flex justify-content-between align-items-center"><span>© 2026 AccessIQ</span><span>Intelligent Access & Security Management</span></div></footer>
+</div>
 
-<section class="section" id="features">
-    <div class="container">
-        <div class="section-heading">
-            <div class="label">Core capabilities</div>
-            <h2>One platform. Complete access visibility.</h2>
-            <p>
-                AccessIQ connects identity, permissions, security monitoring
-                and AI-assisted analysis into one centralized system.
-            </p>
-        </div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const exploreButton = document.getElementById("exploreAccessIQ");
+    const features = document.getElementById("features");
 
-        <div class="row g-4">
-            <div class="col-lg-4">
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="bi bi-person-lock"></i></div>
-                    <h5>Identity & Access Management</h5>
-                    <p>
-                        Manage users, roles and permissions while applying
-                        role-based access control across the system.
-                    </p>
-                </div>
-            </div>
+    if (exploreButton && features) {
+        exploreButton.addEventListener("click", function () {
+            features.classList.remove("explore-focus");
+            void features.offsetWidth;
+            features.classList.add("explore-focus");
 
-            <div class="col-lg-4">
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="bi bi-graph-up-arrow"></i></div>
-                    <h5>AI-Powered Security Analytics</h5>
-                    <p>
-                        Analyze authentication and authorization activity
-                        and use AI-assisted insights to understand security risk.
-                    </p>
-                </div>
-            </div>
+            features.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest"
+            });
 
-            <div class="col-lg-4">
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="bi bi-journal-text"></i></div>
-                    <h5>Complete Audit Trail</h5>
-                    <p>
-                        Record important system actions, access attempts and
-                        administrative activity for better security visibility.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="section" id="how-it-works">
-    <div class="container">
-        <div class="section-heading">
-            <div class="label">Access lifecycle</div>
-            <h2>How AccessIQ works</h2>
-            <p>A complete flow from identity verification to intelligent security analysis.</p>
-        </div>
-
-        <div class="workflow">
-            <div class="step">
-                <div class="step-icon"><i class="bi bi-person"></i></div>
-                <div class="step-number">01</div>
-                <h6>Identity</h6>
-                <p>User signs in with credentials.</p>
-            </div>
-
-            <div class="step">
-                <div class="step-icon"><i class="bi bi-shield-check"></i></div>
-                <div class="step-number">02</div>
-                <h6>Authentication</h6>
-                <p>Credentials are securely verified.</p>
-            </div>
-
-            <div class="step">
-                <div class="step-icon"><i class="bi bi-people"></i></div>
-                <div class="step-number">03</div>
-                <h6>Role & Permission</h6>
-                <p>Access is evaluated using the assigned role.</p>
-            </div>
-
-            <div class="step">
-                <div class="step-icon"><i class="bi bi-lock"></i></div>
-                <div class="step-number">04</div>
-                <h6>Access Decision</h6>
-                <p>Requested system access is allowed or denied.</p>
-            </div>
-
-            <div class="step">
-                <div class="step-icon"><i class="bi bi-file-earmark-text"></i></div>
-                <div class="step-number">05</div>
-                <h6>Audit Log</h6>
-                <p>Important activities are recorded and tracked.</p>
-            </div>
-
-            <div class="step">
-                <div class="step-icon"><i class="bi bi-cpu"></i></div>
-                <div class="step-number">06</div>
-                <h6>AI Security Analysis</h6>
-                <p>Security signals are analyzed for potential risk.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="section" id="security">
-    <div class="container">
-        <div class="security-panel">
-            <div class="row align-items-center g-5">
-                <div class="col-lg-7">
-                    <div class="section-heading text-start m-0">
-                        <div class="label">Security intelligence</div>
-                        <h2>Designed to make access activity easier to understand.</h2>
-                        <p>
-                            AccessIQ combines traditional access control with security
-                            analytics and AI-assisted analysis, giving administrators
-                            a centralized view of what is happening in the system.
-                        </p>
-                    </div>
-
-                    <div class="check"><i class="bi bi-check-circle-fill"></i> Role-based access control</div>
-                    <div class="check"><i class="bi bi-check-circle-fill"></i> User and permission management</div>
-                    <div class="check"><i class="bi bi-check-circle-fill"></i> Authentication and security event tracking</div>
-                    <div class="check"><i class="bi bi-check-circle-fill"></i> AI-assisted security analysis</div>
-                </div>
-
-                <div class="col-lg-5">
-                    <div class="p-4 rounded-4" style="border:1px solid rgba(117,177,220,.14);background:rgba(0,0,0,.14);">
-                        <div class="d-flex justify-content-between mb-3">
-                            <span style="color:#71899d;font-size:12px;">SECURITY ENGINE</span>
-                            <span style="color:#32e6a1;font-size:12px;font-weight:700;">● ACTIVE</span>
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center py-3 border-bottom" style="border-color:rgba(117,177,220,.1)!important;">
-                            <span><i class="bi bi-shield-check me-2" style="color:#32e6a1;"></i>Access Control</span>
-                            <strong style="color:#32e6a1;">Protected</strong>
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center py-3 border-bottom" style="border-color:rgba(117,177,220,.1)!important;">
-                            <span><i class="bi bi-journal-check me-2" style="color:#42bcff;"></i>Audit Logging</span>
-                            <strong style="color:#42bcff;">Active</strong>
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center py-3">
-                            <span><i class="bi bi-robot me-2" style="color:#ae9aff;"></i>AI Analysis</span>
-                            <strong style="color:#ae9aff;">Available</strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="section">
-    <div class="container">
-        <div class="cta">
-            <div class="label" style="color:#38b8ff;font-size:11px;font-weight:800;letter-spacing:1.8px;">ACCESSIQ CONSOLE</div>
-            <h2 class="mt-2">Ready to secure your access environment?</h2>
-            <p>
-                Sign in to manage users, roles, permissions and security activity
-                from the AccessIQ dashboard.
-            </p>
-            <a href="{{ url_for('main.login') }}" class="btn-main">
-                Sign In to AccessIQ <i class="bi bi-arrow-right ms-2"></i>
-            </a>
-        </div>
-    </div>
-</section>
-
-<footer>
-    <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <span>© 2026 AccessIQ</span>
-        <span>Intelligent Access & Security Management</span>
-    </div>
-</footer>
+            setTimeout(function () {
+                features.classList.remove("explore-focus");
+            }, 1400);
+        });
+    }
+});
+</script>
 
 </body>
 </html>
