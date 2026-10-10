@@ -1512,7 +1512,7 @@ def ai_analysis():
 
     analysis = analyze_activity(
         recent_logs,
-        use_ai=True
+        use_ai=False
     )
 
 
