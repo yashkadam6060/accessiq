@@ -222,7 +222,9 @@ that an attack definitely occurred.
             )
 
             response = client.interactions.create(
-                model="gemini-3.5-flash",
+               
+model="gemini-3.5-flash-lite",
+
                 input=prompt
             )
 
